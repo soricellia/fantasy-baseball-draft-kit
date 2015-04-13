@@ -11,6 +11,7 @@ package fbbdk.data;
  */
 public abstract class Team {
     private String coach;
+    private String teamName;
     private int budgetMoney;
     /**
      * @return the coach
@@ -38,5 +39,19 @@ public abstract class Team {
      */
     public void setBudgetMoney(int budgetMoney) {
         this.budgetMoney = budgetMoney;
+    }
+
+    /**
+     * @return the teamName
+     */
+    public String getTeamName() {
+        return teamName;
+    }
+
+    /**
+     * @param teamName the teamName to set
+     */
+    public void setTeamName(String teamName) {
+        this.teamName = teamName;
     }
 }

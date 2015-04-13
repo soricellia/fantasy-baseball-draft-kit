@@ -5,6 +5,8 @@
  */
 package fbbdk.data;
 
+import java.util.Date;
+
 /**
  * This class is intended to provide the abstraction needed to represent 
  * a player on any team.
@@ -12,24 +14,14 @@ package fbbdk.data;
  * @author Tony
  */
 public abstract class Player {
-    private String name;
+    private String firstName;
+    private String lastName;
+    private String notes;
     private Contract contract;
     private int salary;
     private MLBTeam mlbTeam;
-
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    private Date year;
+    private String countryOfBirth;
 
     /**
      * @return the contract
@@ -71,5 +63,75 @@ public abstract class Player {
      */
     public void setMlbTeam(MLBTeam mlbTeam) {
         this.mlbTeam = mlbTeam;
+    }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName;
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    /**
+     * @return the notes
+     */
+    public String getNotes() {
+        return notes;
+    }
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
+    /**
+     * @return the year
+     */
+    public Date getYear() {
+        return year;
+    }
+
+    /**
+     * @param year the year to set
+     */
+    public void setYear(Date year) {
+        this.year = year;
+    }
+
+    /**
+     * @return the countryOfBirth
+     */
+    public String getCountryOfBirth() {
+        return countryOfBirth;
+    }
+
+    /**
+     * @param countryOfBirth the countryOfBirth to set
+     */
+    public void setCountryOfBirth(String countryOfBirth) {
+        this.countryOfBirth = countryOfBirth;
     }
 }

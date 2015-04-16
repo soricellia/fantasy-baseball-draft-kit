@@ -19,7 +19,7 @@
         <property name="MINUS_ICON"                     value="Minus.png"></property>
         <property name="MOVE_UP_ICON"                   value="MoveUp.png"></property>
         <property name="MOVE_DOWN_ICON"                 value="MoveDown.png"></property>
-        <property name="HOME_SCREEN_ICON"               value="homeScreen.png"></property>
+        <property name="HOME_SCREEN_ICON"               value="homeScreenIcon.png"></property>
         <property name="PLAYER_SCREEN_ICON"             value="playerScreenIcon.png"></property>
         <property name="FANTASY_STANDING_SCREEN_ICON"   value="fantasyStandingScreenIcon.png"></property>
         <property name="DRAFT_SCREEN_ICON"              value="draftScreenIcon.png"></property>
@@ -40,8 +40,12 @@
         <property name="MLB_TEAMS_SCREEN_TOOLTIP"           value="MLB Teams Screen"></property>
         
         <!-- GUI LABELS -->
+        <property name="HOME_SCREEN_HEADING_LABEL"              value="Fantasy Teams"></property>
+        <property name="PLAYER_SCREEN_HEADING_LABEL"            value="Available Players"></property>
+        <property name="FANTASY_STANDING_SCREEN_HEADING_LABEL"  value="Fantasy Standings"></property>
+        <property name="DRAFT_SCREEN_HEADING_LABEL"             value="Draft Summary"></property>
+        <property name="MLB_TEAMS_SCREEN_HEADING_LABEL"         value="MLB Teams"></property>
         
-
         <!-- ERROR MESSAGES -->
         <property name="START_DATE_AFTER_END_DATE_ERROR_MESSAGE"    value="The Starting Monday cannot be chronologically after the Ending Friday"></property>
         <property name="START_DATE_NOT_A_MONDAY_ERROR_MESSAGE"      value="The Start Date must be a Monday"></property>

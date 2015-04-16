@@ -17,8 +17,14 @@ public class DraftDataManager {
     DraftFileManager fileManager;
     
     final static String DEFAULT_DRAFT_NAME = "New Draft";
+   
     public DraftDataManager(DraftDataView initView){
         this.ddv = initView;
+        draft = new Draft();
+    }
+    
+    public Draft getDraft(){
+        return draft;
     }
     
     public void reset(){
@@ -27,5 +33,6 @@ public class DraftDataManager {
         draft.setDraftName(DEFAULT_DRAFT_NAME);
         draft.getPickOrder().clear();
         
+          ddv.reloadDraft(draft);
     }
 }

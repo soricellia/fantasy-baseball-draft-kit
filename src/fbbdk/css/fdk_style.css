@@ -4,26 +4,21 @@
     in the UI must have the same class as those below in 
     order to be rendered using those properties.
 
-    Author     : Richard McKenna
+    Author     : Anthony Soricelli
 */
 
-.progress_bar > .bar{
-    -fx-background-color: linear-gradient(
-        from 0px .75em to .75em 0px,
-        repeat,
-        -fx-accent 0%,
-        -fx-accent 49%,
-        derive(-fx-accent, 30%) 50%,
-        derive(-fx-accent, 30%) 99%);
-}
 
-.progress_pie {
-    -fx-progress-color:#ff33cc;
+.screen_button{
+    //nothing needed yet
 }
-
+.home_screen{
+    -fx-background-image: url("./images/homeScreenBackground.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+}
 // CSS CLASS FOR OUR BIG PANES
 .bordered_pane {
-    -fx-background-color: #aaaaff;
+    -fx-background-color: #3399FF;
     -fx-background-radius: 5.0;
     -fx-padding: 15;
     -fx-spacing: 10;

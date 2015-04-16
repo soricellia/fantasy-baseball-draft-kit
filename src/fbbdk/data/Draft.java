@@ -16,6 +16,13 @@ public class Draft {
     private ArrayList<Team> teams;
     private ArrayList<Player> pickOrder;
     private String draftName;
+    
+    public Draft(){
+        availablePlayers = new ArrayList<>();
+        teams = new ArrayList<>();
+        pickOrder = new ArrayList<>();
+        
+    }
     /**
      * @return the availablePlayers
      */

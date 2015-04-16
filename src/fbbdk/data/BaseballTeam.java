@@ -16,6 +16,11 @@ public class BaseballTeam extends Team{
     private ArrayList<Pitcher> pitchers;
     private ArrayList<Player> reserves;
 
+    public BaseballTeam(){
+        hitters = new ArrayList<>();
+        pitchers = new ArrayList<>();
+        reserves = new ArrayList<>();
+    }
     /**
      * @return the hitters
      */

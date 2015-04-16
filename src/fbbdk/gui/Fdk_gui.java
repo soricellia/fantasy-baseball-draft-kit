@@ -17,7 +17,6 @@ import fbbdk.data.DraftDataView;
 import fbbdk.file.DraftFileManager;
 import fbbdk.file.DraftSiteExporter;
 import java.io.IOException;
-import java.util.ArrayList;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -86,10 +85,17 @@ public class Fdk_gui implements DraftDataView{
     MessageDialog messageDialog;
     YesNoCancelDialog yesNoCancelDialog;
     
+    //these are my screens
+    BorderPane homeScreen;
+    BorderPane playerScreen;
+    BorderPane fantasyTeamScreen;
+    BorderPane draftScreen;
+    BorderPane mlbTeamsScreen;
     
     //constants used for GUI
-    static BorderPane DEFAULT_WORKSPACE = new HomeScreen();
     static final String PRIMARY_STYLE_SHEET = PATH_CSS + "fdk_style.css";
+    static final String CLASS_BORDERED_PANE = "bordered_pane";
+    static final String SCREEN_BUTTON = "screen_button";
     /**
      * Constructor for making this GUI, note that it does not initialize the UI
      * controls. To do that, call initGUI.
@@ -193,11 +199,8 @@ public class Fdk_gui implements DraftDataView{
 
         // INIT THE CENTER WORKSPACE CONTROLS BUT DON'T ADD THEM
         // TO THE WINDOW YET
-        initWorkspace(DEFAULT_WORKSPACE);
-        
-        //INIT THE SCREEN TOOLBAR
-        initScreenToolbar();
-        
+        initWorkspace();
+         
         // NOW SETUP THE EVENT HANDLERS
         initEventHandlers();
 
@@ -207,12 +210,12 @@ public class Fdk_gui implements DraftDataView{
       
     /**
      * When called this function puts the workspace into the window,
-     * revealing the controls for editing a Course.
+     * revealing the draft screens  
      */
     public void activateWorkspace() {
         if (!workspaceActivated) {
             // PUT THE WORKSPACE IN THE GUI
-            fdkPane.setCenter(workspaceScrollPane);
+            fdkPane.setCenter(workspacePane);
             workspaceActivated = true;
         }
     }
@@ -251,8 +254,8 @@ public class Fdk_gui implements DraftDataView{
         // AND USE IT TO SIZE THE WINDOW
         primaryStage.setX(bounds.getMinX());
         primaryStage.setY(bounds.getMinY());
-        primaryStage.setWidth(bounds.getWidth());
-        primaryStage.setHeight(bounds.getHeight());
+        primaryStage.setWidth(bounds.getWidth()*2/3);
+        primaryStage.setHeight(bounds.getHeight()*2/3);
 
         // ADD THE TOOLBAR ONLY, NOTE THAT THE WORKSPACE
         // HAS BEEN CONSTRUCTED, BUT WON'T BE ADDED UNTIL
@@ -282,15 +285,24 @@ public class Fdk_gui implements DraftDataView{
         exportDraftButton = initChildButton(fileToolbarPane, Fdk_PropertyType.EXPORT_PAGE_ICON, Fdk_PropertyType.EXPORT_PAGE_TOOLTIP, true);
         exitButton = initChildButton(fileToolbarPane, Fdk_PropertyType.EXIT_ICON, Fdk_PropertyType.EXIT_TOOLTIP, false);
     }
-    private void initWorkspace(BorderPane screen) throws IOException {
-       
-        workspacePane = screen;
+    private void initWorkspace() throws IOException {
         
-        // AND NOW PUT IT IN THE WORKSPACE
-        workspaceScrollPane = new ScrollPane();
-        workspaceScrollPane.setContent(workspacePane);
-        workspaceScrollPane.setFitToWidth(true);
-
+       //build my screens
+        homeScreen = new HomeScreen(primaryScene);
+        playerScreen = new PlayerScreen(primaryScene);
+        fantasyTeamScreen = new FantasyStandingScreen(primaryScene);
+        draftScreen = new DraftScreen(primaryScene);
+        mlbTeamsScreen = new MLBTeamsScreen(primaryScene);
+        
+        //construct the workspacePane
+        workspacePane = new BorderPane();
+        //the default workspacePane will be the homepage
+        workspacePane.setCenter(homeScreen);
+        workspacePane.getStyleClass().add(CLASS_BORDERED_PANE);
+         //INIT THE SCREEN TOOLBAR
+        initScreenToolbar(workspacePane);
+       
+        
         // NOTE THAT WE HAVE NOT PUT THE WORKSPACE INTO THE WINDOW,
         // THAT WILL BE DONE WHEN THE USER EITHER CREATES A NEW
         // COURSE OR LOADS AN EXISTING ONE FOR EDITING
@@ -300,28 +312,40 @@ public class Fdk_gui implements DraftDataView{
      * This function initializes all the buttons in the toolbar at the bottom of
      * the application window. These are related to screen management.
      */
-    private void initScreenToolbar() {
+    private void initScreenToolbar(BorderPane workspacePane) {
         screenToolbarPane = new FlowPane();
 
         // HERE ARE OUR SCREEN TOOLBAR BUTTONS, NOTE THAT ALL WILL
         // START AS ENABLED (false)
         homeScreenButton = initChildButton(screenToolbarPane,
                 Fdk_PropertyType.HOME_SCREEN_ICON, Fdk_PropertyType.HOME_SCREEN_TOOLTIP, false);
-        
+        homeScreenButton.getStyleClass().add(SCREEN_BUTTON);
+       
         playerScreenButton = initChildButton(screenToolbarPane,
                 Fdk_PropertyType.PLAYER_SCREEN_ICON, Fdk_PropertyType.PLAYER_SCREEN_TOOLTIP, false);
-        
+        playerScreenButton.getStyleClass().add(SCREEN_BUTTON);
+       
         fantasyStandingScreenButton = initChildButton(screenToolbarPane, 
                 Fdk_PropertyType.FANTASY_STANDING_SCREEN_ICON, Fdk_PropertyType.FANTASY_STANDING_SCREEN_TOOLTIP, false);
-        
+        fantasyStandingScreenButton.getStyleClass().add(SCREEN_BUTTON);
+       
         draftScreenButton = initChildButton(screenToolbarPane,
                 Fdk_PropertyType.DRAFT_SCREEN_ICON, Fdk_PropertyType.DRAFT_SCREEN_TOOLTIP, false);
-        
+        draftScreenButton.getStyleClass().add(SCREEN_BUTTON);
+       
         mlbTeamsScreenButton = initChildButton(screenToolbarPane,
                 Fdk_PropertyType.MLB_TEAMS_SCREEN_ICON, Fdk_PropertyType.MLB_TEAMS_SCREEN_TOOLTIP, false);
+        mlbTeamsScreenButton.getStyleClass().add(SCREEN_BUTTON);
+       
+        workspacePane.setBottom(screenToolbarPane);
     }
+    
     @Override
     public void reloadDraft(Draft draftToReload) {
+        // FIRST ACTIVATE THE WORKSPACE IF NECESSARY
+        if (!workspaceActivated) {
+            activateWorkspace();
+        }
         //TODO
     }
     
@@ -377,7 +401,38 @@ public class Fdk_gui implements DraftDataView{
     }
 
     private void initEventHandlers() {
-        //TODO
+       // FIRST THE FILE CONTROLS
+        fileController = new FileController(messageDialog, yesNoCancelDialog, dfm, draftSiteExporter);
+        newDraftButton.setOnAction(e -> {
+            fileController.handleNewDraftRequest(this);
+        });
+        loadDraftButton.setOnAction(e -> {
+            fileController.handleLoadDraftRequest(this);
+        });
+        saveDraftButton.setOnAction(e -> {
+            fileController.handleSaveDraftRequest(this, ddm.getDraft());
+        });
+        exportDraftButton.setOnAction(e -> {
+            fileController.handleExportDraftRequest(this);
+        });
+        exitButton.setOnAction(e -> {
+            fileController.handleExitRequest(this);
+        });
+        homeScreenButton.setOnAction(e->{
+            workspacePane.setCenter(homeScreen);
+        });
+        playerScreenButton.setOnAction(e->{
+            workspacePane.setCenter(playerScreen);
+        });
+        mlbTeamsScreenButton.setOnAction(e->{
+            workspacePane.setCenter(mlbTeamsScreen);
+        });
+        fantasyStandingScreenButton.setOnAction(e->{
+            workspacePane.setCenter(fantasyTeamScreen);
+        });
+        draftScreenButton.setOnAction(e->{
+            workspacePane.setCenter(draftScreen);
+        });
     }
 
 }

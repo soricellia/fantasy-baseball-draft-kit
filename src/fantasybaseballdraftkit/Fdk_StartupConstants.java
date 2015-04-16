@@ -16,9 +16,9 @@ public class Fdk_StartupConstants {
     public static final String PROPERTIES_FILE_NAME = "properties.xml";
     public static final String PROPERTIES_SCHEMA_FILE_NAME = "properties_schema.xsd";    
     public static final String PATH_DATA = "./data/";
-    public static final String PATH_COURSES = PATH_DATA + "courses/";
+    public static final String PATH_DRAFTS = PATH_DATA + "drafts/";
     public static final String PATH_IMAGES = "./images/";
-    public static final String PATH_CSS = "csb/css/";
+    public static final String PATH_CSS = "fbbdk/css/";
     public static final String PATH_SITES = "sites/";
     public static final String PATH_BASE = PATH_SITES + "base/";
     public static final String PATH_EMPTY = ".";
@@ -31,4 +31,5 @@ public class Fdk_StartupConstants {
 
     // ERROR DIALOG CONTROL
     public static String CLOSE_BUTTON_LABEL = "Close";
+    
 }

@@ -23,6 +23,9 @@ public abstract class Player {
     private Date year;
     private String countryOfBirth;
 
+    public Player(){
+        
+    }
     /**
      * @return the contract
      */

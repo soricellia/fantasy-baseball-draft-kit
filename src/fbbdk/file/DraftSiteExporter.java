@@ -105,4 +105,12 @@ public class DraftSiteExporter {
         baseDir = initBaseDir;
         sitesDir = initSitesDir;
     }
+
+    public String getPageURLPath(Draft draftToExport, String this_needs_to_be_done) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void exportCourseSite(Draft courseToExport, Stage window) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

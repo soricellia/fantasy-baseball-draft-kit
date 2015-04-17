@@ -12,9 +12,11 @@ package fbbdk.data;
 public class Pitcher extends Player{
     private int wins;
     private int strikeOuts;
-    private int inningsPitched;
+    private double inningsPitched;
     private int hits;
     private int saves;
+    private double whip;
+    private double era;
 
     /**
      * @return the wins
@@ -47,14 +49,14 @@ public class Pitcher extends Player{
     /**
      * @return the inningsPitched
      */
-    public int getInningsPitched() {
+    public double getInningsPitched() {
         return inningsPitched;
     }
 
     /**
      * @param inningsPitched the inningsPitched to set
      */
-    public void setInningsPitched(int inningsPitched) {
+    public void setInningsPitched(double inningsPitched) {
         this.inningsPitched = inningsPitched;
     }
 
@@ -85,24 +87,40 @@ public class Pitcher extends Player{
     public void setSaves(int saves) {
         this.saves = saves;
     }
+    
+
     /**
-     * this method calculates and returns the walks plus
-     * hits per innings pitched or WHIP stat of the pitcher
-     * 
-     * @return the walks + hits per innings pitched 
+     * @return the whip
      */
-    public Double whip(){
-        return -1.0;
+    public double getWhip() {
+        return whip;
     }
+
     /**
-     * NEEDS TO BE DONE STILL
-     * 
-     * this method calculates and returns the
-     * earned run average of the pitcher
-     * 
-     * @return the earned run average of the pitcher 
+     * calculated as walks + hits/(innings pitched)
+     * @param walks
+     * @param hits
+     * @param ip
      */
-    public Double era(){
-        return -1.0;
+    public void setWhip(int walks, int hits, double ip) {
+        this.whip = walks + hits/ip;
     }
+
+    /**
+     * @return the era
+     */
+    public double getEra() {
+        return era;
+    }
+
+    /**
+     * @param er
+     * @param ip
+     */
+    public void setEra(int er,double ip) {
+        this.inningsPitched = ip;
+        
+        era = er*9/ip;
+    }
+    
 }

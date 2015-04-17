@@ -12,14 +12,14 @@ import java.util.ArrayList;
  * @author Tony
  */
 public class Hitter extends Player{
-    private Position positon;
-    private ArrayList<Position> qualifyingPositions;
+    private String positon;
+    private String qp;
     private int hits;
     private int stolenBases;
     private int runsBattedIn;
     private int homeRunes;
-    private int walks;
-    
+    private int runs;
+    private double ba;
     
     /**
      * NEEDS TO BE DONE
@@ -36,29 +36,30 @@ public class Hitter extends Player{
     /**
      * @return the positon
      */
-    public Position getPositon() {
+    public String getPositon() {
         return positon;
     }
 
     /**
      * @param positon the positon to set
      */
-    public void setPositon(Position positon) {
+    public void setPositon(String positon) {
         this.positon = positon;
     }
 
     /**
      * @return the qualifyingPositions
      */
-    public ArrayList<Position> getQualifyingPositions() {
-        return qualifyingPositions;
+    public String getQP() {
+        return qp;
     }
 
     /**
-     * @param qualifyingPositions the qualifyingPositions to set
+     * @param qp
+     
      */
-    public void setQualifyingPositions(ArrayList<Position> qualifyingPositions) {
-        this.qualifyingPositions = qualifyingPositions;
+    public void setQP(String qp) {
+        this.qp = qp;
     }
 
     /**
@@ -118,16 +119,34 @@ public class Hitter extends Player{
     }
 
     /**
-     * @return the walks
+     * @return the ba
      */
-    public int getWalks() {
-        return walks;
+    public double getBa() {
+        return ba;
     }
 
     /**
-     * @param walks the walks to set
+     * @param atBat number of times at bat
+     * @param hits number of hits
      */
-    public void setWalks(int walks) {
-        this.walks = walks;
+    public void setBa(int atBat,int hits) {
+        if(atBat == 0)
+            ba = 0.0;
+        else
+            ba = hits/atBat;
+    }
+
+    /**
+     * @return the runs
+     */
+    public int getRuns() {
+        return runs;
+    }
+
+    /**
+     * @param runs the runs to set
+     */
+    public void setRuns(int runs) {
+        this.runs = runs;
     }
 }

@@ -7,6 +7,7 @@ package fbbdk.gui;
 
 import fantasybaseballdraftkit.Fdk_PropertyType;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DRAFT_SCREEN_HEADING_LABEL;
+import static fbbdk.gui.HomeScreen.SCREEN_STYLE;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -29,10 +30,13 @@ public class DraftScreen extends BorderPane{
     public DraftScreen(Scene primaryScene){
         //init the propertiesManager
         properties = PropertiesManager.getPropertiesManager();
+        //set the class
+        this.getStyleClass().add(SCREEN_STYLE);
+        
         //init the components
         initComponents();
     }
-
+    //2033400830
     private void initComponents() {
         //init gridpane
         pane = new GridPane();

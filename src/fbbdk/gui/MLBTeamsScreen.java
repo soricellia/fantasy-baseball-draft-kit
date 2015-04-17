@@ -7,6 +7,7 @@ package fbbdk.gui;
 
 import fantasybaseballdraftkit.Fdk_PropertyType;
 import static fantasybaseballdraftkit.Fdk_PropertyType.MLB_TEAMS_SCREEN_HEADING_LABEL;
+import static fbbdk.gui.HomeScreen.SCREEN_STYLE;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -29,6 +30,9 @@ public class MLBTeamsScreen extends BorderPane{
     public MLBTeamsScreen(Scene primaryScene){
         //init the properties Manager
         properties = PropertiesManager.getPropertiesManager();
+        //set the class
+        this.getStyleClass().add(SCREEN_STYLE);
+        
         //init the components
         initComponents();
     }

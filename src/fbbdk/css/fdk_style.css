@@ -7,23 +7,46 @@
     Author     : Anthony Soricelli
 */
 
+.root{
+    -fx-font-size: 12pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: black;
+}
 
 .screen_button{
     //nothing needed yet
 }
-.home_screen{
-    -fx-background-image: url("./images/homeScreenBackground.png");
-    -fx-background-repeat: stretch;
-    -fx-background-position: center center;
-}
-// CSS CLASS FOR OUR BIG PANES
-.bordered_pane {
-    -fx-background-color: #3399FF;
+.screen{
+    -fx-background-color: white;
     -fx-background-radius: 5.0;
     -fx-padding: 15;
     -fx-spacing: 10;
-    -fx-border-width: 2px;
-    -fx-border-color: #7777dd;
+    -fx-border-color: gainsboro;
+    -fx-border-width: 2;
+    -fx-border-style:solid
+    
+}
+.player_radio_panel_style{
+    -fx-border-color: gainsboro;
+    -fx-border-width: 2;
+    -fx-border-style:solid;
+    -fx-background-color: #00F;
+    -fx-background-radius: 5.0;
+    
+}
+.player_radio_style{
+    
+    -fx-padding: 15;
+    -fx-spacing: 20;
+    -fx-text-fill: white;
+    
+}
+// CSS CLASS FOR OUR BIG PANES
+.bordered_pane {
+    -fx-background-color: #00F;
+    -fx-background-radius: 5.0;
+    -fx-padding: 15;
+    -fx-spacing: 10;
 }
 
 // CSS CLASS FOR LABELS HEADING LARGE SECTIONS IN THE GUI

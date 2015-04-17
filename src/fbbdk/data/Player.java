@@ -19,8 +19,8 @@ public abstract class Player {
     private String notes;
     private Contract contract;
     private int salary;
-    private MLBTeam mlbTeam;
-    private Date year;
+    private String mlbTeam;
+    private int birthDate;
     private String countryOfBirth;
 
     public Player(){
@@ -57,14 +57,14 @@ public abstract class Player {
     /**
      * @return the mlbTeam
      */
-    public MLBTeam getMlbTeam() {
+    public String getMlbTeam() {
         return mlbTeam;
     }
 
     /**
      * @param mlbTeam the mlbTeam to set
      */
-    public void setMlbTeam(MLBTeam mlbTeam) {
+    public void setMlbTeam(String mlbTeam) {
         this.mlbTeam = mlbTeam;
     }
 
@@ -113,15 +113,15 @@ public abstract class Player {
     /**
      * @return the year
      */
-    public Date getYear() {
-        return year;
+    public int getBirthDate() {
+        return birthDate;
     }
 
     /**
      * @param year the year to set
      */
-    public void setYear(Date year) {
-        this.year = year;
+    public void setBirthDate(int year) {
+        this.birthDate = year;
     }
 
     /**

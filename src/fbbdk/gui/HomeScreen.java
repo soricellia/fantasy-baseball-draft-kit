@@ -7,6 +7,7 @@ package fbbdk.gui;
 
 import fantasybaseballdraftkit.Fdk_PropertyType;
 import static fantasybaseballdraftkit.Fdk_PropertyType.HOME_SCREEN_HEADING_LABEL;
+import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_CSS;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
@@ -27,12 +28,12 @@ public class HomeScreen extends BorderPane{
     PropertiesManager propertiesManager;
     
     final static String HEADING_LABEL = "heading_label";
-    final static String HOME_SCREEN_STYLE = "home_screen";
+    final static String SCREEN_STYLE = "screen";
     public HomeScreen(Scene primaryScene){
         //first call super
         super();
-        //set the style class
-        this.getStyleClass().add(HOME_SCREEN_STYLE);
+        //set the class
+        this.getStyleClass().add(SCREEN_STYLE);
         //init the prop manager
         propertiesManager = PropertiesManager.getPropertiesManager();
         

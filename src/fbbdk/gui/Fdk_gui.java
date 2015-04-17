@@ -255,7 +255,7 @@ public class Fdk_gui implements DraftDataView{
         primaryStage.setX(bounds.getMinX());
         primaryStage.setY(bounds.getMinY());
         primaryStage.setWidth(bounds.getWidth()*2/3);
-        primaryStage.setHeight(bounds.getHeight()*2/3);
+        primaryStage.setHeight(bounds.getHeight()*5/6);
 
         // ADD THE TOOLBAR ONLY, NOTE THAT THE WORKSPACE
         // HAS BEEN CONSTRUCTED, BUT WON'T BE ADDED UNTIL
@@ -289,7 +289,7 @@ public class Fdk_gui implements DraftDataView{
         
        //build my screens
         homeScreen = new HomeScreen(primaryScene);
-        playerScreen = new PlayerScreen(primaryScene);
+        playerScreen = new PlayerScreen(primaryScene,ddm);
         fantasyTeamScreen = new FantasyStandingScreen(primaryScene);
         draftScreen = new DraftScreen(primaryScene);
         mlbTeamsScreen = new MLBTeamsScreen(primaryScene);

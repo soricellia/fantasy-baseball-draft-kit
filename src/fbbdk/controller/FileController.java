@@ -9,6 +9,7 @@ import fbbdk.gui.WebBrowser;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DRAFT_SAVED_MESSAGE;
 import static fantasybaseballdraftkit.Fdk_PropertyType.NEW_DRAFT_CREATED_MESSAGE;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SAVE_UNSAVED_WORK_MESSAGE;
+import static fantasybaseballdraftkit.Fdk_StartupConstants.JSON_PLAYER_PATH;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_DRAFTS;
 import fbbdk.data.Draft;
 import fbbdk.data.DraftDataManager;
@@ -108,6 +109,12 @@ public class FileController {
                 // RESET THE DATA, WHICH SHOULD TRIGGER A RESET OF THE UI
                 DraftDataManager dataManager = gui.getDataManager();
                 dataManager.reset();
+                
+                //now we need to load in new players
+                draftIO.loadDraft(dataManager.getDraft(), JSON_PLAYER_PATH);
+                //load the obervable players
+                dataManager.getDraft().setObservablePlayers();
+                
                 saved = false;
 
                 // REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE

@@ -6,6 +6,8 @@
 package fbbdk.data;
 
 import java.util.ArrayList;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  *
@@ -16,11 +18,13 @@ public class Draft {
     private ArrayList<Team> teams;
     private ArrayList<Player> pickOrder;
     private String draftName;
+    private ObservableList<Player> observablePlayers;
     
     public Draft(){
         availablePlayers = new ArrayList<>();
         teams = new ArrayList<>();
         pickOrder = new ArrayList<>();
+        observablePlayers = FXCollections.observableArrayList();
         
     }
     /**
@@ -29,7 +33,9 @@ public class Draft {
     public ArrayList<Player> getAvailablePlayers() {
         return availablePlayers;
     }
-
+    public void setObservablePlayers(){
+        getObservablePlayers().addAll(availablePlayers);
+    }
     /**
      * @param availablePlayers the availablePlayers to set
      */
@@ -80,6 +86,20 @@ public class Draft {
      */
     public void setDraftName(String draftName) {
         this.draftName = draftName;
+    }
+
+    /**
+     * @return the observablePlayers
+     */
+    public ObservableList<Player> getObservablePlayers() {
+        return observablePlayers;
+    }
+
+    /**
+     * @param observablePlayers the observablePlayers to set
+     */
+    public void setObservablePlayers(ObservableList<Player> observablePlayers) {
+        this.observablePlayers = observablePlayers;
     }
     
 }

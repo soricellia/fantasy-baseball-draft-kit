@@ -26,7 +26,7 @@ public enum Fdk_PropertyType {
         DRAFT_SCREEN_ICON,
         MLB_TEAMS_SCREEN_ICON,
         ADD_ICON,
-        MINUS_ICON,
+        REMOVE_ICON,
         MOVE_UP_ICON,
         MOVE_DOWN_ICON,
         
@@ -37,6 +37,8 @@ public enum Fdk_PropertyType {
         SAVE_DRAFT_TOOLTIP,
         EXPORT_PAGE_TOOLTIP,
         EXIT_TOOLTIP,
+        ADD_ICON_TOOLTIP,
+        REMOVE_ICON_TOOLTIP,
         
         HOME_SCREEN_TOOLTIP,
         PLAYER_SCREEN_TOOLTIP,
@@ -53,7 +55,10 @@ public enum Fdk_PropertyType {
         FANTASY_STANDING_SCREEN_HEADING_LABEL,
         DRAFT_SCREEN_HEADING_LABEL,
         MLB_TEAMS_SCREEN_HEADING_LABEL,
-     
+        
+        //OTHER GUI LABELS
+        SEARCH_LABEL,
+        
         // ERROR DIALOG MESSAGES
         START_DATE_AFTER_END_DATE_ERROR_MESSAGE,
         START_DATE_NOT_A_MONDAY_ERROR_MESSAGE,

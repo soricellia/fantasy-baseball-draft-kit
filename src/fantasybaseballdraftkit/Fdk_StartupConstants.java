@@ -24,7 +24,7 @@ public class Fdk_StartupConstants {
     public static final String PATH_EMPTY = ".";
 
     // THESE ARE THE DATA FILES WE WILL LOAD AT STARTUP
-    public static final String JSON_FILE_PATH_SUBJECTS = PATH_DATA + "subjects.json";
+    public static final String JSON_PLAYER_PATH = PATH_DATA + "players.json";
     
     // ERRO MESSAGE ASSOCIATED WITH PROPERTIES FILE LOADING ERRORS
     public static String PROPERTIES_FILE_ERROR_MESSAGE = "Error Loading properties.xml";

@@ -27,6 +27,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -170,6 +171,10 @@ public class PlayerScreen extends BorderPane{
         
         initEventHandlers();
         
+        //select the all button and apply the correct table headings
+        allRadioButton.setSelected(true);
+        setMixedTableHeadings();
+        
         this.setCenter(pane);
     }
       // INIT A LABEL AND PLACE IT IN A GridPane INIT ITS PROPER PLACE
@@ -289,29 +294,46 @@ public class PlayerScreen extends BorderPane{
         //this will be done later in an action listener
         firstNameColumn = new TableColumn<>(FIRST_NAME_COLUMN);
         firstNameColumn.setEditable(false);
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         
         lastNameColumn = new TableColumn<>(LAST_NAME_COLUMN);
         lastNameColumn.setEditable(false);
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        
         proTeamColumn = new TableColumn<>(PRO_TEAM_COLUMN);
         proTeamColumn.setEditable(false);
+        proTeamColumn.setCellValueFactory(new PropertyValueFactory<>("mlbTeam"));
+        
         positionsColumn = new TableColumn<>(POSITIONS_COLUMN);
         positionsColumn.setEditable(false);
+        positionsColumn.setCellValueFactory(new PropertyValueFactory<>("qp"));
+        
         yearOfBirthColumn = new TableColumn<>(YEAR_OF_BIRTH_COLUMN);
         yearOfBirthColumn.setEditable(false);
+        yearOfBirthColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+        
         winRunColumn = new TableColumn<>();
         winRunColumn.setEditable(false);
+        
+        
         savesHRColumn = new TableColumn<>();
         savesHRColumn.setEditable(false);
+        
         kRBIColumn = new TableColumn<>();
         kRBIColumn.setEditable(false);
+        
         eraSBColumn = new TableColumn<>();
         eraSBColumn.setEditable(false);
+        
         whipBAColumn = new TableColumn<>();
         whipBAColumn.setEditable(false);
+        
         evColumn = new TableColumn<>(ESTIMATED_VALUE_COLUMN);
         evColumn.setEditable(false);
+        
         notesColumn = new TableColumn<>(NOTES_COLUMN);
         notesColumn.setEditable(true);
+        notesColumn.setCellValueFactory(new PropertyValueFactory<>("notes"));
         
         //now we can add all of these bad girls to the table
         playerTable.getColumns().addAll(firstNameColumn,lastNameColumn,proTeamColumn,positionsColumn

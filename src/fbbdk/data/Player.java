@@ -5,7 +5,12 @@
  */
 package fbbdk.data;
 
+import java.beans.PropertyChangeSupport;
 import java.util.Date;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 /**
  * This class is intended to provide the abstraction needed to represent 
@@ -14,18 +19,69 @@ import java.util.Date;
  * @author Tony
  */
 public abstract class Player {
-    private String firstName;
-    private String lastName;
-    private String notes;
+    
+    private StringProperty firstName;
+    private StringProperty lastName;
+    private StringProperty notes;
     private Contract contract;
-    private int salary;
-    private String mlbTeam;
-    private int birthDate;
-    private String countryOfBirth;
+    private IntegerProperty salary;
+    private StringProperty mlbTeam;
+    private IntegerProperty birthDate;
+    private StringProperty countryOfBirth;
+    private transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
     public Player(){
-        
+         firstName = new SimpleStringProperty();
+         lastName = new SimpleStringProperty();
+         notes = new SimpleStringProperty();
+         salary = new SimpleIntegerProperty();
+         mlbTeam = new SimpleStringProperty();
+         birthDate = new SimpleIntegerProperty();
+         countryOfBirth = new SimpleStringProperty();
     }
+
+    /**
+     * @return the firstName
+     */
+    public String getFirstName() {
+        return firstName.get();
+    }
+
+    /**
+     * @param firstName the firstName to set
+     */
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
+    }
+
+    /**
+     * @return the lastName
+     */
+    public String getLastName() {
+        return lastName.get();
+    }
+
+    /**
+     * @param lastName the lastName to set
+     */
+    public void setLastName(String lastName) {
+        this.lastName.set(lastName);
+    }
+
+    /**
+     * @return the notes
+     */
+    public String getNotes() {
+        return notes.get();
+    }
+
+    /**
+     * @param notes the notes to set
+     */
+    public void setNotes(String notes) {
+        this.notes.set(notes);
+    }
+
     /**
      * @return the contract
      */
@@ -44,97 +100,70 @@ public abstract class Player {
      * @return the salary
      */
     public int getSalary() {
-        return salary;
+        return salary.get();
     }
 
     /**
      * @param salary the salary to set
      */
     public void setSalary(int salary) {
-        this.salary = salary;
+        this.salary.set(salary);
     }
 
     /**
      * @return the mlbTeam
      */
     public String getMlbTeam() {
-        return mlbTeam;
+        return mlbTeam.get();
     }
 
     /**
      * @param mlbTeam the mlbTeam to set
      */
     public void setMlbTeam(String mlbTeam) {
-        this.mlbTeam = mlbTeam;
+        this.mlbTeam.set(mlbTeam);
     }
 
     /**
-     * @return the firstName
-     */
-    public String getFirstName() {
-        return firstName;
-    }
-
-    /**
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * @return the lastName
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * @return the notes
-     */
-    public String getNotes() {
-        return notes;
-    }
-
-    /**
-     * @param notes the notes to set
-     */
-    public void setNotes(String notes) {
-        this.notes = notes;
-    }
-
-    /**
-     * @return the year
+     * @return the birthDate
      */
     public int getBirthDate() {
-        return birthDate;
+        return birthDate.get();
     }
 
     /**
-     * @param year the year to set
+     * @param birthDate the birthDate to set
      */
-    public void setBirthDate(int year) {
-        this.birthDate = year;
+    public void setBirthDate(int birthDate) {
+        this.birthDate.set(birthDate);
     }
 
     /**
      * @return the countryOfBirth
      */
     public String getCountryOfBirth() {
-        return countryOfBirth;
+        return countryOfBirth.get();
     }
 
     /**
      * @param countryOfBirth the countryOfBirth to set
      */
     public void setCountryOfBirth(String countryOfBirth) {
-        this.countryOfBirth = countryOfBirth;
+        this.countryOfBirth.set(countryOfBirth);
     }
+
+    /**
+     * @return the propertyChangeSupport
+     */
+    public PropertyChangeSupport getPropertyChangeSupport() {
+        return propertyChangeSupport;
+    }
+
+    /**
+     * @param propertyChangeSupport the propertyChangeSupport to set
+     */
+    public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
+        this.propertyChangeSupport = propertyChangeSupport;
+    }
+
 }

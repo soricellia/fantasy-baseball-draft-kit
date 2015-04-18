@@ -5,39 +5,34 @@
  */
 package fbbdk.data;
 
-import java.util.ArrayList;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import java.text.DecimalFormat;
 
 /**
  *
  * @author Tony
  */
-public class Hitter extends Player{
+public class Hitter{
     
     //these will go into our player table
-    private StringProperty positon;
-    private StringProperty qp;
-    private IntegerProperty hits;
-    private IntegerProperty stolenBases;
-    private IntegerProperty runsBattedIn;
-    private IntegerProperty homeRunes;
-    private IntegerProperty runs;
-    private DoubleProperty ba;
+    private String position;
+    private String qp;
+    private int hits;
+    private int stolenBases;
+    private int runsBattedIn;
+    private int homeRunes;
+    private int runs;
+    private int atBat;
+    private double ba;
     
     public Hitter(){
-        positon = new SimpleStringProperty();
-        qp = new SimpleStringProperty();
-        hits = new SimpleIntegerProperty();
-        stolenBases = new SimpleIntegerProperty();
-        runsBattedIn = new SimpleIntegerProperty();
-        homeRunes = new SimpleIntegerProperty();
-        runs = new SimpleIntegerProperty();
-        ba = new SimpleDoubleProperty();
+        position = "";
+        qp = "";
+        hits = 0;
+        stolenBases = 0;
+        runsBattedIn = 0;
+        homeRunes = 0;
+        runs = 0;
+        ba = 0.0;
     
     }
 
@@ -45,21 +40,21 @@ public class Hitter extends Player{
      * @return the position
      */
     public String getPositon() {
-        return positon.get();
+        return position;
     }
 
     /**
      * @param positon the position to set
      */
-    public void setPositon(String positon) {
-        this.positon.set(positon);
+    public void setPosition(String positon) {
+        this.position = positon;
     }
 
     /**
      * @return the qualifyingPositions
      */
     public String getQP() {
-        return qp.get();
+        return qp;
     }
 
     /**
@@ -67,70 +62,70 @@ public class Hitter extends Player{
      
      */
     public void setQP(String qp) {
-        this.qp.set(qp);
+        this.qp=qp;
     }
 
     /**
      * @return the hits
      */
     public int getHits() {
-        return hits.get();
+        return hits;
     }
 
     /**
      * @param hits the hits to set
      */
     public void setHits(int hits) {
-        this.hits.set(hits);
+        this.hits=hits;
     }
 
     /**
      * @return the stolenBases
      */
     public int getStolenBases() {
-        return stolenBases.get();
+        return stolenBases;
     }
 
     /**
      * @param stolenBases the stolenBases to set
      */
     public void setStolenBases(int stolenBases) {
-        this.stolenBases.set(stolenBases);
+        this.stolenBases=stolenBases;
     }
 
     /**
      * @return the runsBattedIn
      */
     public int getRunsBattedIn() {
-        return runsBattedIn.get();
+        return runsBattedIn;
     }
 
     /**
      * @param runsBattedIn the runsBattedIn to set
      */
     public void setRunsBattedIn(int runsBattedIn) {
-        this.runsBattedIn.set(runsBattedIn);
+        this.runsBattedIn=runsBattedIn;
     }
 
     /**
      * @return the homeRunes
      */
     public int getHomeRunes() {
-        return homeRunes.get();
+        return homeRunes;
     }
 
     /**
      * @param homeRunes the homeRunes to set
      */
     public void setHomeRunes(int homeRunes) {
-        this.homeRunes.set(homeRunes);
+        this.homeRunes=homeRunes;
     }
 
     /**
      * @return the ba
      */
     public double getBa() {
-        return ba.get();
+        return ba;
     }
 
     /**
@@ -138,24 +133,44 @@ public class Hitter extends Player{
      * @param hits number of hits
      */
     public void setBa(int atBat,int hits) {
+        this.atBat = atBat;
+        this.hits = hits;
         if(atBat == 0){
-            ba.set(0.0);
+            ba = 0.0;
         }else{
-            ba.set(hits/atBat);
+            ba = Double.parseDouble(""+hits)/Double.parseDouble(""+atBat);
+            DecimalFormat df = new DecimalFormat(".###");
+            ba = Double.parseDouble(df.format(ba));
+            
         }
+        
     }
 
     /**
      * @return the runs
      */
     public int getRuns() {
-        return runs.get();
+        return runs;
     }
 
     /**
      * @param runs the runs to set
      */
     public void setRuns(int runs) {
-        this.runs.set(runs);
+        this.runs=runs;
+    }
+
+    /**
+     * @return the atBat
+     */
+    public int getAtBat() {
+        return atBat;
+    }
+
+    /**
+     * @param atBat the atBat to set
+     */
+    public void setAtBat(int atBat) {
+        this.atBat = atBat;
     }
 }

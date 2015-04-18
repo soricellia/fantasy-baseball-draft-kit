@@ -5,6 +5,7 @@
  */
 package fbbdk.file;
 
+import fbbdk.data.BaseballPlayer;
 import fbbdk.data.Draft;
 import fbbdk.data.Hitter;
 import fbbdk.data.Pitcher;
@@ -98,7 +99,7 @@ public class JsonDraftFileManager implements DraftFileManager{
        //now lets clear all availble players from the list
        draftToLoad.getAvailablePlayers().clear();
        //create a variable to accsess player array
-       ArrayList<Player> players = draftToLoad.getAvailablePlayers();
+       ArrayList<BaseballPlayer> players = draftToLoad.getAvailablePlayers();
        
         //create a json array
        JsonArray array = json.getJsonArray(JSON_HITTER);
@@ -161,33 +162,38 @@ public class JsonDraftFileManager implements DraftFileManager{
     }
 
 
-    private void loadHitters(ArrayList<Player> players, JsonArray array) {
+    private void loadHitters(ArrayList<BaseballPlayer> players, JsonArray array) {
         for(int i = 0; i < array.size() ; i++){
            JsonObject jso = array.getJsonObject(i);
-           Hitter player = new Hitter();
+           BaseballPlayer player = new BaseballPlayer();
            player.setFirstName(jso.getString(JSON_FIRST_NAME));
            player.setLastName(jso.getString(JSON_LAST_NAME));
            player.setMlbTeam(jso.getString(JSON_TEAM));
            player.setBirthDate(Integer.parseInt(jso.getString(JSON_BIRTH_DATE)));
            player.setCountryOfBirth(jso.getString(JSON_NATION_OF_BIRTH));
-           player.setQP(jso.getString(JSON_QP));
            player.setNotes(jso.getString(JSON_NOTES));
+           player.setPositions(jso.getString(JSON_QP));
            
-           player.setHits(Integer.parseInt(jso.getString(JSON_H)));
-           player.setRuns(Integer.parseInt(jso.getString(JSON_R)));
-           player.setHomeRunes(Integer.parseInt(jso.getString(JSON_HR)));
-           player.setStolenBases(Integer.parseInt(jso.getString(JSON_SB)));
-           player.setRunsBattedIn(Integer.parseInt(jso.getString(JSON_RBI)));
-           player.setBa(Integer.parseInt(jso.getString(JSON_AB)), Integer.parseInt(jso.getString(JSON_H)));
+           //create hitter stats then add the stats from the json file
+           Hitter hitterStats = new Hitter();
            
+           hitterStats.setHits(Integer.parseInt(jso.getString(JSON_H)));
+           hitterStats.setRuns(Integer.parseInt(jso.getString(JSON_R)));
+           hitterStats.setHomeRunes(Integer.parseInt(jso.getString(JSON_HR)));
+           hitterStats.setStolenBases(Integer.parseInt(jso.getString(JSON_SB)));
+           hitterStats.setRunsBattedIn(Integer.parseInt(jso.getString(JSON_RBI)));
+           hitterStats.setBa(Integer.parseInt(jso.getString(JSON_AB)), Integer.parseInt(jso.getString(JSON_H)));
+           //now add the hitter stats to the player
+           player.setHitterStats(hitterStats);
            players.add(player);
        }
     }
 
-    private void loadPitchers(ArrayList<Player> players, JsonArray array) {
+    private void loadPitchers(ArrayList<BaseballPlayer> players, JsonArray array) {
         for(int i = 0; i < array.size() ; i++){
            JsonObject jso = array.getJsonObject(i);
-           Pitcher player = new Pitcher();
+           //first add the player stuff
+           BaseballPlayer player = new BaseballPlayer();
            player.setFirstName(jso.getString(JSON_FIRST_NAME));
            player.setLastName(jso.getString(JSON_LAST_NAME));
            player.setMlbTeam(jso.getString(JSON_TEAM));
@@ -195,13 +201,17 @@ public class JsonDraftFileManager implements DraftFileManager{
            player.setCountryOfBirth(jso.getString(JSON_NATION_OF_BIRTH));
            player.setNotes(jso.getString(JSON_NOTES));
            
-           player.setWhip(Integer.parseInt(jso.getString(JSON_BB)),Integer.parseInt(jso.getString(JSON_H))
+           //now add the pitcher stats
+           Pitcher pitcherStats = new Pitcher();
+           pitcherStats.setWhip(Integer.parseInt(jso.getString(JSON_BB)),Integer.parseInt(jso.getString(JSON_H))
                    ,Double.parseDouble(jso.getString(JSON_IP)));
-           player.setEra(Integer.parseInt(jso.getString(JSON_ER)), Double.parseDouble(jso.getString(JSON_IP)));
-           player.setWins(Integer.parseInt(jso.getString(JSON_W)));
-           player.setStrikeOuts(Integer.parseInt(jso.getString(JSON_K)));
-           player.setSaves(Integer.parseInt(jso.getString(JSON_SV)));
+           pitcherStats.setEra(Integer.parseInt(jso.getString(JSON_ER)), Double.parseDouble(jso.getString(JSON_IP)));
+           pitcherStats.setWins(Integer.parseInt(jso.getString(JSON_W)));
+           pitcherStats.setStrikeOuts(Integer.parseInt(jso.getString(JSON_K)));
+           pitcherStats.setSaves(Integer.parseInt(jso.getString(JSON_SV)));
            
+           //add the stats to the player
+           player.setPitcherStats(pitcherStats);
            players.add(player);
        }
     }

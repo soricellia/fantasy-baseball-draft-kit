@@ -14,11 +14,11 @@ import javafx.collections.ObservableList;
  * @author Tony
  */
 public class Draft {
-    private ArrayList<Player> availablePlayers;
+    private ArrayList<BaseballPlayer> availablePlayers;
     private ArrayList<Team> teams;
-    private ArrayList<Player> pickOrder;
+    private ArrayList<BaseballPlayer> pickOrder;
     private String draftName;
-    private ObservableList<Player> observablePlayers;
+    private ObservableList<BaseballPlayer> observablePlayers;
     
     public Draft(){
         availablePlayers = new ArrayList<>();
@@ -30,7 +30,7 @@ public class Draft {
     /**
      * @return the availablePlayers
      */
-    public ArrayList<Player> getAvailablePlayers() {
+    public ArrayList<BaseballPlayer> getAvailablePlayers() {
         return availablePlayers;
     }
     public void setObservablePlayers(){
@@ -39,7 +39,7 @@ public class Draft {
     /**
      * @param availablePlayers the availablePlayers to set
      */
-    public void setAvailablePlayers(ArrayList<Player> availablePlayers) {
+    public void setAvailablePlayers(ArrayList<BaseballPlayer> availablePlayers) {
         this.availablePlayers = availablePlayers;
     }
 
@@ -60,14 +60,14 @@ public class Draft {
     /**
      * @return the pickOrder
      */
-    public ArrayList<Player> getPickOrder() {
+    public ArrayList<BaseballPlayer> getPickOrder() {
         return pickOrder;
     }
 
     /**
      * @param pickOrder the pickOrder to set
      */
-    public void setPickOrder(ArrayList<Player> pickOrder) {
+    public void setPickOrder(ArrayList<BaseballPlayer> pickOrder) {
         this.pickOrder = pickOrder;
     }
     public void sortTeams(){
@@ -91,14 +91,14 @@ public class Draft {
     /**
      * @return the observablePlayers
      */
-    public ObservableList<Player> getObservablePlayers() {
+    public ObservableList<BaseballPlayer> getObservablePlayers() {
         return observablePlayers;
     }
 
     /**
      * @param observablePlayers the observablePlayers to set
      */
-    public void setObservablePlayers(ObservableList<Player> observablePlayers) {
+    public void setObservablePlayers(ObservableList<BaseballPlayer> observablePlayers) {
         this.observablePlayers = observablePlayers;
     }
     

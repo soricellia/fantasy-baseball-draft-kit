@@ -13,10 +13,17 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_ICON;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_ICON_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SEARCH_LABEL;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_IMAGES;
+import fbbdk.controller.PlayerTableController;
+import fbbdk.data.BaseballPlayer;
 import fbbdk.data.DraftDataManager;
 import fbbdk.data.Player;
 import static fbbdk.gui.HomeScreen.SCREEN_STYLE;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,6 +37,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
@@ -47,6 +55,8 @@ public class PlayerScreen extends BorderPane{
     PropertiesManager properties;
     
     DraftDataManager dataManager;
+    
+    PlayerTableController playerTableController;
     
     Label playerHeadingLabel;
    
@@ -89,63 +99,64 @@ public class PlayerScreen extends BorderPane{
     //this will hold the table
     FlowPane tablePane;
     //and the table that holds all the data
-    TableView<Player> playerTable;
+    TableView<BaseballPlayer> playerTable;
     //and the table colums
-    TableColumn<Player,String> firstNameColumn;
-    TableColumn<Player,String> lastNameColumn;
-    TableColumn<Player,String> proTeamColumn;
-    TableColumn<Player,String> positionsColumn;
-    TableColumn<Player,Integer> yearOfBirthColumn;
-    TableColumn<Player,Integer> winRunColumn;
-    TableColumn<Player,Integer> savesHRColumn;
-    TableColumn<Player,Integer> kRBIColumn;
-    TableColumn<Player,Double> eraSBColumn;
-    TableColumn<Player,Double> whipBAColumn;
-    TableColumn<Player,Integer> evColumn;
-    TableColumn<Player,String> notesColumn;
+    TableColumn<BaseballPlayer,String> firstNameColumn;
+    TableColumn<BaseballPlayer,String> lastNameColumn;
+    TableColumn<BaseballPlayer,String> proTeamColumn;
+    TableColumn<BaseballPlayer,String> positionsColumn;
+    TableColumn<BaseballPlayer,Integer> yearOfBirthColumn;
+    TableColumn<BaseballPlayer,Integer> winRunColumn;
+    TableColumn<BaseballPlayer,Integer> savesHRColumn;
+    TableColumn<BaseballPlayer,Integer> kRBIColumn;
+    TableColumn<BaseballPlayer,Double> eraSBColumn;
+    TableColumn<BaseballPlayer,Double> whipBAColumn;
+    TableColumn<BaseballPlayer,Integer> evColumn;
+    TableColumn<BaseballPlayer,String> notesColumn;
     
-    final static String PLAYER_RADIO_STYLE = "player_radio_style";
-    final static String PLAYER_RADIO_PANEL_STYLE = "player_radio_panel_style";
-    final static String HEADING_STYLE = "heading_label";
-    final static String SUB_HEADING = "subheading_label";
-    final static String EMPTY_TEXT = "";
+    private static final String PLAYER_RADIO_STYLE = "player_radio_style";
+    private static final String PLAYER_RADIO_PANEL_STYLE = "player_radio_panel_style";
+    public static final String HEADING_STYLE = "heading_label";
+    public static final String SUB_HEADING = "subheading_label";
+    public static final String EMPTY_TEXT = "";
     
     //these are the constants needed for the radio buttons
-    private static String ALL = "ALL";
-    private static String C = "C";
-    private static String FB = "1B";
-    private static String SB = "2B";
-    private static String TB = "3B";
-    private static String CI = "CI";
-    private static String SS = "SS";
-    private static String MI = "MI";
-    private static String OF = "OF";
-    private static String U = "U";
-    private static String P = "P";
+    private static final  String ALL = "ALL";
+    private static final String C = "C";
+    private static final String FB = "1B";
+    private static final String SB = "2B";
+    private static final String TB = "3B";
+    private static final String CI = "CI";
+    private static final String SS = "SS";
+    private static final String MI = "MI";
+    private static final String OF = "OF";
+    private static final String U = "U";
+    private static final String P = "P";
+    private static final String UNDER_SCORE = "_";
     
     //these will be the constants needed for the table colums
-    private static String FIRST_NAME_COLUMN = "First";
-    private static String LAST_NAME_COLUMN = "Last";
-    private static String PRO_TEAM_COLUMN = "Pro Team";
-    private static String POSITIONS_COLUMN = "Positions";
-    private static String YEAR_OF_BIRTH_COLUMN = "Year of Birth";
-    private static String RUN_WIN_COLUMN = "R/W";
-    private static String RUN_COLUMN = "R";
-    private static String WIN_COLUMN = "W";
-    private static String HR_SV_COLUMN = "HR/SV";
-    private static String HR_COLUMN = "HR";
-    private static String SV_COLUMN = "SV";
-    private static String RBI_K_COLUMN = "RBI/K";
-    private static String RBI_COLUMN = "RBI";
-    private static String K_COLUMN = "K";
-    private static String SB_ERA_COLUMN = "SB/ERA";
-    private static String SB_COLUMN = "SB";
-    private static String ERA_COLUMN = "ERA";
-    private static String BA_WHIP_COLUMN = "BA/WHIP";
-    private static String BA_COLUMN = "BA";
-    private static String WHIP_COLUMN = "WHIP";
-    private static String ESTIMATED_VALUE_COLUMN = "Estimated Value";
-    private static String NOTES_COLUMN = "Notes";
+    private static final String FIRST_NAME_COLUMN = "First";
+    private static final String LAST_NAME_COLUMN = "Last";
+    private static final String PRO_TEAM_COLUMN = "Pro Team";
+    private static final String POSITIONS_COLUMN = "Positions";
+    private static final String YEAR_OF_BIRTH_COLUMN = "Year of Birth";
+    private static final String RUN_WIN_COLUMN = "R/W";
+    private static final String RUN_COLUMN = "R";
+    private static final String WIN_COLUMN = "W";
+    private static final String HR_SV_COLUMN = "HR/SV";
+    private static final String HR_COLUMN = "HR";
+    private static final String SV_COLUMN = "SV";
+    private static final String RBI_K_COLUMN = "RBI/K";
+    private static final String RBI_COLUMN = "RBI";
+    private static final String K_COLUMN = "K";
+    private static final String SB_ERA_COLUMN = "SB/ERA";
+    private static final String SB_COLUMN = "SB";
+    private static final String ERA_COLUMN = "ERA";
+    private static final String BA_WHIP_COLUMN = "BA/WHIP";
+    private static final String BA_COLUMN = "BA";
+    private static final String WHIP_COLUMN = "WHIP";
+    private static final String ESTIMATED_VALUE_COLUMN = "Estimated Value";
+    private static final String NOTES_COLUMN = "Notes";
     
     
     public PlayerScreen(Scene primaryScene,DraftDataManager dataManager){
@@ -153,6 +164,8 @@ public class PlayerScreen extends BorderPane{
         properties = PropertiesManager.getPropertiesManager();
         this.dataManager = dataManager;
         
+        //init the playerTableControler
+        playerTableController = new PlayerTableController(dataManager);
         //set the class
         this.getStyleClass().add(SCREEN_STYLE);
         
@@ -212,7 +225,44 @@ public class PlayerScreen extends BorderPane{
         tf.setEditable(editable);
         return tf;
     }
-
+    /**
+     * 
+     * @return returns all positions selected in radio buttons 
+     */
+    private ArrayList<String> getSelectedPositions(){
+        ArrayList<String> positions = new ArrayList<String>();
+         if(cRadioButton.isSelected()){
+            positions.add(C);
+        }if(firstBaseRadioButton.isSelected()){
+            positions.add(FB);
+        }if(ciRadioButton.isSelected()){
+                positions.add(CI);
+        }if(secondBaseRadioButton.isSelected()){
+                positions.add(SB);
+        }if(thirdBaseRadioButton.isSelected()){
+                positions.add(TB);
+        }if(miRadioButton.isSelected()){
+                positions.add(MI);
+        }if(ssRadioButton.isSelected()){
+                positions.add(SS);
+        }if(ofRadioButton.isSelected()){
+                positions.add(OF);
+        }if(uRadioButton.isSelected()){
+                //ok for utility we are going to have to
+                //clear the positions list then add everything
+                positions.clear();
+                String[] list = {FB,SB,TB,MI,SS,C,OF,CI};
+                for(int x = 0 ; x < list.length ; x++){
+                    positions.add(list[x]);
+                }
+                
+        }if(pitcherRadioButton.isSelected()){
+                positions.add(P);
+        }
+        
+        return positions;
+    }
+    
     private void initHeading(GridPane pane) {
         //first lets init the topPane
         borderTopPane = new BorderPane();
@@ -238,6 +288,7 @@ public class PlayerScreen extends BorderPane{
         
         searchText = initTextField(1,EMPTY_TEXT,true);
         searchText.prefColumnCountProperty().set(60);
+        
         searchPanel.getChildren().addAll(searchLabel,searchText);
         searchPanel.setPadding(new Insets(0,0,0,50));
         searchPanel.setSpacing(10.0);
@@ -306,7 +357,7 @@ public class PlayerScreen extends BorderPane{
         
         positionsColumn = new TableColumn<>(POSITIONS_COLUMN);
         positionsColumn.setEditable(false);
-        positionsColumn.setCellValueFactory(new PropertyValueFactory<>("qp"));
+        positionsColumn.setCellValueFactory(new PropertyValueFactory<>("positions"));
         
         yearOfBirthColumn = new TableColumn<>(YEAR_OF_BIRTH_COLUMN);
         yearOfBirthColumn.setEditable(false);
@@ -314,19 +365,23 @@ public class PlayerScreen extends BorderPane{
         
         winRunColumn = new TableColumn<>();
         winRunColumn.setEditable(false);
-        
+        winRunColumn.setCellValueFactory(new PropertyValueFactory<>("winRun"));
         
         savesHRColumn = new TableColumn<>();
         savesHRColumn.setEditable(false);
+        savesHRColumn.setCellValueFactory(new PropertyValueFactory<>("savesHR"));
         
         kRBIColumn = new TableColumn<>();
         kRBIColumn.setEditable(false);
+        kRBIColumn.setCellValueFactory(new PropertyValueFactory<>("kRBI"));
         
         eraSBColumn = new TableColumn<>();
         eraSBColumn.setEditable(false);
+        eraSBColumn.setCellValueFactory(new PropertyValueFactory<>("eraSB"));
         
         whipBAColumn = new TableColumn<>();
         whipBAColumn.setEditable(false);
+        whipBAColumn.setCellValueFactory(new PropertyValueFactory<>("whipBA"));
         
         evColumn = new TableColumn<>(ESTIMATED_VALUE_COLUMN);
         evColumn.setEditable(false);
@@ -350,67 +405,67 @@ public class PlayerScreen extends BorderPane{
         
         allRadioButton.setOnAction(e->{
             allButtonClicked();
-            //still need to call controller to sort
+            playerTableController.handleAllSearch();
         });
         cRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         firstBaseRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         ciRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         secondBaseRadioButton.setOnAction(e->{
            if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
            setCorrectHeadings();
-            //still need to call controller to sort
+           playerTableController.handleRadioSearch(getSelectedPositions());
         });
         thirdBaseRadioButton.setOnAction(e->{
            if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
            setCorrectHeadings();
-            //still need to call controller to sort
+           playerTableController.handleRadioSearch(getSelectedPositions());
         });
         miRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         ssRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         ofRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         uRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         pitcherRadioButton.setOnAction(e->{
             if(allRadioButton.isSelected())
                 allRadioButton.setSelected(false);
             setCorrectHeadings();
-            //still need to call controller to sort
+            playerTableController.handleRadioSearch(getSelectedPositions());
         });
         plusButton.setOnAction(e->{
             
@@ -419,9 +474,12 @@ public class PlayerScreen extends BorderPane{
             
         });
         searchText.setOnAction(e->{
-            //do stuff
-        });
+            playerTableController.handleSearchTextRequest(searchText.getText());
+        }); 
+
+            
     }
+    
     private void unCheckAllButtons(){
         allRadioButton.setSelected(false);
         cRadioButton.setSelected(false);
@@ -496,4 +554,5 @@ public class PlayerScreen extends BorderPane{
         eraSBColumn.setText(ERA_COLUMN);
         whipBAColumn.setText(WHIP_COLUMN);
     }
+   
 }

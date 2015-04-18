@@ -346,6 +346,7 @@ public class Fdk_gui implements DraftDataView{
         if (!workspaceActivated) {
             activateWorkspace();
         }
+        
         //TODO
     }
     

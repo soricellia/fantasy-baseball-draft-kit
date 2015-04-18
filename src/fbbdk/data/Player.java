@@ -7,6 +7,7 @@ package fbbdk.data;
 
 import java.beans.PropertyChangeSupport;
 import java.util.Date;
+import java.util.Objects;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -28,6 +29,9 @@ public abstract class Player {
     private StringProperty mlbTeam;
     private IntegerProperty birthDate;
     private StringProperty countryOfBirth;
+    private StringProperty positions;
+    private StringProperty position;
+    
     private transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
     public Player(){
@@ -38,8 +42,26 @@ public abstract class Player {
          mlbTeam = new SimpleStringProperty();
          birthDate = new SimpleIntegerProperty();
          countryOfBirth = new SimpleStringProperty();
+         positions = new SimpleStringProperty();
+         position = new SimpleStringProperty();
     }
-
+    
+    public String getPositions(){
+        return positions.get();
+    }
+    
+    public String getPosition(){
+        return position.get();
+    }
+    
+    public void setPosition(String position){
+        this.position.set(position);
+    }
+    
+    public void setPositions(String positions){
+        this.positions.set(positions);
+    }
+    
     /**
      * @return the firstName
      */
@@ -157,6 +179,34 @@ public abstract class Player {
      */
     public PropertyChangeSupport getPropertyChangeSupport() {
         return propertyChangeSupport;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.firstName);
+        hash = 53 * hash + Objects.hashCode(this.lastName);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final Player other = (Player) obj;
+        
+        if(!this.firstName.equals(other.getFirstName())){
+            return false;
+        }
+        if (!this.lastName.equals(other.getLastName())) {
+            return false;
+        }
+        return true;
     }
 
     /**

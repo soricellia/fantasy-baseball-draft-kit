@@ -5,31 +5,26 @@
  */
 package fbbdk.data;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import java.text.DecimalFormat;
 
 /**
  *
  * @author Tony
  */
-public class Pitcher extends Player{
+public class Pitcher{
     
     //all of these things will go into our player table
     
     //position and qp are to match hitter stringProperties
-    private StringProperty position;
-    private StringProperty qp;
-    private IntegerProperty wins;
-    private IntegerProperty strikeOuts;
-    private DoubleProperty inningsPitched;
-    private IntegerProperty hits;
-    private IntegerProperty saves;
-    private DoubleProperty whip;
-    private DoubleProperty era;
+    private String position;
+    private String qp;
+    private int wins;
+    private int strikeOuts;
+    private double inningsPitched;
+    private int hits;
+    private int saves;
+    private double whip;
+    private double era;
 
     //this is the value of the position and qp string property we want to set 
     private final String PITCHER_POSITION = "P";
@@ -38,88 +33,88 @@ public class Pitcher extends Player{
         
         //need to set the position and qp of every pitcher
         //in order to match hitter data
-        position = new SimpleStringProperty();
-        position.set(PITCHER_POSITION);
-        qp = new SimpleStringProperty();
-        qp.set(PITCHER_POSITION);
+        position = PITCHER_POSITION;
+        qp = PITCHER_POSITION;
         //now we init everything else
-        wins = new SimpleIntegerProperty();
-        strikeOuts = new SimpleIntegerProperty();
-        inningsPitched = new SimpleDoubleProperty();
-        hits = new SimpleIntegerProperty();
-        saves = new SimpleIntegerProperty();
-        whip = new SimpleDoubleProperty();
-        era = new SimpleDoubleProperty();
-
+       wins = 0;
+       strikeOuts = 0;
+       inningsPitched = 0;
+       hits = 0;
+       saves = 0;
+       whip = 0.0;
+       era = 0.0;
+    }
+    public String getPosition(){
+        return position;
     }
     /**
      * @return the wins
      */
     public int getWins() {
-        return wins.get();
+        return wins;
     }
 
     /**
      * @param wins the wins to set
      */
     public void setWins(int wins) {
-        this.wins.set(wins);
+        this.wins=wins;
     }
 
     /**
      * @return the strikeOuts
      */
     public int getStrikeOuts() {
-        return strikeOuts.get();
+        return strikeOuts;
     }
 
     /**
      * @param strikeOuts the strikeOuts to set
      */
     public void setStrikeOuts(int strikeOuts) {
-        this.strikeOuts.set(strikeOuts);
+        this.strikeOuts=strikeOuts;
     }
 
     /**
      * @return the inningsPitched
      */
     public double getInningsPitched() {
-        return inningsPitched.get();
+        return inningsPitched;
     }
 
     /**
      * @param inningsPitched the inningsPitched to set
      */
     public void setInningsPitched(double inningsPitched) {
-        this.inningsPitched.set(inningsPitched);
+        this.inningsPitched=inningsPitched;
     }
 
     /**
      * @return the hits
      */
     public int getHits() {
-        return hits.get();
+        return hits;
     }
 
     /**
      * @param hits the hits to set
      */
     public void setHits(int hits) {
-        this.hits.set(hits);
+        this.hits=hits;
     }
 
     /**
      * @return the saves
      */
     public int getSaves() {
-        return saves.get();
+        return saves;
     }
 
     /**
      * @param saves the saves to set
      */
     public void setSaves(int saves) {
-        this.saves.set(saves);
+        this.saves=saves;
     }
     
 
@@ -127,7 +122,7 @@ public class Pitcher extends Player{
      * @return the whip
      */
     public double getWhip() {
-        return whip.get();
+        return whip;
     }
 
     /**
@@ -137,16 +132,22 @@ public class Pitcher extends Player{
      * @param ip
      */
     public void setWhip(int walks, int hits, double ip) {
-        this.hits.set(hits);
-        this.inningsPitched.set(ip);
-        this.whip.set(walks + hits/ip);
+        this.hits=hits;
+        this.inningsPitched=ip;
+        if(ip == 0)
+            whip = 0.0;
+        else{
+            this.whip= (Double.parseDouble(""+walks) + (Double.parseDouble(""+hits)/Double.parseDouble(""+ip)));
+            DecimalFormat df = new DecimalFormat("##.#");
+            whip = Double.parseDouble(df.format(whip));
+        }
     }
 
     /**
      * @return the era
      */
     public double getEra() {
-        return era.get();
+        return era;
     }
 
     /**
@@ -154,9 +155,15 @@ public class Pitcher extends Player{
      * @param ip
      */
     public void setEra(int er,double ip) {
-        this.inningsPitched.set(ip);
-        
-        era.set(er*9/ip);
+        this.inningsPitched=ip;
+        DecimalFormat df = new DecimalFormat(".###");
+        if(ip == 0){
+            era = 0;
+        }else{
+            int number = er*9;
+            era=Double.parseDouble(""+number)/Double.parseDouble(""+ip);
+            era = Double.parseDouble(df.format(era));
+        }
     }
     
 }

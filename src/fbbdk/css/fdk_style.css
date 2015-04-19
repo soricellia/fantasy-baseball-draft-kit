@@ -22,13 +22,14 @@
     -fx-padding: 15;
     -fx-spacing: 10;
     -fx-border-color: gainsboro;
-    -fx-border-width: 2;
-    -fx-border-style:solid
+    -fx-border-width: 3;
+    -fx-border-style:solid;
+    
     
 }
 .player_radio_panel_style{
     -fx-border-color: gainsboro;
-    -fx-border-width: 2;
+    -fx-border-width: 4;
     -fx-border-style:solid;
     -fx-background-color: #00F;
     -fx-background-radius: 5.0;
@@ -45,8 +46,9 @@
 .bordered_pane {
     -fx-background-color: #00F;
     -fx-background-radius: 5.0;
-    -fx-padding: 15;
+    -fx-padding: 20;
     -fx-spacing: 10;
+    
 }
 
 // CSS CLASS FOR LABELS HEADING LARGE SECTIONS IN THE GUI

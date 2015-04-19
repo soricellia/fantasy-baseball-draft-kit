@@ -254,7 +254,7 @@ public class Fdk_gui implements DraftDataView{
         // AND USE IT TO SIZE THE WINDOW
         primaryStage.setX(bounds.getMinX());
         primaryStage.setY(bounds.getMinY());
-        primaryStage.setWidth(bounds.getWidth()*2/3);
+        primaryStage.setWidth(bounds.getWidth()*3/4);
         primaryStage.setHeight(bounds.getHeight()*5/6);
 
         // ADD THE TOOLBAR ONLY, NOTE THAT THE WORKSPACE
@@ -320,7 +320,7 @@ public class Fdk_gui implements DraftDataView{
         homeScreenButton = initChildButton(screenToolbarPane,
                 Fdk_PropertyType.HOME_SCREEN_ICON, Fdk_PropertyType.HOME_SCREEN_TOOLTIP, false);
         homeScreenButton.getStyleClass().add(SCREEN_BUTTON);
-       
+        
         playerScreenButton = initChildButton(screenToolbarPane,
                 Fdk_PropertyType.PLAYER_SCREEN_ICON, Fdk_PropertyType.PLAYER_SCREEN_TOOLTIP, false);
         playerScreenButton.getStyleClass().add(SCREEN_BUTTON);

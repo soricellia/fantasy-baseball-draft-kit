@@ -9,6 +9,7 @@ import fbbdk.data.BaseballPlayer;
 import fbbdk.data.Draft;
 import fbbdk.data.DraftDataManager;
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 import javafx.collections.ObservableList;
 
 /**
@@ -24,18 +25,35 @@ public class PlayerTableController {
     //this is for the search
     ArrayList<String> positionsSelected;
     String searchText;
+    String firstName;
+    String lastName;
 
     public PlayerTableController(DraftDataManager dataManager) {
         this.dataManager = dataManager;
         playerList = dataManager.getDraft().getObservablePlayers();
-        positionsSelected = new ArrayList<String>();
+        positionsSelected = new ArrayList<>();
         searchText = "";
+        firstName = "";
+        lastName = "";
     }
 
     public void handleSearchTextRequest(String text) {
 
-        //first thing we need to set the searchText
-        searchText = text.toLowerCase();
+        StringTokenizer firstAndLast = new StringTokenizer(text, " ");
+        if(firstAndLast.countTokens() == 2){
+            firstName = firstAndLast.nextToken();
+            lastName = firstAndLast.nextToken();
+            searchText = text;
+            handleRadioSearch(positionsSelected,firstName,lastName);
+            //ok we are done
+            return;
+        }
+        //new to reset first and last name
+        firstName = "";
+        lastName = "";
+        
+        //need to set the searchText
+        searchText = text.trim().toLowerCase();
 
         //going to need the list of all players
         ArrayList<BaseballPlayer> allPlayers = dataManager.getDraft().getAvailablePlayers();
@@ -61,7 +79,7 @@ public class PlayerTableController {
     public void handleAllSearch() {
         //first we clear the positionsSelected
         positionsSelected.clear();
-        
+
         //now we make sure there is no search text
         if (!searchText.equals("")) {
             handleSearchTextRequest(searchText);
@@ -77,32 +95,45 @@ public class PlayerTableController {
         playerList.addAll(allPlayers);
 
     }
+    
 
     public void handleRadioSearch(ArrayList<String> positions) {
+        //error checking
+        //if this occurs its because we are in the wrong handlesearch method
+        if(!firstName.isEmpty()){
+            //go here instead
+            handleRadioSearch(positions,firstName,lastName);
+            //and we are done
+            return;
+        }
+        
         //first thing we do is set the PositionsSelected list
         positionsSelected = positions;
-        //to do this we are going to need the playersList
+        
+        //need the player list to search
         ArrayList<BaseballPlayer> allPlayers = dataManager.getDraft().getAvailablePlayers();
 
         //now we make sure positions isnt empty
         if (positions.isEmpty()) {
+            //first clear the list
+            playerList.clear();
             //just add everything
-            playerList.addAll(allPlayers);
-            
-            //ok now we check searchText
+            if (searchText.isEmpty()) {
+                playerList.addAll(allPlayers);
+            }
+            //ok now we search the playerList
             BaseballPlayer player;
-            if (!searchText.equals("")) {
-                for (int x = 0; x < playerList.size(); x++) {
-                    player = playerList.get(x);
-                    
-                    if ((player.getFirstName().contains(searchText) || player.getLastName().contains(searchText))) {
-                        playerList.remove(x);
-                        x--;
-                    }
+            for (int x = 0; x < allPlayers.size(); x++) {
+                player = allPlayers.get(x);
+                if ((player.getFirstName().toLowerCase().startsWith(searchText)
+                        || player.getLastName().toLowerCase().startsWith(searchText))) {
+                    playerList.add(player);
                 }
             }
         } else {
-            //now we wipe the playerList
+            //positionsSelected isnt empty
+
+            //so lets clear the playerList and start from scratch
             playerList.clear();
 
             //then we are going to add the players with said positions to the player list
@@ -118,17 +149,86 @@ public class PlayerTableController {
                         playerList.add(player);
                     }//end position if
                 }//end positions for
-            }//end big for
+            }//end big positions for
+
             //ok now we check searchText
-            if (!searchText.equals("")) {
+            //first we are going to create a new list
+            ArrayList<BaseballPlayer> newList = new ArrayList<>();
+            if (!searchText.isEmpty()) {
                 for (int x = 0; x < playerList.size(); x++) {
                     player = playerList.get(x);
-                    if (!(player.getFirstName().startsWith(searchText) || player.getLastName().startsWith(searchText))) {
-                        playerList.remove(player);
+                    if ((player.getFirstName().toLowerCase().startsWith(searchText)
+                            || player.getLastName().toLowerCase().startsWith(searchText))) {
+                        newList.add(player);
                     }
                 }
+                //now we clear the playerList and add everything from the newList
+                playerList.clear();
+                playerList.addAll(newList);
             }
         }
     }
 
+    private void handleRadioSearch(ArrayList<String> positions, String firstName, String lastName) {
+        //first thing we do is set the PositionsSelected list
+        positionsSelected = positions;
+
+        //need the player list to search
+        ArrayList<BaseballPlayer> allPlayers = dataManager.getDraft().getAvailablePlayers();
+
+        //now we make sure positions isnt empty
+        if (positions.isEmpty()) {
+            //first clear the list
+            playerList.clear();
+            //just add everything
+            if (searchText.isEmpty()) {
+                playerList.addAll(allPlayers);
+            }
+            //ok now we search the playerList
+            BaseballPlayer player;
+            for (int x = 0; x < allPlayers.size(); x++) {
+                player = allPlayers.get(x);
+                if ((player.getFirstName().toLowerCase().startsWith(firstName)
+                        && player.getLastName().toLowerCase().startsWith(lastName))) {
+                    playerList.add(player);
+                }
+            }
+        } else {
+            //positionsSelected isnt empty
+
+            //so lets clear the playerList and start from scratch
+            playerList.clear();
+
+            //then we are going to add the players with said positions to the player list
+            //and we are going to need a player to reference
+            BaseballPlayer player;
+            for (int x = 0; x < allPlayers.size(); x++) {
+                player = allPlayers.get(x);
+                //now we need to loop through the positions array and check each player
+                for (int y = 0; y < positions.size(); y++) {
+                    //check each position
+                    if (player.getPositions().contains(positions.get(y))) {
+                        //we found a player so add the player to playerList
+                        playerList.add(player);
+                    }//end position if
+                }//end positions for
+            }//end big positions for
+
+            //ok now we check searchText
+            //first we are going to create a new list
+            ArrayList<BaseballPlayer> newList = new ArrayList<>();
+            if (!searchText.isEmpty()) {
+                for (int x = 0; x < playerList.size(); x++) {
+                    player = playerList.get(x);
+                    if ((player.getFirstName().toLowerCase().startsWith(firstName)
+                            && player.getLastName().toLowerCase().startsWith(lastName))) {
+                        newList.add(player);
+                    }
+                }
+                //now we clear the playerList and add everything from the newList
+                playerList.clear();
+                playerList.addAll(newList);
+            }
+        }
+    }
 }

@@ -31,6 +31,7 @@ public abstract class Player {
     private StringProperty countryOfBirth;
     private StringProperty positions;
     private StringProperty position;
+    private IntegerProperty estimatedValue;
     
     private transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
@@ -39,13 +40,19 @@ public abstract class Player {
          lastName = new SimpleStringProperty();
          notes = new SimpleStringProperty();
          salary = new SimpleIntegerProperty();
+         estimatedValue = new SimpleIntegerProperty();
          mlbTeam = new SimpleStringProperty();
          birthDate = new SimpleIntegerProperty();
          countryOfBirth = new SimpleStringProperty();
          positions = new SimpleStringProperty();
          position = new SimpleStringProperty();
     }
-    
+    public int getEstimatedValue(){
+        return -1;
+    }
+    public void setEstimatedValue(int value){
+        this.estimatedValue.set(value);
+    }
     public String getPositions(){
         return positions.get();
     }
@@ -189,24 +196,9 @@ public abstract class Player {
         return hash;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        
-        final Player other = (Player) obj;
-        
-        if(!this.firstName.equals(other.getFirstName())){
-            return false;
-        }
-        if (!this.lastName.equals(other.getLastName())) {
-            return false;
-        }
-        return true;
+    
+    public String toString(){
+        return firstName+" "+lastName;
     }
 
     /**

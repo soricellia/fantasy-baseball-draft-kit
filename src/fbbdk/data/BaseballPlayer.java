@@ -43,7 +43,27 @@ public class BaseballPlayer extends Player{
         whipBA = new SimpleDoubleProperty();
     
     }
-
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+                
+        
+        if(this.getClass() != obj.getClass()){
+            return false;
+        }
+        
+        final BaseballPlayer other = (BaseballPlayer) obj;
+        
+        if(!(super.getFirstName().toLowerCase().equals(other.getFirstName().toLowerCase()))){
+            return false;
+        }
+        if (!(super.getLastName().toLowerCase().equals(other.getLastName().toLowerCase()))) {
+            return false;
+        }
+        return true;
+    }
     @Override
     public int hashCode() {
         int hash = 5;

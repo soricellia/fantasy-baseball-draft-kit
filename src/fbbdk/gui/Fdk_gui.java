@@ -8,6 +8,7 @@ package fbbdk.gui;
 import fantasybaseballdraftkit.Fdk_PropertyType;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.CLOSE_BUTTON_LABEL;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_CSS;
+import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_GUI_IMAGES;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_IMAGES;
 import fbbdk.controller.DraftController;
 import fbbdk.controller.FileController;
@@ -352,7 +353,7 @@ public class Fdk_gui implements DraftDataView{
     // INIT A BUTTON AND ADD IT TO A CONTAINER IN A TOOLBAR
     private Button initChildButton(Pane toolbar, Fdk_PropertyType icon, Fdk_PropertyType tooltip, boolean disabled) {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        String imagePath = "file:" + PATH_IMAGES + props.getProperty(icon.toString());
+        String imagePath = "file:" + PATH_GUI_IMAGES + props.getProperty(icon.toString());
         Image buttonImage = new Image(imagePath);
         Button button = new Button();
         button.setDisable(disabled);

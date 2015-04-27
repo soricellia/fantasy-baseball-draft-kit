@@ -17,6 +17,7 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.HOME_SCREEN_TAXI_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_ICON;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SELECT_TEAM_LABEL;
+import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_GUI_IMAGES;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_IMAGES;
 import fbbdk.data.BaseballPlayer;
 import fbbdk.data.DraftDataManager;
@@ -210,7 +211,7 @@ public class HomeScreen extends BorderPane{
      // INIT A BUTTON AND ADD IT TO A CONTAINER IN A TOOLBAR
     private Button initChildButton(Pane toolbar, Fdk_PropertyType icon, Fdk_PropertyType tooltip, boolean disabled) {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        String imagePath = "file:" + PATH_IMAGES + props.getProperty(icon.toString());
+        String imagePath = "file:" + PATH_GUI_IMAGES + props.getProperty(icon.toString());
         Image buttonImage = new Image(imagePath);
         Button button = new Button();
         button.setDisable(disabled);

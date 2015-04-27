@@ -18,6 +18,9 @@ public class Fdk_StartupConstants {
     public static final String PATH_DATA = "./data/";
     public static final String PATH_DRAFTS = PATH_DATA + "drafts/";
     public static final String PATH_IMAGES = "./images/";
+    public static final String PATH_GUI_IMAGES = PATH_IMAGES+"gui/";
+    public static final String PATH_PLAYER_IMAGES = PATH_IMAGES+"players/";
+    public static final String PATH_FLAG_IMAGES = PATH_IMAGES+"flags/";
     public static final String PATH_CSS = "fbbdk/css/";
     public static final String PATH_SITES = "sites/";
     public static final String PATH_BASE = PATH_SITES + "base/";

@@ -12,6 +12,7 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.PLAYER_SCREEN_HEADING_LAB
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_ICON;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_ICON_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SEARCH_LABEL;
+import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_GUI_IMAGES;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_IMAGES;
 import fbbdk.controller.PlayerTableController;
 import fbbdk.data.BaseballPlayer;
@@ -197,7 +198,7 @@ public class PlayerScreen extends BorderPane {
     // INIT A BUTTON AND ADD IT TO A CONTAINER IN A TOOLBAR
     private Button initChildButton(Pane toolbar, Fdk_PropertyType icon, Fdk_PropertyType tooltip, boolean disabled) {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
-        String imagePath = "file:" + PATH_IMAGES + props.getProperty(icon.toString());
+        String imagePath = "file:" + PATH_GUI_IMAGES + props.getProperty(icon.toString());
         Image buttonImage = new Image(imagePath);
         Button button = new Button();
         button.setDisable(disabled);

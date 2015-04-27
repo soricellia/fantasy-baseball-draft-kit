@@ -50,6 +50,11 @@
     -fx-spacing: 10;
     
 }
+.top_home{
+    -fx-padding: 20;
+    -fx-spacing: 10;
+    
+}
 
 // CSS CLASS FOR LABELS HEADING LARGE SECTIONS IN THE GUI
 .heading_label {

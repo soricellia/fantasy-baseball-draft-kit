@@ -26,7 +26,10 @@ public enum Fdk_PropertyType {
         DRAFT_SCREEN_ICON,
         MLB_TEAMS_SCREEN_ICON,
         ADD_ICON,
+        ADD_TEAM_ICON,
         REMOVE_ICON,
+        REMOVE_TEAM_ICON,
+        EDIT_ICON,
         MOVE_UP_ICON,
         MOVE_DOWN_ICON,
         
@@ -39,6 +42,9 @@ public enum Fdk_PropertyType {
         EXIT_TOOLTIP,
         ADD_ICON_TOOLTIP,
         REMOVE_ICON_TOOLTIP,
+        ADD_TEAM_TOOLTIP,
+        REMOVE_TEAM_TOOLTIP,
+        EDIT_ICON_TOOLTIP,
         
         HOME_SCREEN_TOOLTIP,
         PLAYER_SCREEN_TOOLTIP,
@@ -58,6 +64,8 @@ public enum Fdk_PropertyType {
         
         //OTHER GUI LABELS
         SEARCH_LABEL,
+        DRAFT_SEARCH_LABEL,
+        SELECT_TEAM_LABEL,
         
         // ERROR DIALOG MESSAGES
         START_DATE_AFTER_END_DATE_ERROR_MESSAGE,

@@ -16,7 +16,10 @@
         <property name="DELETE_ICON"                    value="Delete.png"></property>
         <property name="EXIT_ICON"                      value="Exit.png"></property>
         <property name="ADD_ICON"                       value="Add.png"></property>
-        <property name="REMOVE_ICON"                     value="Minus.png"></property>
+        <property name="ADD_TEAM_ICON"                  value="addTeam.png"></property>
+        <property name="REMOVE_ICON"                    value="Minus.png"></property>
+        <property name="REMOVE_TEAM_ICON"               value="removeTeam.png"></property>
+        <property name="EDIT_ICON"                      value="Edit.png"></property>
         <property name="MOVE_UP_ICON"                   value="MoveUp.png"></property>
         <property name="MOVE_DOWN_ICON"                 value="MoveDown.png"></property>
         <property name="HOME_SCREEN_ICON"               value="homeScreenIcon.png"></property>
@@ -34,6 +37,9 @@
         <property name="EXIT_TOOLTIP"                       value="Exit the Application"></property>
         <property name="ADD_ICON_TOOLTIP"                   value="Add player to Team"></property>
         <property name="REMOVE_ICON_TOOLTIP"                value="Remove Player from Team"></property>
+        <property name="ADD_TEAM_TOOLTIP"                   value="Add Team to Draft"></property>
+        <property name="REMOVE_TEAM_TOOLTP"                 value="Remove Team from Draft"></property>
+        <property name="EDIT_ICON_TOOLTIP"                  value="Edit a Draft Team"></property>
         <property name="HOME_SCREEN_TOOLTIP"                value="Home Screen"></property>
         <property name="PLAYER_SCREEN_TOOLTIP"              value="Player Screen"></property>
         <property name="FANTASY_STANDING_SCREEN_TOOLTIP"    value="Fantasy Standing Screen"></property>
@@ -47,7 +53,8 @@
         <property name="DRAFT_SCREEN_HEADING_LABEL"             value="Draft Summary"></property>
         <property name="MLB_TEAMS_SCREEN_HEADING_LABEL"         value="MLB Teams"></property>
         <property name ="SEARCH_LABEL"                          value="Search: "></property>
-        
+        <property name = "DRAFT_SEARCH_LABEL"                   value="Draft Team: "></property>
+        <property name = "SELECT_TEAM_LABEL"                    value="Select Fantasy Team: "></property>
         <!-- ERROR MESSAGES -->
         <property name="START_DATE_AFTER_END_DATE_ERROR_MESSAGE"    value="The Starting Monday cannot be chronologically after the Ending Friday"></property>
         <property name="START_DATE_NOT_A_MONDAY_ERROR_MESSAGE"      value="The Start Date must be a Monday"></property>

@@ -18,13 +18,16 @@ public class Draft {
     private ArrayList<Team> teams;
     private ArrayList<BaseballPlayer> pickOrder;
     private String draftName;
+    
     private ObservableList<BaseballPlayer> observablePlayers;
+    private ObservableList<String> teamNames;
     
     public Draft(){
         availablePlayers = new ArrayList<>();
         teams = new ArrayList<>();
         pickOrder = new ArrayList<>();
         observablePlayers = FXCollections.observableArrayList();
+        teamNames = FXCollections.observableArrayList();
         
     }
     /**
@@ -49,7 +52,9 @@ public class Draft {
     public ArrayList<Team> getTeams() {
         return teams;
     }
-
+    public ObservableList<String> getTeamNames(){
+        return teamNames;
+    }
     /**
      * @param teams the teams to set
      */

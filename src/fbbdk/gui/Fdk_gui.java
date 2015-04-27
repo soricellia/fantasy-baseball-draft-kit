@@ -288,7 +288,7 @@ public class Fdk_gui implements DraftDataView{
     private void initWorkspace() throws IOException {
         
        //build my screens
-        homeScreen = new HomeScreen(primaryScene);
+        homeScreen = new HomeScreen(primaryScene,ddm);
         playerScreen = new PlayerScreen(primaryScene,ddm);
         fantasyTeamScreen = new FantasyStandingScreen(primaryScene);
         draftScreen = new DraftScreen(primaryScene);

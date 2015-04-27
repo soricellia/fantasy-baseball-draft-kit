@@ -66,6 +66,8 @@ public enum Fdk_PropertyType {
         SEARCH_LABEL,
         DRAFT_SEARCH_LABEL,
         SELECT_TEAM_LABEL,
+        HOME_SCREEN_PLAYER_LABEL,
+        HOME_SCREEN_TAXI_LABEL,
         
         // ERROR DIALOG MESSAGES
         START_DATE_AFTER_END_DATE_ERROR_MESSAGE,

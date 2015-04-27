@@ -55,6 +55,8 @@
         <property name ="SEARCH_LABEL"                          value="Search: "></property>
         <property name = "DRAFT_SEARCH_LABEL"                   value="Draft Team: "></property>
         <property name = "SELECT_TEAM_LABEL"                    value="Select Fantasy Team: "></property>
+        <property name="HOME_SCREEN_PLAYER_LABEL"               value="Starting Lineup"></property>
+        <property name="HOME_SCREEN_TAXI_LABEL"                 value="Taxi Squad"></property>  
         <!-- ERROR MESSAGES -->
         <property name="START_DATE_AFTER_END_DATE_ERROR_MESSAGE"    value="The Starting Monday cannot be chronologically after the Ending Friday"></property>
         <property name="START_DATE_NOT_A_MONDAY_ERROR_MESSAGE"      value="The Start Date must be a Monday"></property>

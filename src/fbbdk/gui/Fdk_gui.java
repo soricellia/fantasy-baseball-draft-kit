@@ -298,7 +298,6 @@ public class Fdk_gui implements DraftDataView{
         workspacePane = new BorderPane();
         //the default workspacePane will be the homepage
         workspacePane.setCenter(homeScreen);
-        workspacePane.getStyleClass().add(CLASS_BORDERED_PANE);
          //INIT THE SCREEN TOOLBAR
         initScreenToolbar(workspacePane);
        

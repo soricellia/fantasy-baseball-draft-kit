@@ -19,41 +19,38 @@
 .screen{
     -fx-background-color: white;
     -fx-background-radius: 5.0;
-    -fx-padding: 15;
-    -fx-spacing: 10;
+    -fx-padding: 5;
+    -fx-spacing: 20;
     -fx-border-color: gainsboro;
     -fx-border-width: 3;
     -fx-border-style:solid;
     
-    
 }
 .player_radio_panel_style{
     -fx-border-color: gainsboro;
-    -fx-border-width: 4;
+    -fx-border-width: 5;
     -fx-border-style:solid;
-    -fx-background-color: #00F;
-    -fx-background-radius: 5.0;
-    
+    -fx-background-color:gainsboro;
 }
 .player_radio_style{
-    
-    -fx-padding: 15;
+    -fx-padding: 25;
     -fx-spacing: 20;
-    -fx-text-fill: white;
-    
 }
 // CSS CLASS FOR OUR BIG PANES
 .bordered_pane {
-    -fx-background-color: #00F;
-    -fx-background-radius: 5.0;
+    -fx-border-width: 2;
+    -fx-border-style:solid;
+    -fx-border-color: gainsboro;
+}
+.padding{
     -fx-padding: 20;
-    -fx-spacing: 10;
     
 }
-.top_home{
-    -fx-padding: 20;
-    -fx-spacing: 10;
-    
+.spacing{
+    -fx-spacing: 15;
+}
+.background{
+    -fx-background-color:gainsboro;
 }
 
 // CSS CLASS FOR LABELS HEADING LARGE SECTIONS IN THE GUI

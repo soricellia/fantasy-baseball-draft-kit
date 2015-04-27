@@ -108,6 +108,8 @@ public class PlayerScreen extends BorderPane {
 
     private static final String PLAYER_RADIO_STYLE = "player_radio_style";
     private static final String PLAYER_RADIO_PANEL_STYLE = "player_radio_panel_style";
+    private static final String SCREEN_STYLE="screen";
+    private static final String PADDING_STYLE="padding";
     public static final String HEADING_STYLE = "heading_label";
     public static final String SUB_HEADING = "subheading_label";
     public static final String EMPTY_TEXT = "";
@@ -159,14 +161,15 @@ public class PlayerScreen extends BorderPane {
         playerTableController = new PlayerTableController(dataManager);
         //set the class
         this.getStyleClass().add(SCREEN_STYLE);
-
+        
         //init the components
         initComponents();
     }
 
     private void initComponents() {
         pane = new GridPane();
-
+        pane.getStyleClass().addAll(PADDING_STYLE,SCREEN_STYLE);
+        
         initHeading(pane);
 
         initRadioButtons(pane);
@@ -269,7 +272,6 @@ public class PlayerScreen extends BorderPane {
         //first lets init the topPane
         borderTopPane = new BorderPane();
         topPane = new VBox();
-
         //init the Vboxes
         upperTopPane = new HBox();
         lowerTopPane = new HBox();
@@ -395,7 +397,10 @@ public class PlayerScreen extends BorderPane {
         notesColumn.setPrefWidth(350);
         
         //now we can add all of these bad girls to the table
-        playerTable.getColumns().addAll(firstNameColumn, lastNameColumn, proTeamColumn, positionsColumn, yearOfBirthColumn, winRunColumn, savesHRColumn, kRBIColumn, eraSBColumn, whipBAColumn, evColumn, notesColumn);
+        playerTable.getColumns().addAll(firstNameColumn, lastNameColumn,
+                proTeamColumn, positionsColumn, yearOfBirthColumn, winRunColumn,
+                savesHRColumn, kRBIColumn, eraSBColumn, whipBAColumn, evColumn,
+                notesColumn);
         //make the playerTable editable
         playerTable.setEditable(true);
         //add the data to the table

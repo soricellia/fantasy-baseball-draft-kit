@@ -11,96 +11,60 @@ import java.util.ArrayList;
  *
  * @author Tony
  */
-public class BaseballTeam extends Team{
-    private ArrayList<Hitter> hitters;
-    private ArrayList<Pitcher> pitchers;
-    private ArrayList<Player> reserves;
+public class BaseballTeam extends Team {
 
-    public BaseballTeam(){
-        hitters = new ArrayList<>();
-        pitchers = new ArrayList<>();
-        reserves = new ArrayList<>();
-    }
-    /**
-     * @return the hitters
-     */
-    public ArrayList<Hitter> getHitters() {
-        return hitters;
-    }
-
-    /**
-     * @param hitters the hitters to set
-     */
-    public void setHitters(ArrayList<Hitter> hitters) {
-        this.hitters = hitters;
-    }
-    /**
-     * this method adds a hitter to the hitters list
-     * @param hitter 
-     */
-    public void addHitter(Hitter hitter){
-        this.hitters.add(hitter);
-    }
-    /**
-     * this method removes a hitter from the hitters list
-     * @param hitter 
-     */
-    public void removeHitter(Hitter hitter){
-        this.hitters.remove(hitter);
-    }
-    /**
-     * @return the pitchers
-     */
-    public ArrayList<Pitcher> getPitchers() {
-        return pitchers;
-    }
-
-    /**
-     * @param pitchers the pitchers to set
-     */
-    public void setPitchers(ArrayList<Pitcher> pitchers) {
-        this.pitchers = pitchers;
-    }
-    /**
-     * this method adds a pitcher to the pitchers list
-     * @param pitcher 
-     */
-    public void addPitcher(Pitcher pitcher){
-        this.pitchers.add(pitcher);
-    }
-    /**
-     * this method removes a pitcher from the pitchers list
-     * @param pitcher 
-     */
-    public void removePitcher(Pitcher pitcher){
-        this.pitchers.remove(pitcher);
-    }
     
+    private ArrayList<BaseballPlayer> taxiPlayers;
+    private ArrayList<BaseballPlayer> players;
+    
+    public BaseballTeam() {
+        super();
+        players = new ArrayList<>();
+        taxiPlayers = new ArrayList<>();
+    }
+
+    public ArrayList<BaseballPlayer> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(ArrayList<BaseballPlayer> players) {
+        this.players = players;
+    }
+    public void addPlayer(BaseballPlayer player){
+        players.add(player);
+    }
+    public void removePlayer(BaseballPlayer player){
+        players.remove(player);
+    }
     /**
      * @return the reserves
      */
-    public ArrayList<Player> getReserves() {
-        return reserves;
+    public ArrayList<BaseballPlayer> getTaxiPlayers() {
+        return taxiPlayers;
     }
 
     /**
      * @param reserves the reserves to set
      */
-    public void setReserves(ArrayList<Player> reserves) {
-        this.reserves = reserves;
+    public void setTaxiPlayers(ArrayList<BaseballPlayer> reserves) {
+        this.taxiPlayers = reserves;
     }
+
     /**
      * this method adds a player to the reserves list
-     * @param player 
+     *
+     * @param player
      */
-    public void addReserve(Player player){
-        this.reserves.add(player);
+    public void addTaxiPlayer(BaseballPlayer player) {
+        this.taxiPlayers.add(player);
     }
+
     /**
      * this method removes a player from the reserves list
-     * @param player 
+     *
+     * @param player
      */
-    public void removeReserve(Player player){
-        this.reserves.remove(player);
+    public void removeTaxiPlayer(BaseballPlayer player) {
+        this.taxiPlayers.remove(player);
     }
 }

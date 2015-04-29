@@ -128,7 +128,20 @@ public class FileController {
             errorHandler.handleNewCourseError();
         }
     }
-
+    /**
+     * This method marks the appropriate variable such that we know
+     * that the current Course has been edited since it's been saved.
+     * The UI is then updated to reflect this.
+     * 
+     * @param gui The user interface editing the Course.
+     */
+    public void markAsEdited(Fdk_gui gui) {
+        // THE Course OBJECT IS NOW DIRTY
+        saved = false;
+        
+        // LET THE UI KNOW
+        gui.updateToolbarControls(saved);
+    }
     /**
      * This method lets the user open a Course saved to a file. It will also
      * make sure data for the current Course is not lost.

@@ -18,13 +18,14 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_ICON;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SELECT_TEAM_LABEL;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_GUI_IMAGES;
-import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_IMAGES;
+import fbbdk.controller.TeamEditController;
 import fbbdk.data.BaseballPlayer;
+import fbbdk.data.BaseballTeam;
 import fbbdk.data.DraftDataManager;
 import static fbbdk.gui.PlayerScreen.EMPTY_TEXT;
 import static fbbdk.gui.PlayerScreen.SUB_HEADING;
-import javafx.collections.ObservableList;
-import javafx.scene.Scene;
+import java.util.ArrayList;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -45,20 +46,24 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
 
 /**
  *
  * @author Tony
  */
-public class HomeScreen extends BorderPane{
-    
+public class HomeScreen extends BorderPane {
+
+    //need this
+    Stage primaryStage;
+
     //this is the heading label
     Label teamsHeadingLabel;
-    
+
     //put the grid pane in this 
     ScrollPane scrollPane;
-     //this holds everything
+    //this holds everything
     VBox pane;
 
     //this holds the top stuff
@@ -70,27 +75,26 @@ public class HomeScreen extends BorderPane{
     HBox lowerTopPane;
 
     //these are the components that go in the topPane
-    Button plusButton;
-    Button minusButton;
-    Button editDraftButton;
+    Button addTeamButton;
+    Button removeTeamButton;
+    Button editTeamButton;
     Label selectTeamLabel;
-    ComboBox teamsComboBox;
-    
+    ComboBox<BaseballTeam> teamsComboBox;
 
     HBox searchPanel;
     Label searchLabel;
     TextField searchText;
-    
+
     //this will hold the table
     BorderPane playerPane;
     BorderPane taxiPane;
     SplitPane splitPane;
-    
+
     //label for playerTable
     Label playerLabel;
     //label for taxiTable
     Label taxiLabel;
-    
+
     //and the table that holds all the data
     TableView<BaseballPlayer> playerTable;
     TableView<BaseballPlayer> taxiTable;
@@ -107,7 +111,7 @@ public class HomeScreen extends BorderPane{
     TableColumn<BaseballPlayer, Double> whipBAColumn;
     TableColumn<BaseballPlayer, Integer> evColumn;
     TableColumn<BaseballPlayer, String> notesColumn;
-    
+
     //THESE ARE THE COLUMN HEADINGS FOR THE PLAYER TABLE
     private static final String FIRST_NAME_COLUMN = "First";
     private static final String LAST_NAME_COLUMN = "Last";
@@ -122,47 +126,54 @@ public class HomeScreen extends BorderPane{
     private static final String ESTIMATED_VALUE_COLUMN = "Estimated Value";
     private static final String NOTES_COLUMN = "Notes";
 
-    
-    //this is for getting all of my labels
+    //this is some of the important stuff ill need for this screen
     PropertiesManager propertiesManager;
     DraftDataManager dataManager;
-    
+    MessageDialog messageDialog;
+    YesNoCancelDialog yesNoCancelDialog;
+    Fdk_gui gui;
     final static String HEADING_LABEL = "heading_label";
     final static String SCREEN_STYLE = "screen";
     final String PADDING_STYLE = "padding";
     final String BORDER_STYLE = "bordered_pane";
     final String SPACING_STYLE = "spacing";
     final String BACKGROUND_STYLE = "background";
-    
-    public HomeScreen(Scene primaryScene, DraftDataManager ddm){
+
+    public HomeScreen(Fdk_gui initGui, DraftDataManager ddm,
+            MessageDialog initMessageDialog,
+            YesNoCancelDialog initYesNoCancelDialog) {
         //first call super
         super();
-        //set the class
-        this.getStyleClass().add(SCREEN_STYLE);
-        //init the prop manager
+        //init the important stuff
         propertiesManager = PropertiesManager.getPropertiesManager();
         dataManager = ddm;
+        messageDialog = initMessageDialog;
+        yesNoCancelDialog = initYesNoCancelDialog;
+        gui = initGui;
+
+        //set the class
+        this.getStyleClass().add(SCREEN_STYLE);
         //init the components
         initComponents();
-        
+        initEventHandlers();
+
     }
 
     private void initComponents() {
         scrollPane = new ScrollPane();
         scrollPane.setBorder(Border.EMPTY);
         scrollPane.setFitToWidth(true);
-        
+
         pane = new VBox();
-        
-        pane.getStyleClass().addAll(PADDING_STYLE,SCREEN_STYLE);
+
+        pane.getStyleClass().addAll(PADDING_STYLE, SCREEN_STYLE);
         //search bar and things go here
         initTopPane();
         //all the players go here
         playerPane = initPlayerPane();
         //the taxi players table go here
-        taxiPane = initTaxiPlane();
-        
-        
+        taxiPane = initTaxiPane();
+
         pane.getChildren().add(playerPane);
         pane.getChildren().add(taxiPane);
         //add the gridPane to the scrollPane
@@ -170,46 +181,52 @@ public class HomeScreen extends BorderPane{
         //now set homescreen to the scroll pane
         this.setCenter(scrollPane);
     }
-    
-    private void initTopPane(){
+
+    private void initTopPane() {
         //everything in the top pane goes here
         topPane = new VBox();
         //the heading label is going to go here
-        
+
         upperTopPane = new HBox();
-        teamsHeadingLabel = initLabel(HOME_SCREEN_HEADING_LABEL,HEADING_LABEL);
+        teamsHeadingLabel = initLabel(HOME_SCREEN_HEADING_LABEL, HEADING_LABEL);
         upperTopPane.getChildren().add(teamsHeadingLabel);
         //the search bar stuff goes here
         middleTopPane = new HBox();
-        searchLabel = initLabel(DRAFT_SEARCH_LABEL,SUB_HEADING);
-        searchText = initTextField(19,EMPTY_TEXT,true);
-        middleTopPane.getChildren().addAll(searchLabel,searchText);
+        searchLabel = initLabel(DRAFT_SEARCH_LABEL, SUB_HEADING);
+        searchText = initTextField(19, EMPTY_TEXT, true);
+        middleTopPane.getChildren().addAll(searchLabel, searchText);
         //now the buttons
         lowerTopPane = new HBox();
         lowerTopPane.getStyleClass().add(SPACING_STYLE);
-        
+
         HBox tempOneBox = new HBox();
-        plusButton = initChildButton(tempOneBox, ADD_TEAM_ICON,ADD_TEAM_TOOLTIP,false);
-        minusButton = initChildButton(tempOneBox, REMOVE_TEAM_ICON,REMOVE_TEAM_TOOLTIP,true);
-        
+        addTeamButton = initChildButton(tempOneBox,
+                ADD_TEAM_ICON, ADD_TEAM_TOOLTIP, false);
+        removeTeamButton = initChildButton(tempOneBox,
+                REMOVE_TEAM_ICON, REMOVE_TEAM_TOOLTIP, true);
+
         HBox tempBox = new HBox();
         tempBox.getStyleClass().add(SPACING_STYLE);
-        editDraftButton = initChildButton(tempBox, EDIT_ICON,EDIT_ICON_TOOLTIP,true);
+        editTeamButton = initChildButton(tempBox,
+                EDIT_ICON, EDIT_ICON_TOOLTIP, true);
+
+        selectTeamLabel = initLabel(SELECT_TEAM_LABEL, SUB_HEADING);
+        teamsComboBox = new ComboBox();
+        teamsComboBox.setDisable(true);
         
-        selectTeamLabel = initLabel(SELECT_TEAM_LABEL,SUB_HEADING);
-        teamsComboBox = new ComboBox(dataManager.getDraft().getTeamNames());
-        tempBox.getChildren().addAll(selectTeamLabel,teamsComboBox);
-        
-        lowerTopPane.getChildren().addAll(tempOneBox,tempBox);
-        
+        tempBox.getChildren().addAll(selectTeamLabel, teamsComboBox);
+
+        lowerTopPane.getChildren().addAll(tempOneBox, tempBox);
+
         //now add them all to the topPane VBox
-        topPane.getChildren().addAll(upperTopPane,middleTopPane,lowerTopPane);
+        topPane.getChildren().addAll(upperTopPane, middleTopPane, lowerTopPane);
         //and finally add the topPane to the gridPane
         pane.getChildren().add(topPane);
     }
-    
-     // INIT A BUTTON AND ADD IT TO A CONTAINER IN A TOOLBAR
-    private Button initChildButton(Pane toolbar, Fdk_PropertyType icon, Fdk_PropertyType tooltip, boolean disabled) {
+
+    // INIT A BUTTON AND ADD IT TO A CONTAINER IN A TOOLBAR
+    private Button initChildButton(Pane toolbar, Fdk_PropertyType icon,
+            Fdk_PropertyType tooltip, boolean disabled) {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
         String imagePath = "file:" + PATH_GUI_IMAGES + props.getProperty(icon.toString());
         Image buttonImage = new Image(imagePath);
@@ -230,14 +247,15 @@ public class HomeScreen extends BorderPane{
         tf.setEditable(editable);
         return tf;
     }
-    
-    
-     // INIT A LABEL AND PLACE IT IN A GridPane INIT ITS PROPER PLACE
-    private Label initGridLabel(GridPane container, Fdk_PropertyType labelProperty, String styleClass, int col, int row, int colSpan, int rowSpan) {
+
+    // INIT A LABEL AND PLACE IT IN A GridPane INIT ITS PROPER PLACE
+    private Label initGridLabel(GridPane container,
+            Fdk_PropertyType labelProperty, String styleClass, int col, int row, int colSpan, int rowSpan) {
         Label label = initLabel(labelProperty, styleClass);
         container.add(label, col, row, colSpan, rowSpan);
         return label;
     }
+
     // INIT A LABEL AND SET IT'S STYLESHEET CLASS
     private Label initLabel(Fdk_PropertyType labelProperty, String styleClass) {
         PropertiesManager props = PropertiesManager.getPropertiesManager();
@@ -249,45 +267,46 @@ public class HomeScreen extends BorderPane{
 
     private BorderPane initPlayerPane() {
         playerPane = new BorderPane();
-        playerPane.getStyleClass().addAll(BORDER_STYLE,BACKGROUND_STYLE);
-        
+        playerPane.getStyleClass().addAll(BORDER_STYLE, BACKGROUND_STYLE);
+
         FlowPane labelPane = new FlowPane();
         labelPane.getStyleClass().add(PADDING_STYLE);
-        
-        
-        playerLabel = initLabel(HOME_SCREEN_PLAYER_LABEL,SUB_HEADING);
+
+        playerLabel = initLabel(HOME_SCREEN_PLAYER_LABEL, SUB_HEADING);
         labelPane.getChildren().add(playerLabel);
         playerPane.setTop(labelPane);
-        
+
         //init the table
         playerTable = createTable(playerTable);
 
         //set the table to the center
         playerPane.setCenter(playerTable);
-        
+
         return playerPane;
     }
-     private BorderPane initTaxiPlane() {
+
+    private BorderPane initTaxiPane() {
         taxiPane = new BorderPane();
-        taxiPane.getStyleClass().addAll(BORDER_STYLE,BACKGROUND_STYLE);
-        
+        taxiPane.getStyleClass().addAll(BORDER_STYLE, BACKGROUND_STYLE);
+
         FlowPane labelPane = new FlowPane();
         labelPane.getStyleClass().add(PADDING_STYLE);
-        
-        taxiLabel = initLabel(HOME_SCREEN_TAXI_LABEL,SUB_HEADING);
+
+        taxiLabel = initLabel(HOME_SCREEN_TAXI_LABEL, SUB_HEADING);
         labelPane.getChildren().add(taxiLabel);
         taxiPane.setTop(labelPane);
-        
+
         taxiPane.getStyleClass().add(BORDER_STYLE);
         //first init the player table
         taxiTable = createTable(taxiTable);
-        
+
         taxiPane.setCenter(taxiTable);
-        
+
         return taxiPane;
     }
-    private TableView<BaseballPlayer> createTable(TableView<BaseballPlayer> table){
-           //first init the player table
+
+    private TableView<BaseballPlayer> createTable(TableView<BaseballPlayer> table) {
+        //first init the player table
         table = new TableView<>();
 
         //and the table colums
@@ -343,7 +362,7 @@ public class HomeScreen extends BorderPane{
         notesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         //we want to notes column a little thicker
         notesColumn.setPrefWidth(350);
-        
+
         //now we can add all of these bad girls to the table
         table.getColumns().addAll(firstNameColumn, lastNameColumn,
                 proTeamColumn, positionsColumn, yearOfBirthColumn, winRunColumn,
@@ -355,9 +374,76 @@ public class HomeScreen extends BorderPane{
         table.setItems(null);
         //ok now lets make the playerTable a bit bigger
         table.setPrefHeight(500);
-        
+
         return table;
     }
-   
-    
+
+    private void initEventHandlers() {
+        //first lets init the controller
+        TeamEditController tec = new TeamEditController(primaryStage,
+                dataManager.getDraft(), messageDialog, yesNoCancelDialog);
+
+        addTeamButton.setOnAction(e -> {
+            tec.handleAddTeamRequest(gui, this);
+        });
+
+        editTeamButton.setOnAction(e -> {
+            tec.handleEditTeamRequest(gui,
+                    teamsComboBox.getSelectionModel().getSelectedItem(), this);
+        });
+
+        removeTeamButton.setOnAction(e -> {
+            tec.handleRemoveTeamRequest(gui,
+                    teamsComboBox.getSelectionModel().getSelectedItem(), this);
+        });
+
+        teamsComboBox.setOnAction(e -> {
+            updateScreen(teamsComboBox.getSelectionModel().getSelectedItem());
+        });
+
+    }
+
+    /**
+     *
+     * @param team the team that is to be set
+     */
+    public void updateScreen(BaseballTeam team) {
+        //this jsut makes my life easier
+        ArrayList<BaseballTeam> teams = dataManager.getDraft().getTeams();
+       
+        //if teams isnt empty then we can start doing stuff
+        if (!teams.isEmpty()) {
+             //first we make sure the combo box is enabled
+            teamsComboBox.setDisable(false);
+            //now we can do stuff to it
+            teamsComboBox.getItems().clear();
+            teamsComboBox.getItems().addAll(teams);
+            
+            //make sure our buttons are ok
+            removeTeamButton.setDisable(false);
+            editTeamButton.setDisable(false);
+            teamsComboBox.getSelectionModel().select(team);
+            //and now we update the players list
+           //team will only be null after team is deleted
+            if (team != null) {
+                if (!team.getPlayers().isEmpty()) {
+                    playerTable.getItems().addAll(team.getPlayers());
+                }
+                if (!team.getTaxiPlayers().isEmpty()) {
+                    taxiTable.getItems().addAll(team.getTaxiPlayers());
+                }
+            }else{
+                //ok so our teams list isnt null but this team is.
+                //that means the team was deleted.
+                //lets reselect something else
+                teamsComboBox.getSelectionModel().selectFirst();
+            }
+        } else {
+            removeTeamButton.setDisable(true);
+            editTeamButton.setDisable(true);
+            teamsComboBox.setDisable(true);
+        }
+
+    }
+
 }

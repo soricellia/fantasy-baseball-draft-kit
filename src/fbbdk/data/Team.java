@@ -9,10 +9,16 @@ package fbbdk.data;
  *
  * @author Tony
  */
-public abstract class Team {
+public class Team implements Comparable{
     private String coach;
     private String teamName;
     private int budgetMoney;
+    
+    public Team(){
+        coach = "";
+        teamName = "";
+        budgetMoney = 0;
+    }
     /**
      * @return the coach
      */
@@ -54,4 +60,19 @@ public abstract class Team {
     public void setTeamName(String teamName) {
         this.teamName = teamName;
     }
+    public String toString(){
+        return teamName;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        if(o.getClass()!=this.getClass()){
+            //dont want you
+            return -1;
+        }
+        Team team = (Team) o;
+        return teamName.compareTo(team.teamName);
+        
+    }
+    
 }

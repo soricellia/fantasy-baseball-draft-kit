@@ -14,22 +14,27 @@ import javafx.collections.ObservableList;
  * @author Tony
  */
 public class Draft {
+
+   
     private ArrayList<BaseballPlayer> availablePlayers;
-    private ArrayList<Team> teams;
+    private ArrayList<BaseballTeam> teams;
     private ArrayList<BaseballPlayer> pickOrder;
     private String draftName;
     
     private ObservableList<BaseballPlayer> observablePlayers;
-    private ObservableList<String> teamNames;
-    
+   
+
     public Draft(){
         availablePlayers = new ArrayList<>();
         teams = new ArrayList<>();
         pickOrder = new ArrayList<>();
         observablePlayers = FXCollections.observableArrayList();
-        teamNames = FXCollections.observableArrayList();
-        
     }
+    
+     public static void addPlayer(BaseballPlayer player) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     /**
      * @return the availablePlayers
      */
@@ -49,18 +54,15 @@ public class Draft {
     /**
      * @return the teams
      */
-    public ArrayList<Team> getTeams() {
+    public ArrayList<BaseballTeam> getTeams() {
         return teams;
-    }
-    public ObservableList<String> getTeamNames(){
-        return teamNames;
     }
     /**
      * @param teams the teams to set
      */
-    public void setTeams(ArrayList<Team> teams) {
+    public void setTeams(ArrayList<BaseballTeam> teams) {
         this.teams = teams;
-    }
+     }
 
     /**
      * @return the pickOrder
@@ -92,7 +94,15 @@ public class Draft {
     public void setDraftName(String draftName) {
         this.draftName = draftName;
     }
-
+    public void removeTeam(BaseballTeam teamToRemove){
+        teams.remove(teamToRemove);
+        }
+    public void addTeam(BaseballTeam teamToAdd){
+        teams.add(teamToAdd);
+    }
+    public void removePlayer(BaseballPlayer player){
+        availablePlayers.remove(player);
+    }
     /**
      * @return the observablePlayers
      */

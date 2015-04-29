@@ -19,7 +19,7 @@ import javafx.beans.property.StringProperty;
  * 
  * @author Tony
  */
-public abstract class Player {
+public abstract class Player implements Comparable{
     
     private StringProperty firstName;
     private StringProperty lastName;
@@ -206,6 +206,13 @@ public abstract class Player {
      */
     public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
         this.propertyChangeSupport = propertyChangeSupport;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Player player = (Player) o;
+        return this.firstName.toString().compareTo(player.firstName.toString())
+                +this.lastName.toString().compareTo(player.lastName.toString());
     }
 
 }

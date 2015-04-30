@@ -3,29 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package fbbdk.controller;
+package fbbdk.gui;
 
 import fbbdk.data.BaseballPlayer;
+import javafx.stage.Stage;
 
 /**
  *
  * @author Tony
  */
-class PlayerDialog {
+public class EditPlayerDialog extends Stage{
 
-    void showAddLectureDialog() {
+    public void showEditPlayerDialog(BaseballPlayer playerToEdit) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    boolean wasCompleteSelected() {
+    public boolean wasCompleteSelected() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    BaseballPlayer getPlayer() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    void showEditPlayerDialog(BaseballPlayer playerToEdit) {
+    public BaseballPlayer getPlayer() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

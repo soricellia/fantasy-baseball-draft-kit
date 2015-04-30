@@ -5,6 +5,8 @@
  */
 package fantasybaseballdraftkit;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author Tony
@@ -25,7 +27,7 @@ public class Fdk_StartupConstants {
     public static final String PATH_SITES = "sites/";
     public static final String PATH_BASE = PATH_SITES + "base/";
     public static final String PATH_EMPTY = ".";
-
+    
     // THESE ARE THE DATA FILES WE WILL LOAD AT STARTUP
     public static final String JSON_PLAYER_PATH = PATH_DATA + "players.json";
     
@@ -34,5 +36,6 @@ public class Fdk_StartupConstants {
 
     // ERROR DIALOG CONTROL
     public static String CLOSE_BUTTON_LABEL = "Close";
+    
     
 }

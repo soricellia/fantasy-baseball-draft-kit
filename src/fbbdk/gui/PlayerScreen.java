@@ -13,12 +13,12 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_ICON;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_ICON_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SEARCH_LABEL;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_GUI_IMAGES;
+import fbbdk.controller.DraftController;
 import fbbdk.controller.PlayerTableController;
 import fbbdk.data.BaseballPlayer;
 import fbbdk.data.DraftDataManager;
 import java.util.ArrayList;
 import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -36,6 +36,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
 
 /**
@@ -44,17 +45,26 @@ import properties_manager.PropertiesManager;
  */
 public class PlayerScreen extends BorderPane {
 
-    PropertiesManager properties;
+    //these are my managers
 
+    PropertiesManager properties;
     DraftDataManager dataManager;
 
+    //this is the GUI
+    Fdk_gui gui;
+    Stage primaryStage;
+    //controllers
     PlayerTableController playerTableController;
+    DraftController draftController;
 
-    Label playerHeadingLabel;
-
+    //my dialogs
+    MessageDialog messageDialog;
+    YesNoCancelDialog yesNoCancelDialog;
+    
     //this holds everything
     GridPane pane;
 
+    Label playerHeadingLabel;
     //this holds the top stuff
     BorderPane borderTopPane;
     VBox topPane;
@@ -63,8 +73,8 @@ public class PlayerScreen extends BorderPane {
     HBox lowerTopPane;
 
     //these are the components that go in the topPane
-    Button plusButton;
-    Button minusButton;
+    Button addPlayerButton;
+    Button removePlayerButton;
     //this is the pane for the buttons
     FlowPane buttonPane;
 
@@ -107,8 +117,8 @@ public class PlayerScreen extends BorderPane {
 
     private static final String PLAYER_RADIO_STYLE = "player_radio_style";
     private static final String PLAYER_RADIO_PANEL_STYLE = "player_radio_panel_style";
-    private static final String SCREEN_STYLE="screen";
-    private static final String PADDING_STYLE="padding";
+    private static final String SCREEN_STYLE = "screen";
+    private static final String PADDING_STYLE = "padding";
     public static final String HEADING_STYLE = "heading_label";
     public static final String SUB_HEADING = "subheading_label";
     public static final String EMPTY_TEXT = "";
@@ -125,7 +135,6 @@ public class PlayerScreen extends BorderPane {
     private static final String OF = "OF";
     private static final String U = "U";
     private static final String P = "P";
-    private static final String UNDER_SCORE = "_";
 
     //these will be the constants needed for the table colums
     private static final String FIRST_NAME_COLUMN = "First";
@@ -151,24 +160,31 @@ public class PlayerScreen extends BorderPane {
     private static final String ESTIMATED_VALUE_COLUMN = "Estimated Value";
     private static final String NOTES_COLUMN = "Notes";
 
-    public PlayerScreen(Scene primaryScene, DraftDataManager dataManager) {
-        //init the properties manager
+    public PlayerScreen(Fdk_gui initGui, Stage initPrimaryStage,
+            MessageDialog initMessageDialog,YesNoCancelDialog initYesNoCancelDialog) {
+        //init the important stuff
         properties = PropertiesManager.getPropertiesManager();
-        this.dataManager = dataManager;
-
+        gui = initGui;
+        dataManager = gui.getDataManager();
+        primaryStage = initPrimaryStage;
+        messageDialog = initMessageDialog;
+        yesNoCancelDialog = initYesNoCancelDialog;
         //init the playerTableControler
         playerTableController = new PlayerTableController(dataManager);
+        draftController = new DraftController(primaryStage,dataManager.getDraft(),
+                messageDialog,yesNoCancelDialog);
+        
         //set the class
         this.getStyleClass().add(SCREEN_STYLE);
-        
+
         //init the components
         initComponents();
     }
 
     private void initComponents() {
         pane = new GridPane();
-        pane.getStyleClass().addAll(PADDING_STYLE,SCREEN_STYLE);
-        
+        pane.getStyleClass().addAll(PADDING_STYLE, SCREEN_STYLE);
+
         initHeading(pane);
 
         initRadioButtons(pane);
@@ -221,7 +237,7 @@ public class PlayerScreen extends BorderPane {
      * @return returns all positions selected in radio buttons
      */
     private ArrayList<String> getSelectedPositions() {
-        ArrayList<String> positions = new ArrayList<String>();
+        ArrayList<String> positions = new ArrayList<>();
         if (cRadioButton.isSelected()) {
             positions.add(C);
         }
@@ -282,8 +298,8 @@ public class PlayerScreen extends BorderPane {
         //now we init the buttons
         //first create the flowpane to add the buttons to
         buttonPane = new FlowPane();
-        plusButton = initChildButton(lowerTopPane, ADD_ICON, ADD_ICON_TOOLTIP, true);
-        minusButton = initChildButton(lowerTopPane, REMOVE_ICON, REMOVE_ICON_TOOLTIP, true);
+        addPlayerButton = initChildButton(lowerTopPane, ADD_ICON, ADD_ICON_TOOLTIP, false);
+        removePlayerButton = initChildButton(lowerTopPane, REMOVE_ICON, REMOVE_ICON_TOOLTIP, false);
 
         searchPanel = new HBox();
 
@@ -394,7 +410,7 @@ public class PlayerScreen extends BorderPane {
         notesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
         //we want to notes column a little thicker
         notesColumn.setPrefWidth(350);
-        
+
         //now we can add all of these bad girls to the table
         playerTable.getColumns().addAll(firstNameColumn, lastNameColumn,
                 proTeamColumn, positionsColumn, yearOfBirthColumn, winRunColumn,
@@ -471,16 +487,16 @@ public class PlayerScreen extends BorderPane {
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
-        plusButton.setOnAction(e -> {
-
+        addPlayerButton.setOnAction(e -> {
+            draftController.handleAddPlayerRequest(gui);
         });
-        minusButton.setOnAction(e -> {
+        removePlayerButton.setOnAction(e -> {
 
         });
         searchText.setOnKeyReleased(e -> {
             playerTableController.handleSearchTextRequest(searchText.getText());
         });
-        notesColumn.setOnEditCommit(e->{
+        notesColumn.setOnEditCommit(e -> {
             e.getRowValue().setNotes(e.getNewValue());
         });
 
@@ -508,7 +524,7 @@ public class PlayerScreen extends BorderPane {
                 unCheckAllButtons();
                 //so just select the pitcher
                 pitcherRadioButton.setSelected(true);
-            }else{
+            } else {
                 //this means both pitcher and uradioButton are selected
                 unCheckAllButtons();
                 pitcherRadioButton.setSelected(true);
@@ -602,21 +618,21 @@ public class PlayerScreen extends BorderPane {
         if (uRadioButton.isSelected()) {
             uRadioButton.setSelected(false);
         }
-        
-        if(ssRadioButton.isSelected()&&secondBaseRadioButton.isSelected()){
+
+        if (ssRadioButton.isSelected() && secondBaseRadioButton.isSelected()) {
             miRadioButton.setSelected(true);
         }
-        if(miRadioButton.isSelected()){
+        if (miRadioButton.isSelected()) {
             //if this button is selected we dont want ss and 2b selected
             //because they mean the same thing
             ssRadioButton.setSelected(false);
             secondBaseRadioButton.setSelected(false);
         }
-        if(firstBaseRadioButton.isSelected()
-                &&thirdBaseRadioButton.isSelected()){
+        if (firstBaseRadioButton.isSelected()
+                && thirdBaseRadioButton.isSelected()) {
             ciRadioButton.setSelected(true);
         }
-        if(ciRadioButton.isSelected()){
+        if (ciRadioButton.isSelected()) {
             //if this button is selected we dont want 1b or 3b selected
             //because they mean the same thing
             firstBaseRadioButton.setSelected(false);

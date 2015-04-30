@@ -60,14 +60,20 @@
         <property name="DIALOG_TEAM_HEADING_LABEL"              value="Fantasy Team Details"></property>
         <property name="DIALOG_TEAM_NAME_LABEL"                 value="Name: "></property>
         <property name="DIALOG_TEAM_OWNER_LABEL"                value="Owner: "></property>
-         
+        <property name="DIALOG_ADD_HEADING_LABEL"               value="Player Details"></property>
+        <property name="DIALOG_ADD_FIRST_NAME_LABEL"            value="First Name: "></property>  
+        <property name="DIALOG_ADD_LAST_NAME_LABEL"             value="Last Name: "></property>
+        <property name="DIALOG_ADD_PRO_TEAM_LABEL"             value="Pro Team: "></property>
+        
         <!--BUTTON TEXT -->
         <property name="DIALOG_COMPLETE_BUTTON_TEXT"            value="Complete"></property>
         <property name="DIALOG_CANCEL_BUTTON_TEXT"              value="Cancel"></property>
+        
         <!-- ERROR MESSAGES -->
-        <property name="START_DATE_AFTER_END_DATE_ERROR_MESSAGE"    value="The Starting Monday cannot be chronologically after the Ending Friday"></property>
-        <property name="START_DATE_NOT_A_MONDAY_ERROR_MESSAGE"      value="The Start Date must be a Monday"></property>
-        <property name="END_DATE_NOT_A_FRIDAY_ERROR_MESSAGE"        value="The End Date must be a Friday"></property>
+        <property name="ILLEGAL_PLAYER_NAME_MESSAGE"                value="Please Complete Player Name"></property>
+        <property name="ILLEGAL_PLAYER_POSITION_MESSAGE"            value="Please Pick a Position"></property>
+        <property name="ILLEGAL_TEAM_NAME_MESSAGE"                  value="Please Complete Team Name"></property>
+        <property name="ILLEGAL_TEAM_OWNER_MESSAGE"                 value="Please Complete Team Owner Name"></property>
         <property name="ILLEGAL_DATE_MESSAGE"                       value="Illegal Date Selection"></property>
         <property name="CLOSE_BUTTON_TEXT"                          value="Close"></property>
 
@@ -77,7 +83,8 @@
         <property name="DRAFT_SAVED_MESSAGE"           value="The Draft has been Saved"></property>
         <property name="SITE_EXPORTED_MESSAGE"          value="The Draft Site has been Exported"></property>
         <property name="SAVE_UNSAVED_WORK_MESSAGE"      value="Do you want to save your unsaved work first?"></property>
-        <property name="REMOVE_ITEM_MESSAGE"            value="Are you sure you wish to remove the item?"></property>
+        <property name="REMOVE_TEAM_MESSAGE"            value="Are you sure you wish to remove the team?"></property>
+        <property name="REMOVE_PLAYER_MESSAGE"          value="Are you sure you wish to remove the player?"></property>
         
     </property_list>
     <property_options_list>

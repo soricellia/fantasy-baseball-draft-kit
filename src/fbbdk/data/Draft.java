@@ -31,8 +31,8 @@ public class Draft {
         observablePlayers = FXCollections.observableArrayList();
     }
     
-     public static void addPlayer(BaseballPlayer player) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+     public void addPlayer(BaseballPlayer player) {
+         availablePlayers.add(player);
     }
     
     /**

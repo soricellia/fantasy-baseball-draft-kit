@@ -10,6 +10,8 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_COMPLETE_BUTTON_TE
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_TEAM_HEADING_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_TEAM_NAME_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_TEAM_OWNER_LABEL;
+import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_TEAM_NAME_MESSAGE;
+import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_TEAM_OWNER_MESSAGE;
 import fbbdk.data.BaseballTeam;
 import fbbdk.data.Team;
 import static fbbdk.gui.Fdk_gui.PRIMARY_STYLE_SHEET;
@@ -30,52 +32,56 @@ import properties_manager.PropertiesManager;
  *
  * @author Tony
  */
-public class TeamDialog extends Stage{
+public class TeamDialog extends Stage {
+
     //THIS IS THE OBJECT DATA BEHIND THIS UI
+
     BaseballTeam team;
-    
+
     //everything goes in here
     GridPane gridPane;
-    
+
     Scene dialogScene;
-    
+
     //things that go into gridPane
     Label dialogTeamHeadingLabel;
     Label dialogTeamNameLabel;
     Label dialogTeamOwnerLabel;
-    
+
     TextField nameTextField;
     TextField ownerTextField;
-    
+
     Button dialogCompleteButton;
     Button dialogCancelButton;
-    
+
+    MessageDialog messageDialog;
+
     String selection;
-    
+
     public static final String CLASS_HEADING_LABEL = "heading_label";
     public static final String COMPLETE = "Complete";
     public static final String CANCEL = "Cancel";
     public static final String ADD_TEAM_TITLE = "Add New Fantasy Team";
     public static final String EDIT_TEAM_TITLE = "Edit Fantasy Team";
-    
-    public TeamDialog(Stage primaryStage){
+
+    public TeamDialog(Stage primaryStage, MessageDialog initMessageDialog) {
         // MAKE THIS DIALOG MODAL, MEANING OTHERS WILL WAIT
         // FOR IT WHEN IT IS DISPLAYED
         initModality(Modality.WINDOW_MODAL);
         initOwner(primaryStage);
-        
+        messageDialog = initMessageDialog;
         // FIRST OUR CONTAINER
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 20, 20, 20));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
-        
+
         // PUT THE HEADING IN THE GRID
         dialogTeamHeadingLabel = new Label(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_TEAM_HEADING_LABEL.toString()));
         dialogTeamHeadingLabel.getStyleClass().add(CLASS_HEADING_LABEL);
-        
+
         //now the name
         dialogTeamNameLabel = new Label(PropertiesManager
                 .getPropertiesManager()
@@ -85,7 +91,7 @@ public class TeamDialog extends Stage{
         nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             team.setTeamName(newValue);
         });
-        
+
         //now the owner
         dialogTeamOwnerLabel = new Label(PropertiesManager
                 .getPropertiesManager()
@@ -95,96 +101,119 @@ public class TeamDialog extends Stage{
         ownerTextField.textProperty().addListener((observable, oldValue, newValue) -> {
             team.setCoach(newValue);
         });
-        
+
         dialogCompleteButton = new Button(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_COMPLETE_BUTTON_TEXT.toString()));
         dialogCancelButton = new Button(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_CANCEL_BUTTON_TEXT.toString()));
-        
+
         //event handler for buttons
-         EventHandler completeCancelHandler = (EventHandler<ActionEvent>) (ActionEvent ae) -> {
-            Button sourceButton = (Button)ae.getSource();
-           this.selection = sourceButton.getText();
-           this.hide();
+        EventHandler completeCancelHandler = (EventHandler<ActionEvent>) (ActionEvent ae) -> {
+            Button sourceButton = (Button) ae.getSource();
+            PropertiesManager props = PropertiesManager.getPropertiesManager();
+            if (sourceButton.getText().equals(COMPLETE)) {
+                if (team.getTeamName() == null) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                }else if (team.getTeamName().trim().isEmpty()) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                } else if (team.getCoach() == null) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                } else if (team.getCoach().trim().isEmpty()) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                }else{
+                    this.selection = sourceButton.getText();
+                    this.hide();
+                }
+            }else{
+                this.selection = sourceButton.getText();
+                this.hide();
+            }
         };
-        
+
         dialogCompleteButton.setOnAction(completeCancelHandler);
         dialogCancelButton.setOnAction(completeCancelHandler);
-        
+
         //now we can add everything at once to the gridPane
-        gridPane.add(dialogTeamHeadingLabel, 0, 0,2,1);
-        gridPane.add(dialogTeamNameLabel,0,1,1,1);
+        gridPane.add(dialogTeamHeadingLabel, 0, 0, 2, 1);
+        gridPane.add(dialogTeamNameLabel, 0, 1, 1, 1);
         gridPane.add(nameTextField, 1, 1, 1, 1);
-        gridPane.add(dialogTeamOwnerLabel, 0, 2,1,1);
-        gridPane.add(ownerTextField, 1, 2,1,1);
-        gridPane.add(dialogCompleteButton, 0,3,1,1);
-        gridPane.add(dialogCancelButton,1,3,1,1);
-        
+        gridPane.add(dialogTeamOwnerLabel, 0, 2, 1, 1);
+        gridPane.add(ownerTextField, 1, 2, 1, 1);
+        gridPane.add(dialogCompleteButton, 0, 3, 1, 1);
+        gridPane.add(dialogCancelButton, 1, 3, 1, 1);
+
         dialogScene = new Scene(gridPane);
         dialogScene.getStylesheets().add(PRIMARY_STYLE_SHEET);
         this.setScene(dialogScene);
     }
+
     /**
      * Accessor method for getting the selection the user made.
-     * 
-     * @return Either complete or cancel, depending on which
-     * button the user selected when this dialog was presented.
+     *
+     * @return Either complete or cancel, depending on which button the user
+     * selected when this dialog was presented.
      */
-    
+
     public String getSelection() {
         return selection;
     }
-    
-    public BaseballTeam getTeam(){
+
+    public BaseballTeam getTeam() {
         return team;
     }
-    
+
     public boolean wasCompleteSelected() {
+        if(selection == null)
+            return false;
         return selection.equals(COMPLETE);
     }
-    
+
     /**
-     * This method loads a custom message into the label and
-     * then pops open the dialog.
-     * 
-     * 
-     * @return Team being added 
+     * This method loads a custom message into the label and then pops open the
+     * dialog.
+     *
+     *
+     * @return Team being added
      */
     public BaseballTeam showAddTeamDialog() {
         // SET THE DIALOG TITLE
         setTitle(ADD_TEAM_TITLE);
-        
+
         // RESET THE SCHEDULE ITEM OBJECT WITH DEFAULT VALUES
         team = new BaseballTeam();
-        
+
         loadGUIData();
-        
+
         // AND OPEN IT UP
         this.showAndWait();
-        
+
         return team;
     }
+
     public void loadGUIData() {
         // LOAD THE UI STUFF
         nameTextField.setText(team.getTeamName());
         ownerTextField.setText(team.getCoach());
-        
+
     }
+
     public void showEditTeamDialog(BaseballTeam teamToEdit) {
         // SET THE DIALOG TITLE
         setTitle(EDIT_TEAM_TITLE);
-        
+
         // LOAD THE SCHEDULE ITEM INTO OUR LOCAL OBJECT
         team = new BaseballTeam();
-        
+
         team.setTeamName(teamToEdit.getTeamName());
         team.setCoach(teamToEdit.getCoach());
-        
+
         // AND THEN INTO OUR GUI
         loadGUIData();
-               
+
         // AND OPEN IT UP
         this.showAndWait();
     }

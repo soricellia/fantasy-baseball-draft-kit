@@ -18,7 +18,7 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_ICON;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SELECT_TEAM_LABEL;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PATH_GUI_IMAGES;
-import fbbdk.controller.TeamEditController;
+import fbbdk.controller.DraftController;
 import fbbdk.data.BaseballPlayer;
 import fbbdk.data.BaseballTeam;
 import fbbdk.data.DraftDataManager;
@@ -139,18 +139,17 @@ public class HomeScreen extends BorderPane {
     final String SPACING_STYLE = "spacing";
     final String BACKGROUND_STYLE = "background";
 
-    public HomeScreen(Fdk_gui initGui, DraftDataManager ddm,
-            MessageDialog initMessageDialog,
+    public HomeScreen(Fdk_gui initGui,Stage initPrimaryStage, MessageDialog initMessageDialog,
             YesNoCancelDialog initYesNoCancelDialog) {
         //first call super
         super();
         //init the important stuff
         propertiesManager = PropertiesManager.getPropertiesManager();
-        dataManager = ddm;
         messageDialog = initMessageDialog;
         yesNoCancelDialog = initYesNoCancelDialog;
         gui = initGui;
-
+        dataManager = gui.getDataManager();
+        primaryStage = initPrimaryStage;
         //set the class
         this.getStyleClass().add(SCREEN_STYLE);
         //init the components
@@ -380,7 +379,7 @@ public class HomeScreen extends BorderPane {
 
     private void initEventHandlers() {
         //first lets init the controller
-        TeamEditController tec = new TeamEditController(primaryStage,
+        DraftController tec = new DraftController(primaryStage,
                 dataManager.getDraft(), messageDialog, yesNoCancelDialog);
 
         addTeamButton.setOnAction(e -> {

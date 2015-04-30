@@ -5,9 +5,7 @@
  */
 package fbbdk.error;
 
-import static fantasybaseballdraftkit.Fdk_PropertyType.END_DATE_NOT_A_FRIDAY_ERROR_MESSAGE;
-import static fantasybaseballdraftkit.Fdk_PropertyType.START_DATE_AFTER_END_DATE_ERROR_MESSAGE;
-import static fantasybaseballdraftkit.Fdk_PropertyType.START_DATE_NOT_A_MONDAY_ERROR_MESSAGE;
+import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_TEAM_NAME_MESSAGE;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.CLOSE_BUTTON_LABEL;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PROPERTIES_FILE_ERROR_MESSAGE;
 import fbbdk.data.Draft;
@@ -96,32 +94,13 @@ public class ErrorHandler {
     public void handleUpdateCourseError() {
         
     }
-
-    /**
-     * This function provides feedback to the user when the calendar
-     * start date is not a Monday, which is forbidden.
-     */
-    public void handleNotAMondayError() {
-        messageDialog.show(properties.getProperty(START_DATE_NOT_A_MONDAY_ERROR_MESSAGE));
+    public void handleMyCockError(){
+        //HANDLE IT WELLLLLL YOUNG PADDAWON
+        //8=========================D
     }
-
-    /**
-     * This function provides feedback to the user when the calendar
-     * end date is not a Friday, which is forbidden.
-     */
-    public void handleNotAFridayError() {
-        messageDialog.show(properties.getProperty(END_DATE_NOT_A_FRIDAY_ERROR_MESSAGE));
+    public void handleTeamAddEditError(){
+        messageDialog.show(properties.getProperty(ILLEGAL_TEAM_NAME_MESSAGE));
     }
-
-    /**
-     * This function provides feedback to the user when the calendar
-     * start date that is selected is chronologically after the end
-     * date that is selected, which is forbidden.
-     */
-    public void handleStartDateAfterEndDate() {
-        messageDialog.show(properties.getProperty(START_DATE_AFTER_END_DATE_ERROR_MESSAGE));
-    }
-
     /**
      * This function provides feedback to the user when the properties.xml
      * file cannot be loaded.

@@ -6,11 +6,11 @@
 package fbbdk.gui;
 
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_ADD_FIRST_NAME_LABEL;
-import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_ADD_HEADING_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_ADD_LAST_NAME_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_ADD_PRO_TEAM_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_CANCEL_BUTTON_TEXT;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_COMPLETE_BUTTON_TEXT;
+import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_PLAYER_HEADING_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_PLAYER_NAME_MESSAGE;
 import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_PLAYER_POSITION_MESSAGE;
 import fbbdk.data.BaseballPlayer;
@@ -115,7 +115,7 @@ public class AddPlayerDialog extends Stage {
         // PUT THE HEADING IN THE GRID
         dialogAddHeadingLabel = new Label(PropertiesManager
                 .getPropertiesManager()
-                .getProperty(DIALOG_ADD_HEADING_LABEL.toString()));
+                .getProperty(DIALOG_PLAYER_HEADING_LABEL.toString()));
         dialogAddHeadingLabel.getStyleClass().add(CLASS_HEADING_LABEL);
 
         //now the first name

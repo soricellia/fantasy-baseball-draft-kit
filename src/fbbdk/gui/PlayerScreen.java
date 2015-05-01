@@ -17,6 +17,7 @@ import fbbdk.controller.DraftController;
 import fbbdk.controller.PlayerTableController;
 import fbbdk.data.BaseballPlayer;
 import fbbdk.data.DraftDataManager;
+import fbbdk.error.ErrorHandler;
 import java.util.ArrayList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -171,8 +172,7 @@ public class PlayerScreen extends BorderPane {
         yesNoCancelDialog = initYesNoCancelDialog;
         //init the playerTableControler
         playerTableController = new PlayerTableController(dataManager);
-        draftController = new DraftController(primaryStage,dataManager.getDraft(),
-                messageDialog,yesNoCancelDialog);
+        draftController = gui.getDraftController();
         
         //set the class
         this.getStyleClass().add(SCREEN_STYLE);
@@ -429,7 +429,7 @@ public class PlayerScreen extends BorderPane {
     }
 
     private void initEventHandlers() {
-
+        
         allRadioButton.setOnAction(e -> {
             allButtonClicked();
             playerTableController.handleAllSearch();
@@ -491,13 +491,26 @@ public class PlayerScreen extends BorderPane {
             draftController.handleAddPlayerRequest(gui);
         });
         removePlayerButton.setOnAction(e -> {
-
+            BaseballPlayer player = playerTable.getSelectionModel().getSelectedItem();
+            if(player == null){
+                ErrorHandler error = ErrorHandler.getErrorHandler();
+                error.handleRemovePlayerError();
+            }
+             draftController.handleRemovePlayerRequest(gui,
+                     player);
         });
         searchText.setOnKeyReleased(e -> {
             playerTableController.handleSearchTextRequest(searchText.getText());
         });
         notesColumn.setOnEditCommit(e -> {
             e.getRowValue().setNotes(e.getNewValue());
+        });
+        playerTable.setOnMouseClicked(e->{
+             if(e.getClickCount() == 2){
+                //OPEN PLAYER EDITOR
+                 draftController.handleEditPlayerRequest(gui, 
+                         playerTable.getSelectionModel().getSelectedItem());
+            }   
         });
 
     }

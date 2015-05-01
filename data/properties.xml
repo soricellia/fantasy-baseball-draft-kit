@@ -60,10 +60,14 @@
         <property name="DIALOG_TEAM_HEADING_LABEL"              value="Fantasy Team Details"></property>
         <property name="DIALOG_TEAM_NAME_LABEL"                 value="Name: "></property>
         <property name="DIALOG_TEAM_OWNER_LABEL"                value="Owner: "></property>
-        <property name="DIALOG_ADD_HEADING_LABEL"               value="Player Details"></property>
+        <property name="DIALOG_PLAYER_HEADING_LABEL"            value="Player Details"></property>
         <property name="DIALOG_ADD_FIRST_NAME_LABEL"            value="First Name: "></property>  
         <property name="DIALOG_ADD_LAST_NAME_LABEL"             value="Last Name: "></property>
-        <property name="DIALOG_ADD_PRO_TEAM_LABEL"             value="Pro Team: "></property>
+        <property name="DIALOG_ADD_PRO_TEAM_LABEL"              value="Pro Team: "></property>
+        <property name="DIALOG_EDIT_FANTASY_TEAM_LABEL"         value="Fantasy Team: "></property>
+        <property name="DIALOG_EDIT_PLAYER_POS_LABEL"           value="Position: "></property>
+        <property name="DIALOG_EDIT_PLAYER_CONTRACT_LABEL"      value="Contract: "></property>
+        <property name="DIALOG_PLAYER_SALARY_LABEL"             value="Salary($): "></property>
         
         <!--BUTTON TEXT -->
         <property name="DIALOG_COMPLETE_BUTTON_TEXT"            value="Complete"></property>
@@ -75,8 +79,11 @@
         <property name="ILLEGAL_TEAM_NAME_MESSAGE"                  value="Please Complete Team Name"></property>
         <property name="ILLEGAL_TEAM_OWNER_MESSAGE"                 value="Please Complete Team Owner Name"></property>
         <property name="ILLEGAL_DATE_MESSAGE"                       value="Illegal Date Selection"></property>
+        <property name="ILLEGAL_PLAYER_SALARY_MESSAGE"              value="Please Enter an Integer for the Players Salary"></property>
+        <property name="NO_PLAYER_SALARY_MESSAGE"                   value="Please Enter the Players Salary"></property>
         <property name="CLOSE_BUTTON_TEXT"                          value="Close"></property>
-
+        <property name="REMOVE_PLAYER_ERROR"                        value="Please Select a Player to Remove"></property>
+        
         <!-- VERIFICATION MESSAGES -->
         <property name="NEW_DRAFT_CREATED_MESSAGE"     value="New Draft Created but not yet Saved"></property>
         <property name="DRAFT_LOADED_MESSAGE"          value="The Draft has been Loaded"></property>
@@ -85,6 +92,7 @@
         <property name="SAVE_UNSAVED_WORK_MESSAGE"      value="Do you want to save your unsaved work first?"></property>
         <property name="REMOVE_TEAM_MESSAGE"            value="Are you sure you wish to remove the team?"></property>
         <property name="REMOVE_PLAYER_MESSAGE"          value="Are you sure you wish to remove the player?"></property>
+        
         
     </property_list>
     <property_options_list>

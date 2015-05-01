@@ -1,4 +1,4 @@
-/*
+/*s
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
@@ -33,6 +33,7 @@ public class Draft {
     
      public void addPlayer(BaseballPlayer player) {
          availablePlayers.add(player);
+         observablePlayers.add(player);
     }
     
     /**
@@ -102,6 +103,8 @@ public class Draft {
     }
     public void removePlayer(BaseballPlayer player){
         availablePlayers.remove(player);
+        //MAKE SURE THIS IS REFLECTED IN THE OBSERVABLE PLAYERS LIST
+        observablePlayers.remove(player);
     }
     /**
      * @return the observablePlayers

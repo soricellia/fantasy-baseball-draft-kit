@@ -13,7 +13,6 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.DIALOG_TEAM_OWNER_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_TEAM_NAME_MESSAGE;
 import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_TEAM_OWNER_MESSAGE;
 import fbbdk.data.BaseballTeam;
-import fbbdk.data.Team;
 import static fbbdk.gui.Fdk_gui.PRIMARY_STYLE_SHEET;
 import static fbbdk.gui.PlayerScreen.SUB_HEADING;
 import javafx.event.ActionEvent;

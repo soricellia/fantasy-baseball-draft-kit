@@ -436,4 +436,14 @@ public class Fdk_gui implements DraftDataView{
         });
     }
 
+    public DraftController getDraftController() {
+        if(draftController == null){
+            draftController = new DraftController(primaryStage,ddm.getDraft(),
+                messageDialog,yesNoCancelDialog);
+        }
+        return draftController;
+       
+            
+    }
+
 }

@@ -13,11 +13,13 @@ import fbbdk.data.BaseballTeam;
 import fbbdk.data.Draft;
 import fbbdk.data.DraftDataManager;
 import fbbdk.gui.EditPlayerDialog;
+import static fbbdk.gui.EditPlayerDialog.FREE_AGENT;
 import fbbdk.gui.Fdk_gui;
 import fbbdk.gui.HomeScreen;
 import fbbdk.gui.MessageDialog;
 import fbbdk.gui.TeamDialog;
 import fbbdk.gui.YesNoCancelDialog;
+import java.util.ArrayList;
 import java.util.Collections;
 import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
@@ -27,129 +29,123 @@ import properties_manager.PropertiesManager;
  * @author Tony
  */
 public class DraftController {
-     
+
     TeamDialog teamDialog;
     AddPlayerDialog addPlayerDialog;
     EditPlayerDialog editPlayerDialog;
     MessageDialog messageDialog;
     YesNoCancelDialog yesNoCancelDialog;
-    
+
     Draft draft;
-    
+
     public DraftController(Stage initPrimaryStage, Draft draft, MessageDialog initMessageDialog, YesNoCancelDialog initYesNoCancelDialog) {
-        editPlayerDialog = new EditPlayerDialog();
+
         messageDialog = initMessageDialog;
         yesNoCancelDialog = initYesNoCancelDialog;
-        
+
         this.draft = draft;
-        
-        teamDialog = new TeamDialog(initPrimaryStage,messageDialog);
-        addPlayerDialog = new AddPlayerDialog(initPrimaryStage,draft,messageDialog);
-        
+
+        teamDialog = new TeamDialog(initPrimaryStage, messageDialog);
+        addPlayerDialog = new AddPlayerDialog(initPrimaryStage, draft, messageDialog);
+        editPlayerDialog = new EditPlayerDialog(initPrimaryStage, draft, messageDialog);
+
     }
 
     // THESE ARE FOR SCHEDULE ITEMS
-    
     public void handleAddTeamRequest(Fdk_gui gui, HomeScreen screen) {
         DraftDataManager ddm = gui.getDataManager();
         Draft draft = ddm.getDraft();
         teamDialog.showAddTeamDialog();
-        
+
         // DID THE USER CONFIRM?
         if (teamDialog.wasCompleteSelected()) {
             // GET THE SCHEDULE ITEM
             BaseballTeam team = teamDialog.getTeam();
-            
+
             // AND ADD IT AS A ROW TO THE TABLE
             draft.getTeams().add(team);
             //update the gui
             screen.updateScreen(team);
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
-        }
-        else {
+        } else {
             // THE USER MUST HAVE PRESSED CANCEL, SO
             // WE DO NOTHING
         }
     }
-    
-    public void handleEditTeamRequest(Fdk_gui gui, BaseballTeam teamToEdit
-            ,HomeScreen screen) {
+
+    public void handleEditTeamRequest(Fdk_gui gui, BaseballTeam teamToEdit, HomeScreen screen) {
         DraftDataManager ddm = gui.getDataManager();
         Draft draft = ddm.getDraft();
         teamDialog.showEditTeamDialog(teamToEdit);
-        
+
         // DID THE USER CONFIRM?
         if (teamDialog.wasCompleteSelected()) {
             // UPDATE THE SCHEDULE ITEM
             BaseballTeam team = teamDialog.getTeam();
             teamToEdit.setTeamName(team.getTeamName());
             teamToEdit.setCoach(team.getCoach());
-            
+
             //update gui
             draft.getTeams().set(draft.getTeams().indexOf(teamToEdit), team);
             Collections.sort(draft.getTeams());
-            
+
             screen.updateScreen(team);
-            
+
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
-        }
-        else {
+        } else {
             // THE USER MUST HAVE PRESSED CANCEL, SO
             // WE DO NOTHING
-        }        
+        }
     }
-    
-    public void handleRemoveTeamRequest(Fdk_gui gui, BaseballTeam teamToRemove
-            ,HomeScreen screen) {
+
+    public void handleRemoveTeamRequest(Fdk_gui gui, BaseballTeam teamToRemove, HomeScreen screen) {
         // PROMPT THE USER TO SAVE UNSAVED WORK
         yesNoCancelDialog.show(PropertiesManager.getPropertiesManager().getProperty(REMOVE_TEAM_MESSAGE));
-        
+
         // AND NOW GET THE USER'S SELECTION
         String selection = yesNoCancelDialog.getSelection();
 
         // IF THE USER SAID YES, THEN SAVE BEFORE MOVING ON
-        if (selection.equals(YesNoCancelDialog.YES)) { 
+        if (selection.equals(YesNoCancelDialog.YES)) {
             gui.getDataManager().getDraft().removeTeam(teamToRemove);
-            
+
             //update gui
             screen.updateScreen(null);
-            
-             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
+
+            //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         }
-        
+
     }
+
     public void handleAddPlayerRequest(Fdk_gui gui) {
         DraftDataManager ddm = gui.getDataManager();
         Draft draft = ddm.getDraft();
         addPlayerDialog.showAddPlayerDialog();
-        
+
         // DID THE USER CONFIRM?
         if (addPlayerDialog.wasCompleteSelected()) {
             // GET THE SCHEDULE ITEM
             BaseballPlayer player = addPlayerDialog.getPlayer();
-            
+
             // AND ADD IT AS A ROW TO THE TABLE
-            
             draft.addPlayer(player);
-            
-            
-             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
+
+            //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
-        }
-        else {
+        } else {
             // THE USER MUST HAVE PRESSED CANCEL, SO
             // WE DO NOTHING
         }
     }
-    
+
     public void handleEditPlayerRequest(Fdk_gui gui, BaseballPlayer playerToEdit) {
         DraftDataManager ddm = gui.getDataManager();
         Draft draft = ddm.getDraft();
         editPlayerDialog.showEditPlayerDialog(playerToEdit);
-        
+
         // DID THE USER CONFIRM?
         if (editPlayerDialog.wasCompleteSelected()) {
             // UPDATE THE SCHEDULE ITEM
@@ -157,32 +153,81 @@ public class DraftController {
             playerToEdit.setPosition(player.getPosition());
             playerToEdit.setContract(player.getContract());
             playerToEdit.setSalary(player.getSalary());
-            
+
             //update gui
-            draft.getAvailablePlayers().set(draft.getAvailablePlayers().indexOf(playerToEdit), player);
-            
-             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
+            ArrayList<BaseballTeam> teams = draft.getTeams();
+            BaseballTeam playersTeam = editPlayerDialog.getPlayerTeam();
+            //first list check if the team is the free agents
+            if (playersTeam.getTeamName().equals(FREE_AGENT)) {   
+                //we need to find out what team the player is on
+                //we need to remove him
+                //them add him to the free agents pool
+                //we will do this in one step
+                draft.addPlayer(
+                        searchAndRemovePlayerFromTeam(teams, player));
+            }
+            //ok hes not going to the free agents so we need to add him to a team
+            else {
+
+                for (int x = 0; x < teams.size(); x++) {
+                    if (teams.get(x).equals(playersTeam)){
+                        teams.get(x).addPlayer(player);
+                        draft.removePlayer(player);
+                    }
+                    
+                }
+            }
+            //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
-        }
-        else {
+        } else {
             // THE USER MUST HAVE PRESSED CANCEL, SO
             // WE DO NOTHING
-        }        
+        }
     }
-    
+
     public void handleRemovePlayerRequest(Fdk_gui gui, BaseballPlayer playerToRemove) {
         // PROMPT THE USER TO SAVE UNSAVED WORK
         yesNoCancelDialog.show(PropertiesManager.getPropertiesManager().getProperty(REMOVE_PLAYER_MESSAGE));
-        
+
         // AND NOW GET THE USER'S SELECTION
         String selection = yesNoCancelDialog.getSelection();
 
         // IF THE USER SAID YES, THEN SAVE BEFORE MOVING ON
-        if (selection.equals(YesNoCancelDialog.YES)) { 
+        if (selection.equals(YesNoCancelDialog.YES)) {
             gui.getDataManager().getDraft().removePlayer(playerToRemove);
-             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
+            //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         }
     }
-        
+
+    private BaseballPlayer searchAndRemovePlayerFromTeam(ArrayList<BaseballTeam> teams, BaseballPlayer player) {
+        //ill use these guy
+        BaseballPlayer playerIterator;
+        BaseballTeam teamIterator;
+                //so first we need to check if theyre on a team other than free agents
+        //so for each team
+        for (int x = 0; x < teams.size(); x++) {
+            //we need to look through the teams roster
+            teamIterator = teams.get(x);
+            //first we look at the players list
+            for (int y = 0; y < teamIterator.getPlayers().size(); y++) {
+                playerIterator = teamIterator.getPlayers().get(y);
+                if (playerIterator.equals(player)) {
+                    //ok we found him we need to remove him
+                    teams.get(x).removePlayer(player);
+                }
+            }
+            //now we need to check the taxiPlayers
+            for (int y = 0; y < teamIterator.getTaxiPlayers().size(); y++) {
+                playerIterator = teamIterator.getTaxiPlayers().get(y);
+                if (playerIterator.equals(player)) {
+                    //same thing we found him and we need to remove him
+                    teams.get(x).removeTaxiPlayer(player);
+                }
+            }
+            
+        }
+        return player;
+    }
+
 }

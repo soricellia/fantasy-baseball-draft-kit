@@ -6,6 +6,7 @@
 package fbbdk.error;
 
 import static fantasybaseballdraftkit.Fdk_PropertyType.ILLEGAL_TEAM_NAME_MESSAGE;
+import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_PLAYER_ERROR;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.CLOSE_BUTTON_LABEL;
 import static fantasybaseballdraftkit.Fdk_StartupConstants.PROPERTIES_FILE_ERROR_MESSAGE;
 import fbbdk.data.Draft;
@@ -100,6 +101,9 @@ public class ErrorHandler {
     }
     public void handleTeamAddEditError(){
         messageDialog.show(properties.getProperty(ILLEGAL_TEAM_NAME_MESSAGE));
+    }
+    public void handleRemovePlayerError(){
+        messageDialog.show(properties.getProperty(REMOVE_PLAYER_ERROR));
     }
     /**
      * This function provides feedback to the user when the properties.xml

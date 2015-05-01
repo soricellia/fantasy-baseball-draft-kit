@@ -26,6 +26,7 @@ import static fbbdk.gui.PlayerScreen.EMPTY_TEXT;
 import static fbbdk.gui.PlayerScreen.SUB_HEADING;
 import java.util.ArrayList;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -132,6 +133,8 @@ public class HomeScreen extends BorderPane {
     MessageDialog messageDialog;
     YesNoCancelDialog yesNoCancelDialog;
     Fdk_gui gui;
+    DraftController draftController;
+    
     final static String HEADING_LABEL = "heading_label";
     final static String SCREEN_STYLE = "screen";
     final String PADDING_STYLE = "padding";
@@ -139,7 +142,7 @@ public class HomeScreen extends BorderPane {
     final String SPACING_STYLE = "spacing";
     final String BACKGROUND_STYLE = "background";
 
-    public HomeScreen(Fdk_gui initGui,Stage initPrimaryStage, MessageDialog initMessageDialog,
+    public HomeScreen(Fdk_gui initGui, Stage initPrimaryStage, MessageDialog initMessageDialog,
             YesNoCancelDialog initYesNoCancelDialog) {
         //first call super
         super();
@@ -150,6 +153,7 @@ public class HomeScreen extends BorderPane {
         gui = initGui;
         dataManager = gui.getDataManager();
         primaryStage = initPrimaryStage;
+        draftController = gui.getDraftController();
         //set the class
         this.getStyleClass().add(SCREEN_STYLE);
         //init the components
@@ -212,7 +216,7 @@ public class HomeScreen extends BorderPane {
         selectTeamLabel = initLabel(SELECT_TEAM_LABEL, SUB_HEADING);
         teamsComboBox = new ComboBox();
         teamsComboBox.setDisable(true);
-        
+
         tempBox.getChildren().addAll(selectTeamLabel, teamsComboBox);
 
         lowerTopPane.getChildren().addAll(tempOneBox, tempBox);
@@ -305,6 +309,7 @@ public class HomeScreen extends BorderPane {
     }
 
     private TableView<BaseballPlayer> createTable(TableView<BaseballPlayer> table) {
+
         //first init the player table
         table = new TableView<>();
 
@@ -373,7 +378,6 @@ public class HomeScreen extends BorderPane {
         table.setItems(null);
         //ok now lets make the playerTable a bit bigger
         table.setPrefHeight(500);
-
         return table;
     }
 
@@ -399,6 +403,14 @@ public class HomeScreen extends BorderPane {
         teamsComboBox.setOnAction(e -> {
             updateScreen(teamsComboBox.getSelectionModel().getSelectedItem());
         });
+        playerTable.setOnMouseClicked(e->{
+             if(e.getClickCount() == 2){
+                //OPEN PLAYER EDITOR
+                 draftController.handleEditPlayerRequest(gui, 
+                         playerTable.getSelectionModel().getSelectedItem());
+            }   
+        });
+        
 
     }
 
@@ -409,33 +421,25 @@ public class HomeScreen extends BorderPane {
     public void updateScreen(BaseballTeam team) {
         //this jsut makes my life easier
         ArrayList<BaseballTeam> teams = dataManager.getDraft().getTeams();
-       
+
         //if teams isnt empty then we can start doing stuff
         if (!teams.isEmpty()) {
-             //first we make sure the combo box is enabled
+            //first we make sure the combo box is enabled
             teamsComboBox.setDisable(false);
             //now we can do stuff to it
             teamsComboBox.getItems().clear();
             teamsComboBox.getItems().addAll(teams);
-            
+
             //make sure our buttons are ok
             removeTeamButton.setDisable(false);
             editTeamButton.setDisable(false);
             teamsComboBox.getSelectionModel().select(team);
             //and now we update the players list
-           //team will only be null after team is deleted
+            //team will only be null after team is deleted
             if (team != null) {
-                if (!team.getPlayers().isEmpty()) {
-                    playerTable.getItems().addAll(team.getPlayers());
-                }
-                if (!team.getTaxiPlayers().isEmpty()) {
-                    taxiTable.getItems().addAll(team.getTaxiPlayers());
-                }
-            }else{
-                //ok so our teams list isnt null but this team is.
-                //that means the team was deleted.
-                //lets reselect something else
-                teamsComboBox.getSelectionModel().selectFirst();
+                playerTable.setItems(team.getObservablePlayers());
+                taxiTable.setItems(team.getObservableTaxiPlayers());
+                teamsComboBox.getSelectionModel().select(team);
             }
         } else {
             removeTeamButton.setDisable(true);

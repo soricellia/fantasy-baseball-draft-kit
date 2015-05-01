@@ -100,32 +100,35 @@ public class HomeScreen extends BorderPane {
     TableView<BaseballPlayer> playerTable;
     TableView<BaseballPlayer> taxiTable;
     //and the table colums
+    TableColumn<BaseballPlayer, String> positionColumn;
     TableColumn<BaseballPlayer, String> firstNameColumn;
     TableColumn<BaseballPlayer, String> lastNameColumn;
     TableColumn<BaseballPlayer, String> proTeamColumn;
     TableColumn<BaseballPlayer, String> positionsColumn;
-    TableColumn<BaseballPlayer, Integer> yearOfBirthColumn;
+    TableColumn<BaseballPlayer, String> contractColumn;
     TableColumn<BaseballPlayer, Integer> winRunColumn;
     TableColumn<BaseballPlayer, Integer> savesHRColumn;
     TableColumn<BaseballPlayer, Integer> kRBIColumn;
     TableColumn<BaseballPlayer, Double> eraSBColumn;
     TableColumn<BaseballPlayer, Double> whipBAColumn;
     TableColumn<BaseballPlayer, Integer> evColumn;
-    TableColumn<BaseballPlayer, String> notesColumn;
+    TableColumn<BaseballPlayer, Integer> salaryColumn;
 
     //THESE ARE THE COLUMN HEADINGS FOR THE PLAYER TABLE
+    
+    private static final String POSITION_COLUMN = "Position";
     private static final String FIRST_NAME_COLUMN = "First";
     private static final String LAST_NAME_COLUMN = "Last";
     private static final String PRO_TEAM_COLUMN = "Pro Team";
     private static final String POSITIONS_COLUMN = "Positions";
-    private static final String YEAR_OF_BIRTH_COLUMN = "Year of Birth";
+    private static final String CONTRACT_COLUMN = "Contract";
     private static final String RUN_WIN_COLUMN = "R/W";
     private static final String HR_SV_COLUMN = "HR/SV";
     private static final String RBI_K_COLUMN = "RBI/K";
     private static final String SB_ERA_COLUMN = "SB/ERA";
     private static final String BA_WHIP_COLUMN = "BA/WHIP";
     private static final String ESTIMATED_VALUE_COLUMN = "Estimated Value";
-    private static final String NOTES_COLUMN = "Notes";
+    private static final String SALARY_COLUMN = "Salary";
 
     //this is some of the important stuff ill need for this screen
     PropertiesManager propertiesManager;
@@ -316,6 +319,11 @@ public class HomeScreen extends BorderPane {
         //and the table colums
         //note that some of the column headings are not set
         //this will be done later in an action listener
+        
+        positionColumn = new TableColumn<>(POSITION_COLUMN);
+        positionColumn.setEditable(false);
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
+        
         firstNameColumn = new TableColumn<>(FIRST_NAME_COLUMN);
         firstNameColumn.setEditable(false);
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -332,9 +340,9 @@ public class HomeScreen extends BorderPane {
         positionsColumn.setEditable(false);
         positionsColumn.setCellValueFactory(new PropertyValueFactory<>("positions"));
 
-        yearOfBirthColumn = new TableColumn<>(YEAR_OF_BIRTH_COLUMN);
-        yearOfBirthColumn.setEditable(false);
-        yearOfBirthColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
+        contractColumn = new TableColumn<>(CONTRACT_COLUMN);
+        contractColumn.setEditable(false);
+        contractColumn.setCellValueFactory(new PropertyValueFactory<>("contract"));
 
         winRunColumn = new TableColumn<>(RUN_WIN_COLUMN);
         winRunColumn.setEditable(false);
@@ -359,19 +367,15 @@ public class HomeScreen extends BorderPane {
         evColumn = new TableColumn<>(ESTIMATED_VALUE_COLUMN);
         evColumn.setEditable(false);
         evColumn.setCellValueFactory(new PropertyValueFactory<>("estimatedValue"));
-        notesColumn = new TableColumn<>(NOTES_COLUMN);
-        notesColumn.setEditable(true);
-        notesColumn.setCellValueFactory(new PropertyValueFactory<>("notes"));
-        //this allows you to type into the notes column on doubleclick
-        notesColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        //we want to notes column a little thicker
-        notesColumn.setPrefWidth(350);
+        salaryColumn = new TableColumn<>(SALARY_COLUMN);
+        
+        salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
 
         //now we can add all of these bad girls to the table
-        table.getColumns().addAll(firstNameColumn, lastNameColumn,
-                proTeamColumn, positionsColumn, yearOfBirthColumn, winRunColumn,
+        table.getColumns().addAll(positionColumn,firstNameColumn, lastNameColumn,
+                proTeamColumn, positionsColumn, contractColumn, winRunColumn,
                 savesHRColumn, kRBIColumn, eraSBColumn, whipBAColumn, evColumn,
-                notesColumn);
+                salaryColumn);
         //make the playerTable editable
         table.setEditable(true);
         //add the data to the table

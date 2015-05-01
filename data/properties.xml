@@ -80,6 +80,7 @@
         <property name="ILLEGAL_TEAM_OWNER_MESSAGE"                 value="Please Complete Team Owner Name"></property>
         <property name="ILLEGAL_DATE_MESSAGE"                       value="Illegal Date Selection"></property>
         <property name="ILLEGAL_PLAYER_SALARY_MESSAGE"              value="Please Enter an Integer for the Players Salary"></property>
+        <property name="NEED_HIGHER_SALARY_MESSAGE"                 value="Please Enter a Salary Greater than $1"></property>
         <property name="NO_PLAYER_SALARY_MESSAGE"                   value="Please Enter the Players Salary"></property>
         <property name="CLOSE_BUTTON_TEXT"                          value="Close"></property>
         <property name="REMOVE_PLAYER_ERROR"                        value="Please Select a Player to Remove"></property>

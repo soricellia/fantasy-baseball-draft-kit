@@ -24,7 +24,7 @@ public abstract class Player implements Comparable{
     private StringProperty firstName;
     private StringProperty lastName;
     private StringProperty notes;
-    private Contract contract;
+    private StringProperty contract;
     private IntegerProperty salary;
     private StringProperty mlbTeam;
     private IntegerProperty birthDate;
@@ -40,6 +40,8 @@ public abstract class Player implements Comparable{
          lastName = new SimpleStringProperty();
          notes = new SimpleStringProperty();
          salary = new SimpleIntegerProperty();
+         salary.set(1);
+         contract = new SimpleStringProperty();
          estimatedValue = new SimpleIntegerProperty();
          mlbTeam = new SimpleStringProperty();
          birthDate = new SimpleIntegerProperty();
@@ -114,15 +116,15 @@ public abstract class Player implements Comparable{
     /**
      * @return the contract
      */
-    public Contract getContract() {
-        return contract;
+    public String getContract() {
+        return contract.get();
     }
 
     /**
      * @param contract the contract to set
      */
-    public void setContract(Contract contract) {
-        this.contract = contract;
+    public void setContract(String contract) {
+        this.contract.set(contract);
     }
 
     /**

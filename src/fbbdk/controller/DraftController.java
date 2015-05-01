@@ -158,23 +158,25 @@ public class DraftController {
             ArrayList<BaseballTeam> teams = draft.getTeams();
             BaseballTeam playersTeam = editPlayerDialog.getPlayerTeam();
             //first list check if the team is the free agents
-            if (playersTeam.getTeamName().equals(FREE_AGENT)) {   
+            if (playersTeam.getTeamName().equals(FREE_AGENT)) {
+                //first we can check if the player is already in the pool
+                if (!draft.getAvailablePlayers().contains(playerToEdit)) {
                 //we need to find out what team the player is on
-                //we need to remove him
-                //them add him to the free agents pool
-                //we will do this in one step
-                draft.addPlayer(
-                        searchAndRemovePlayerFromTeam(teams, player));
-            }
-            //ok hes not going to the free agents so we need to add him to a team
+                    //we need to remove him
+                    //them add him to the free agents pool
+                    //we will do this in one step
+                    draft.addPlayer(
+                            searchAndRemovePlayerFromTeam(teams, player));
+                }
+            } //ok hes not going to the free agents so we need to add him to a team
             else {
 
                 for (int x = 0; x < teams.size(); x++) {
-                    if (teams.get(x).equals(playersTeam)){
+                    if (teams.get(x).equals(playersTeam)) {
                         teams.get(x).addPlayer(player);
                         draft.removePlayer(player);
                     }
-                    
+
                 }
             }
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
@@ -204,7 +206,7 @@ public class DraftController {
         //ill use these guy
         BaseballPlayer playerIterator;
         BaseballTeam teamIterator;
-                //so first we need to check if theyre on a team other than free agents
+        //so first we need to check if theyre on a team other than free agents
         //so for each team
         for (int x = 0; x < teams.size(); x++) {
             //we need to look through the teams roster
@@ -225,7 +227,7 @@ public class DraftController {
                     teams.get(x).removeTaxiPlayer(player);
                 }
             }
-            
+
         }
         return player;
     }

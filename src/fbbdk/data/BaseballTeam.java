@@ -17,16 +17,15 @@ import javafx.collections.ObservableList;
  */
 public class BaseballTeam extends Team {
 
-    
     private ArrayList<BaseballPlayer> taxiPlayers;
     private ArrayList<BaseballPlayer> players;
-    
+
     private ObservableList<BaseballPlayer> observablePlayers;
     private ObservableList<BaseballPlayer> observableTaxiPlayers;
-    
+
     private int teamSize;
     public static final int MAX_TEAM_SIZE = 23;
-    
+
     private static final String C = "C";
     private static final String FB = "1B";
     private static final String SB = "2B";
@@ -35,20 +34,20 @@ public class BaseballTeam extends Team {
     private static final String SS = "SS";
     private static final String MI = "MI";
     private static final String OF = "OF";
-    private static final String U = "C_1B_2B_3B_CI_SS_MI_OF";
+    private static final String U = "U";
     private static final String P = "P";
     private static final String UNDER_SCORE = "_";
     private int c = 0;
-    private int fb= 0;
-    private int ci =0;
+    private int fb = 0;
+    private int ci = 0;
     private int tb = 0;
-    private int sb =0;
+    private int sb = 0;
     private int mi = 0;
     private int ss = 0;
     private int of = 0;
     private int u = 0;
     private int p = 0;
-    
+
     public BaseballTeam() {
         super();
         teamSize = 0;
@@ -57,15 +56,15 @@ public class BaseballTeam extends Team {
         observablePlayers = FXCollections.observableArrayList();
         observableTaxiPlayers = FXCollections.observableArrayList();
     }
-    
-    public ObservableList<BaseballPlayer> getObservablePlayers(){
+
+    public ObservableList<BaseballPlayer> getObservablePlayers() {
         return observablePlayers;
     }
-    
-    public ObservableList<BaseballPlayer> getObservableTaxiPlayers(){
+
+    public ObservableList<BaseballPlayer> getObservableTaxiPlayers() {
         return observableTaxiPlayers;
     }
-    
+
     public ArrayList<BaseballPlayer> getPlayers() {
         return players;
     }
@@ -73,64 +72,89 @@ public class BaseballTeam extends Team {
     public void setPlayers(ArrayList<BaseballPlayer> players) {
         this.players = players;
     }
-    public void addPlayer(BaseballPlayer player){
+
+    public void addPlayer(BaseballPlayer player) {
         players.add(player);
         observablePlayers.add(player);
         teamSize++;
         addPlayerPositionSlot(player);
     }
-    public void removePlayer(BaseballPlayer player){
+
+    public void removePlayer(BaseballPlayer player) {
         players.remove(player);
         observablePlayers.remove(player);
         removePlayerPositionSlot(player);
         teamSize--;
     }
-    private void addPlayerPositionSlot(BaseballPlayer player){
-        if(player.getPosition().equals(C))
+
+    private void addPlayerPositionSlot(BaseballPlayer player) {
+        if (player.getPosition().equals(C)) {
             c++;
-        if(player.getPosition().equals(FB))
+        }
+        if (player.getPosition().equals(FB)) {
             fb++;
-        if(player.getPosition().equals(CI))
+        }
+        if (player.getPosition().equals(CI)) {
             ci++;
-        if(player.getPosition().equals(TB))
+        }
+        if (player.getPosition().equals(TB)) {
             tb++;
-        if(player.getPosition().equals(SB))
+        }
+        if (player.getPosition().equals(SB)) {
             sb++;
-        if(player.getPosition().equals(MI))
+        }
+        if (player.getPosition().equals(MI)) {
             mi++;
-        if(player.getPosition().equals(SS))
+        }
+        if (player.getPosition().equals(SS)) {
             ss++;
-        if(player.getPosition().equals(OF))
+        }
+        if (player.getPosition().equals(OF)) {
             of++;
-        if(player.getPosition().equals(U))
+        }
+        if (player.getPosition().equals(U)) {
             u++;
-        if(player.getPosition().equals(P))
+        }
+        if (player.getPosition().equals(P)) {
             p++;
-        
+        }
+
     }
-    private void removePlayerPositionSlot(BaseballPlayer player){
-        if(player.getPosition().equals(C))
+
+    private void removePlayerPositionSlot(BaseballPlayer player) {
+        if (player.getPosition().equals(C)) {
             c--;
-        if(player.getPosition().equals(FB))
+        }
+        if (player.getPosition().equals(FB)) {
             fb--;
-        if(player.getPosition().equals(CI))
+        }
+        if (player.getPosition().equals(CI)) {
             ci--;
-        if(player.getPosition().equals(TB))
+        }
+        if (player.getPosition().equals(TB)) {
             tb--;
-        if(player.getPosition().equals(SB))
+        }
+        if (player.getPosition().equals(SB)) {
             sb--;
-        if(player.getPosition().equals(MI))
+        }
+        if (player.getPosition().equals(MI)) {
             mi--;
-        if(player.getPosition().equals(SS))
+        }
+        if (player.getPosition().equals(SS)) {
             ss--;
-        if(player.getPosition().equals(U))
+        }
+        if (player.getPosition().equals(U)) {
             u--;
-        if(player.getPosition().equals(OF))
+        }
+        if (player.getPosition().equals(OF)) {
             of--;
-        if(player.getPosition().equals(P))
+        }
+        if (player.getPosition().equals(P)) {
             p--;
-        
+        }
+
     }
+
     /**
      * @return the reserves
      */
@@ -162,112 +186,132 @@ public class BaseballTeam extends Team {
     public void removeTaxiPlayer(BaseballPlayer player) {
         this.taxiPlayers.remove(player);
     }
+
     /**
-     * this will calculate the positions needed for each team
-     * there are exactly 23 starting players and each of these aforementioned
-     * positions has a specific allotment per team 
-     * 2 for C; 1 each for 1B, CI, 3B, 2B, MI, SS, & U; 5 for OF; 9 for P
-     * @return the positions needed for this team ; null if no position is 
+     * this will calculate the positions needed for each team there are exactly
+     * 23 starting players and each of these aforementioned positions has a
+     * specific allotment per team 2 for C; 1 each for 1B, CI, 3B, 2B, MI, SS, &
+     * U; 5 for OF; 9 for P
+     *
+     * @return the positions needed for this team ; null if no position is
      * needed.
      */
-    public String needsPlayerPosition(){
+    public String getNeededPlayerPositions() {
         //first we check the teams size
-        if(teamSize == MAX_TEAM_SIZE){
+        if (teamSize == MAX_TEAM_SIZE) {
             return null;
         }
         String positionsNeeded = "";
         //utility is a special case so we check this first
-        if(u<1){
-            positionsNeeded+=(U+UNDER_SCORE);
-            if(p<9){
-                positionsNeeded+=(P);
-            }
-            //ok we are done
-            return positionsNeeded;
-        }
-        if(c<2)
-            positionsNeeded = C+UNDER_SCORE;
-        if(fb<1)
-            positionsNeeded+=(FB+UNDER_SCORE);
-        if(ci<1)
-            positionsNeeded+=(CI+UNDER_SCORE);
-        if(tb<1)
-            positionsNeeded+=(TB+UNDER_SCORE);
-        if(sb<1)
-            positionsNeeded+=(SB+UNDER_SCORE);
-        if(mi<1)
-            positionsNeeded+=(MI+UNDER_SCORE);
-        if(ss<1)
-            positionsNeeded+=(SS+UNDER_SCORE);
-        if(p < 9)
-            positionsNeeded+=(P);
         
-        if(positionsNeeded.endsWith(UNDER_SCORE)){
-            positionsNeeded = positionsNeeded.substring(0, positionsNeeded.length()-1);
+        if (c < 2) {
+            positionsNeeded = C + UNDER_SCORE;
+        }
+        if (ci < 1) {
+            positionsNeeded += (CI + UNDER_SCORE);
+        }
+        if (fb < 1) {
+            positionsNeeded += (FB + UNDER_SCORE);
+        }
+        if (tb < 1) {
+            positionsNeeded += (TB + UNDER_SCORE);
+        }
+        if (mi < 1) {
+            positionsNeeded += (MI + UNDER_SCORE);
+        }
+        if (sb < 1) {
+            positionsNeeded += (SB + UNDER_SCORE);
+        }
+        if (ss < 1) {
+            positionsNeeded += (SS + UNDER_SCORE);
+        }
+        if (p < 9) {
+            positionsNeeded += (P + UNDER_SCORE);
+        }
+        if( u < 1){
+            positionsNeeded += U;
+        }
+
+        if (positionsNeeded.endsWith(UNDER_SCORE)) {
+            positionsNeeded = positionsNeeded.substring(0, positionsNeeded.length() - 1);
         }
         return positionsNeeded;
     }
+
     /**
-     positions has a specific allotment per team 
-     * 2 for C; 1 each for 1B, CI, 3B, 2B, MI, SS, & U; 5 for OF; 9 for P
+     * positions has a specific allotment per team 2 for C; 1 each for 1B, CI,
+     * 3B, 2B, MI, SS, & U; 5 for OF; 9 for P
      *
-     * @param player 
+     * @param player
      * @return returns true if the player can be used
      */
-    public Boolean canUsePlayer(BaseballPlayer player){
-        
-        if(teamSize == 23)
+    public Boolean canUsePlayer(BaseballPlayer player) {
+
+        if (teamSize == 23) {
             return false;
-        
-        if(player.getPositions().contains(P)){
-            if(p<9)
-                return true;
         }
-        
-        if(u<1)
+
+        if (player.getPositions().contains(P)) {
+            if (p < 9) {
+                return true;
+            }
+        }
+
+        if (u < 1) {
             return true;
-        
+        }
+
         String positions = player.getPositions();
         String[] posArray = positions.split(UNDER_SCORE);
-        for(int x = 0 ; x < posArray.length ; x++){
-            if(posArray[x].equals(C)){
-                if(c<2)
+        for (int x = 0; x < posArray.length; x++) {
+            if (posArray[x].equals(C)) {
+                if (c < 2) {
                     return true;
+                }
             }
-            if(posArray[x].equals(FB)){
-                if(fb<1)
+            if (posArray[x].equals(FB)) {
+                if (fb < 1) {
                     return true;
-                if(ci<1)
+                }
+                if (ci < 1) {
                     return true;
+                }
             }
-            if(posArray[x].equals(TB)){
-                if(ci<1)
+            if (posArray[x].equals(TB)) {
+                if (ci < 1) {
                     return true;
-                if(tb<1)
-                    return true;    
+                }
+                if (tb < 1) {
+                    return true;
+                }
             }
-            if(posArray[x].equals(SB)){
-                if(sb<1)
+            if (posArray[x].equals(SB)) {
+                if (sb < 1) {
                     return true;
-                if(mi<1)
+                }
+                if (mi < 1) {
                     return true;
+                }
             }
-            if(posArray[x].equals(SS)){
-                if(ss<1)
+            if (posArray[x].equals(SS)) {
+                if (ss < 1) {
                     return true;
-                if(mi<1)
+                }
+                if (mi < 1) {
                     return true;
+                }
             }
         }//end for loop
-            
+
         return false;
     }
+
     /**
-     * this method sorts the team.
-     * The order of players must be C, 1B, CI, 3B, 2B, MI, SS, OF, U, P
+     * this method sorts the team. The order of players must be C, 1B, CI, 3B,
+     * 2B, MI, SS, OF, U, P
      */
-    public void sortTeam(){
-        
+    public void sortTeam() {
+
     }
-    
+
 }

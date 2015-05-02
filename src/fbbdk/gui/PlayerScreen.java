@@ -186,7 +186,7 @@ public class PlayerScreen extends BorderPane {
 
     private void initComponents() {
         pane = new GridPane();
-        pane.getStyleClass().addAll(PADDING_STYLE, SCREEN_STYLE);
+        pane.getStyleClass().addAll(PADDING_STYLE);
 
         initHeading(pane);
 

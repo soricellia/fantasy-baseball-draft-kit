@@ -9,10 +9,15 @@
 
 .root{
     -fx-font-size: 12pt;
-    -fx-font-family: "Segoe UI Semibold";
-    -fx-text-fill: black;
+    -fx-font-family: "Arial Narrow";
+    -fx-background-color: white;
 }
-
+.table_heading{
+    -fx-font-weight: bold;
+    -fx-font-size: 16pt;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,.9), 10, 0, 0, 0);
+    -fx-text-fill:white;
+}
 .screen_button{
     //nothing needed yet
 }
@@ -26,10 +31,31 @@
     -fx-padding: 0 0 20 20;
 }
 .screen{
-    -fx-background-color: whitesmoke;
+    -fx-background-color: white;
     -fx-padding: 5;
     -fx-spacing: 20;
-    
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+
+}
+.scroll-pane {
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane:focused {
+    -fx-background-insets: 0;
+}
+
+.scroll-pane .corner {
+    -fx-background-insets: 0;
+}
+.button:hover {
+    -fx-background-color: linear-gradient(whitesmoke, white);
+}
+.button {
+    -fx-text-fill: black;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
 }
 .padding_top{
     -fx-padding: 10 0 0 0;
@@ -39,12 +65,15 @@
     -fx-border-radius:5;
     -fx-border-style:solid;
     -fx-background-color: #00CCFF;
-     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
-}
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.9), 10, 0, 0, 0);
+
+ }
 .player_radio_style{
-    
+    -fx-text-fill: white;
+    -fx-font-weight:bold;
     -fx-padding: 25;
     -fx-spacing: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.9), 10, 0, 0, 0);
 }
 // CSS CLASS FOR OUR BIG PANES
 .bordered_pane {
@@ -69,16 +98,21 @@
 .heading_label {
     -fx-font-size: 20pt;
     -fx-font-weight: bold;
+    -fx-text-fill: red;
+    -fx-effect: dropshadow( gaussian, rgba(0,0,0,.8) , 0,0,0,1);
 }
 
 // CSS CLASS FOR LABELS HEADING SUBSECTIONS IN THE GUI
 .subheading_label {
+    -fx-text-fill: red;
     -fx-font-size: 14pt;
     -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian, rgba(0,0,0,.8) , 0,0,0,1);
 }
 
 // CSS CLASS FOR LABELS SERVING AS PROMPTS IN THE GUI
 .prompt_label {
     -fx-font-size: 10pt;
     -fx-font-weight: bold;
+    -fx-effect: dropshadow( gaussian, rgba(0,0,0,.8) , 0,0,0,1);
 }

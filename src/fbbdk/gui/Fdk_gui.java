@@ -17,6 +17,7 @@ import fbbdk.data.DraftDataManager;
 import fbbdk.data.DraftDataView;
 import fbbdk.file.DraftFileManager;
 import fbbdk.file.DraftSiteExporter;
+import static fbbdk.gui.HomeScreen.SCREEN_STYLE;
 import java.io.IOException;
 import static javafx.application.Application.STYLESHEET_MODENA;
 import static javafx.application.Application.setUserAgentStylesheet;

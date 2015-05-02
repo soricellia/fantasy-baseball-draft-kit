@@ -144,11 +144,13 @@ public class HomeScreen extends BorderPane {
     final String BORDER_STYLE = "bordered_pane";
     final String SPACING_STYLE = "spacing";
     final String BACKGROUND_STYLE = "background";
+    final String TABLE_HEADING = "table_heading";
 
     public HomeScreen(Fdk_gui initGui, Stage initPrimaryStage, MessageDialog initMessageDialog,
             YesNoCancelDialog initYesNoCancelDialog) {
         //first call super
         super();
+        this.getStyleClass().add(SCREEN_STYLE);
         //init the important stuff
         propertiesManager = PropertiesManager.getPropertiesManager();
         messageDialog = initMessageDialog;
@@ -158,7 +160,6 @@ public class HomeScreen extends BorderPane {
         primaryStage = initPrimaryStage;
         draftController = gui.getDraftController();
         //set the class
-        this.getStyleClass().add(SCREEN_STYLE);
         //init the components
         initComponents();
         initEventHandlers();
@@ -169,9 +170,9 @@ public class HomeScreen extends BorderPane {
         scrollPane = new ScrollPane();
         scrollPane.setBorder(Border.EMPTY);
         scrollPane.setFitToWidth(true);
-
+        
         pane = new VBox();
-
+        
         pane.getStyleClass().addAll(PADDING_STYLE, SCREEN_STYLE);
         //search bar and things go here
         initTopPane();
@@ -279,7 +280,7 @@ public class HomeScreen extends BorderPane {
         FlowPane labelPane = new FlowPane();
         labelPane.getStyleClass().add(PADDING_STYLE);
 
-        playerLabel = initLabel(HOME_SCREEN_PLAYER_LABEL, SUB_HEADING);
+        playerLabel = initLabel(HOME_SCREEN_PLAYER_LABEL, TABLE_HEADING);
         labelPane.getChildren().add(playerLabel);
         playerPane.setTop(labelPane);
 

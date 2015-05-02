@@ -47,7 +47,6 @@ import properties_manager.PropertiesManager;
 public class PlayerScreen extends BorderPane {
 
     //these are my managers
-
     PropertiesManager properties;
     DraftDataManager dataManager;
 
@@ -61,7 +60,7 @@ public class PlayerScreen extends BorderPane {
     //my dialogs
     MessageDialog messageDialog;
     YesNoCancelDialog yesNoCancelDialog;
-    
+
     //this holds everything
     GridPane pane;
 
@@ -160,9 +159,13 @@ public class PlayerScreen extends BorderPane {
     private static final String WHIP_COLUMN = "WHIP";
     private static final String ESTIMATED_VALUE_COLUMN = "Estimated Value";
     private static final String NOTES_COLUMN = "Notes";
+    
+    public static final String PADDING_BOTTOM_STYLE = "padding_bottom";
+    public static final String PADDING_LEFT_STYLE = "padding_left";
+    public static final String PADDING_BOTTOM_LEFT_STYLE = "padding_bottom_left";
 
     public PlayerScreen(Fdk_gui initGui, Stage initPrimaryStage,
-            MessageDialog initMessageDialog,YesNoCancelDialog initYesNoCancelDialog) {
+            MessageDialog initMessageDialog, YesNoCancelDialog initYesNoCancelDialog) {
         //init the important stuff
         properties = PropertiesManager.getPropertiesManager();
         gui = initGui;
@@ -173,7 +176,7 @@ public class PlayerScreen extends BorderPane {
         //init the playerTableControler
         playerTableController = new PlayerTableController(dataManager);
         draftController = gui.getDraftController();
-        
+
         //set the class
         this.getStyleClass().add(SCREEN_STYLE);
 
@@ -302,14 +305,15 @@ public class PlayerScreen extends BorderPane {
         removePlayerButton = initChildButton(lowerTopPane, REMOVE_ICON, REMOVE_ICON_TOOLTIP, false);
 
         searchPanel = new HBox();
-
+        searchPanel.getStyleClass().addAll(PADDING_BOTTOM_LEFT_STYLE);
+        
         searchLabel = initLabel(SEARCH_LABEL, SUB_HEADING);
 
         searchText = initTextField(1, EMPTY_TEXT, true);
-        searchText.prefColumnCountProperty().set(70);
+        searchText.prefColumnCountProperty().set(75);
 
         searchPanel.getChildren().addAll(searchLabel, searchText);
-        searchPanel.setPadding(new Insets(0, 0, 0, 50));
+        searchPanel.setPadding(new Insets(0, 0, 10, 20));
         searchPanel.setSpacing(10.0);
 
         lowerTopPane.getChildren().add(searchPanel);
@@ -421,15 +425,17 @@ public class PlayerScreen extends BorderPane {
         //add the data to the table
         playerTable.setItems(dataManager.getDraft().getObservablePlayers());
         //ok now lets make the playerTable a bit bigger
-        playerTable.setPrefHeight(500);
+        playerTable.setPrefHeight(550);
 
         //finally, add the playerTable to the gridPane
         pane.add(playerTable, 1, 3);
 
     }
-
+    public void updateTable(){
+        playerTable.setItems(dataManager.getDraft().getObservablePlayers());
+    }
     private void initEventHandlers() {
-        
+
         allRadioButton.setOnAction(e -> {
             allButtonClicked();
             playerTableController.handleAllSearch();
@@ -492,12 +498,12 @@ public class PlayerScreen extends BorderPane {
         });
         removePlayerButton.setOnAction(e -> {
             BaseballPlayer player = playerTable.getSelectionModel().getSelectedItem();
-            if(player == null){
+            if (player == null) {
                 ErrorHandler error = ErrorHandler.getErrorHandler();
                 error.handleRemovePlayerError();
             }
-             draftController.handleRemovePlayerRequest(gui,
-                     player);
+            draftController.handleRemovePlayerRequest(gui,
+                    player);
         });
         searchText.setOnKeyReleased(e -> {
             playerTableController.handleSearchTextRequest(searchText.getText());
@@ -505,12 +511,12 @@ public class PlayerScreen extends BorderPane {
         notesColumn.setOnEditCommit(e -> {
             e.getRowValue().setNotes(e.getNewValue());
         });
-        playerTable.setOnMouseClicked(e->{
-             if(e.getClickCount() == 2){
+        playerTable.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
                 //OPEN PLAYER EDITOR
-                 draftController.handleEditPlayerRequest(gui, 
-                         playerTable.getSelectionModel().getSelectedItem());
-            }   
+                draftController.handleEditPlayerRequest(gui,
+                        playerTable.getSelectionModel().getSelectedItem());
+            }
         });
 
     }

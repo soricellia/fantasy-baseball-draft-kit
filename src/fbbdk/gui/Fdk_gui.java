@@ -18,6 +18,8 @@ import fbbdk.data.DraftDataView;
 import fbbdk.file.DraftFileManager;
 import fbbdk.file.DraftSiteExporter;
 import java.io.IOException;
+import static javafx.application.Application.STYLESHEET_MODENA;
+import static javafx.application.Application.setUserAgentStylesheet;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -87,8 +89,8 @@ public class Fdk_gui implements DraftDataView{
     YesNoCancelDialog yesNoCancelDialog;
     
     //these are my screens
-    BorderPane homeScreen;
-    BorderPane playerScreen;
+    HomeScreen homeScreen;
+    PlayerScreen playerScreen;
     BorderPane fantasyTeamScreen;
     BorderPane draftScreen;
     BorderPane mlbTeamsScreen;
@@ -174,8 +176,8 @@ public class Fdk_gui implements DraftDataView{
      *
      * @param initCourseFileManager The CourseFileManager to be used by this UI.
      */
-    public void setCourseFileManager(DraftFileManager initCourseFileManager) {
-       dfm = initCourseFileManager;
+    public void setDraftFileManager(DraftFileManager initDraftFileManager) {
+       dfm = initDraftFileManager;
     }
 
     /**
@@ -251,7 +253,7 @@ public class Fdk_gui implements DraftDataView{
         // GET THE SIZE OF THE SCREEN
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
-
+        setUserAgentStylesheet(STYLESHEET_MODENA);
         // AND USE IT TO SIZE THE WINDOW
         primaryStage.setX(bounds.getMinX());
         primaryStage.setY(bounds.getMinY());
@@ -346,6 +348,10 @@ public class Fdk_gui implements DraftDataView{
         if (!workspaceActivated) {
             activateWorkspace();
         }
+        homeScreen.getDraftNameTextField().setText(draftToReload.getDraftName());
+        homeScreen.updateScreen(null);
+        //System.out.println(draftToReload.getAvailablePlayers());
+        playerScreen.updateTable();
         
         //TODO
     }

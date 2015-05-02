@@ -6,8 +6,6 @@
 package fbbdk.data;
 
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.StringTokenizer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -71,13 +69,19 @@ public class BaseballTeam extends Team {
 
     public void setPlayers(ArrayList<BaseballPlayer> players) {
         this.players = players;
+        observablePlayers.addAll(players);
     }
 
     public void addPlayer(BaseballPlayer player) {
+        //this is for duplicates
+        if (players.contains(player)) {
+            removePlayer(player);
+        }
         players.add(player);
         observablePlayers.add(player);
         teamSize++;
         addPlayerPositionSlot(player);
+        sortTeam();
     }
 
     public void removePlayer(BaseballPlayer player) {
@@ -85,9 +89,11 @@ public class BaseballTeam extends Team {
         observablePlayers.remove(player);
         removePlayerPositionSlot(player);
         teamSize--;
+        sortTeam();
     }
 
     private void addPlayerPositionSlot(BaseballPlayer player) {
+
         if (player.getPosition().equals(C)) {
             c++;
         }
@@ -187,6 +193,42 @@ public class BaseballTeam extends Team {
         this.taxiPlayers.remove(player);
     }
 
+    private void countPositions() {
+        c = fb = ci = tb = sb = mi = ss = of = u = p = 0;
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(C)) {
+                c++;
+            }
+            if (players.get(x).getPosition().equals(FB)) {
+                fb++;
+            }
+            if (players.get(x).getPosition().equals(CI)) {
+                ci++;
+            }
+            if (players.get(x).getPosition().equals(TB)) {
+                tb++;
+            }
+            if (players.get(x).getPosition().equals(SB)) {
+                sb++;
+            }
+            if (players.get(x).getPosition().equals(MI)) {
+                mi++;
+            }
+            if (players.get(x).getPosition().equals(SS)) {
+                ss++;
+            }
+            if (players.get(x).getPosition().equals(OF)) {
+                of++;
+            }
+            if (players.get(x).getPosition().equals(U)) {
+                u++;
+            }
+            if (players.get(x).getPosition().equals(P)) {
+                p++;
+            }
+        }
+    }
+
     /**
      * this will calculate the positions needed for each team there are exactly
      * 23 starting players and each of these aforementioned positions has a
@@ -203,7 +245,7 @@ public class BaseballTeam extends Team {
         }
         String positionsNeeded = "";
         //utility is a special case so we check this first
-        
+
         if (c < 2) {
             positionsNeeded = C + UNDER_SCORE;
         }
@@ -228,7 +270,10 @@ public class BaseballTeam extends Team {
         if (p < 9) {
             positionsNeeded += (P + UNDER_SCORE);
         }
-        if( u < 1){
+        if (of < 5) {
+            positionsNeeded += (OF + UNDER_SCORE);
+        }
+        if (u < 1) {
             positionsNeeded += U;
         }
 
@@ -311,7 +356,61 @@ public class BaseballTeam extends Team {
      * 2B, MI, SS, OF, U, P
      */
     public void sortTeam() {
-
+        ArrayList<BaseballPlayer> correctList = new ArrayList<>();
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(C)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(FB)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(CI)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(TB)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(SB)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(MI)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(SS)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(OF)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(U)) {
+                correctList.add(players.get(x));
+            }
+        }
+        for (int x = 0; x < players.size(); x++) {
+            if (players.get(x).getPosition().equals(P)) {
+                correctList.add(players.get(x));
+            }
+        }
+        players = correctList;
+        observablePlayers.clear();
+        observablePlayers.setAll(correctList);
+        countPositions();
     }
 
 }

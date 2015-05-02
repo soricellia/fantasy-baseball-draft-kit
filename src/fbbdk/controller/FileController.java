@@ -111,10 +111,11 @@ public class FileController {
                 dataManager.reset();
                 
                 //now we need to load in new players
-                draftIO.loadDraft(dataManager.getDraft(), JSON_PLAYER_PATH);
+                draftIO.loadNewDraft(dataManager.getDraft(), JSON_PLAYER_PATH);
                 //load the obervable players
                 dataManager.getDraft().setObservablePlayers();
-                
+                //and reload the draft into the gui
+                gui.reloadDraft(dataManager.getDraft());
                 saved = false;
 
                 // REFRESH THE GUI, WHICH WILL ENABLE AND DISABLE
@@ -173,17 +174,17 @@ public class FileController {
      * know the name of the file, so we won't need to prompt the user.
      * 
      * @param gui The user interface editing the Course.
+     * @param draftToSave
      * 
-     * @param courseToSave The course being edited that is to be saved to a file.
      */
-    public void handleSaveDraftRequest(Fdk_gui gui, Draft courseToSave) {
+    public void handleSaveDraftRequest(Fdk_gui gui, Draft draftToSave) {
         try {
             // SAVE IT TO A FILE
-            draftIO.saveDraft(courseToSave);
-
+            
+            draftIO.saveDraft(draftToSave);
+            
             // MARK IT AS SAVED
             saved = true;
-
             // TELL THE USER THE FILE HAS BEEN SAVED
             messageDialog.show(properties.getProperty(DRAFT_SAVED_MESSAGE));
 
@@ -315,6 +316,7 @@ public class FileController {
                 Draft draftToLoad = gui.getDataManager().getDraft();
                 draftIO.loadDraft(draftToLoad, selectedFile.getAbsolutePath());
                 gui.reloadDraft(draftToLoad);
+                
                 saved = true;
                 gui.updateToolbarControls(saved);
             } catch (Exception e) {

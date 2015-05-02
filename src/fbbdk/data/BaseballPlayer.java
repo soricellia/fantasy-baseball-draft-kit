@@ -43,6 +43,9 @@ public class BaseballPlayer extends Player{
         whipBA = new SimpleDoubleProperty();
     
     }
+    public boolean isPitcher(){
+        return isPitcher;
+    }
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {

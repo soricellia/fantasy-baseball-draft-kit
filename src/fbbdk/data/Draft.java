@@ -96,6 +96,15 @@ public class Draft {
         this.draftName = draftName;
     }
     public void removeTeam(BaseballTeam teamToRemove){
+        //first we want to get all the players out of the team and into the pool
+        int size = teamToRemove.getPlayers().size();
+        BaseballPlayer player;
+        for(int x = 0 ; x < size  ; x++){
+            player = teamToRemove.getPlayers().get(0);
+            teamToRemove.removePlayer(player);
+            addPlayer(player);
+        }
+        //we are done now, remove the team
         teams.remove(teamToRemove);
         }
     public void addTeam(BaseballTeam teamToAdd){

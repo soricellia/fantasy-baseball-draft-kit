@@ -195,6 +195,7 @@ public class TeamDialog extends Stage {
 
     public void loadGUIData() {
         // LOAD THE UI STUFF
+        
         nameTextField.setText(team.getTeamName());
         ownerTextField.setText(team.getCoach());
 
@@ -206,10 +207,9 @@ public class TeamDialog extends Stage {
 
         // LOAD THE SCHEDULE ITEM INTO OUR LOCAL OBJECT
         team = new BaseballTeam();
-
         team.setTeamName(teamToEdit.getTeamName());
         team.setCoach(teamToEdit.getCoach());
-
+        team.setPlayers(teamToEdit.getPlayers());
         // AND THEN INTO OUR GUI
         loadGUIData();
 

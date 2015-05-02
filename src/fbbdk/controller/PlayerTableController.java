@@ -40,18 +40,18 @@ public class PlayerTableController {
     public void handleSearchTextRequest(String text) {
 
         StringTokenizer firstAndLast = new StringTokenizer(text, " ");
-        if(firstAndLast.countTokens() == 2){
+        if (firstAndLast.countTokens() == 2) {
             firstName = firstAndLast.nextToken();
             lastName = firstAndLast.nextToken();
             searchText = text;
-            handleRadioSearch(positionsSelected,firstName,lastName);
+            handleRadioSearch(positionsSelected, firstName, lastName);
             //ok we are done
             return;
         }
         //new to reset first and last name
         firstName = "";
         lastName = "";
-        
+
         //need to set the searchText
         searchText = text.trim().toLowerCase();
 
@@ -95,21 +95,20 @@ public class PlayerTableController {
         playerList.addAll(allPlayers);
 
     }
-    
 
     public void handleRadioSearch(ArrayList<String> positions) {
         //error checking
         //if this occurs its because we are in the wrong handlesearch method
-        if(!firstName.isEmpty()){
+        if (!firstName.isEmpty()) {
             //go here instead
-            handleRadioSearch(positions,firstName,lastName);
+            handleRadioSearch(positions, firstName, lastName);
             //and we are done
             return;
         }
-        
+
         //first thing we do is set the PositionsSelected list
         positionsSelected = positions;
-        
+
         //need the player list to search
         ArrayList<BaseballPlayer> allPlayers = dataManager.getDraft().getAvailablePlayers();
 

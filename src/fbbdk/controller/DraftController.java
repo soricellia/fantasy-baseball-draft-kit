@@ -54,7 +54,6 @@ public class DraftController {
     // THESE ARE FOR SCHEDULE ITEMS
     public void handleAddTeamRequest(Fdk_gui gui, HomeScreen screen) {
         DraftDataManager ddm = gui.getDataManager();
-        Draft draft = ddm.getDraft();
         teamDialog.showAddTeamDialog();
 
         // DID THE USER CONFIRM?
@@ -63,7 +62,7 @@ public class DraftController {
             BaseballTeam team = teamDialog.getTeam();
 
             // AND ADD IT AS A ROW TO THE TABLE
-            draft.getTeams().add(team);
+            ddm.getDraft().getTeams().add(team);
             //update the gui
             screen.updateScreen(team);
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
@@ -76,7 +75,7 @@ public class DraftController {
 
     public void handleEditTeamRequest(Fdk_gui gui, BaseballTeam teamToEdit, HomeScreen screen) {
         DraftDataManager ddm = gui.getDataManager();
-        Draft draft = ddm.getDraft();
+        
         teamDialog.showEditTeamDialog(teamToEdit);
 
         // DID THE USER CONFIRM?
@@ -85,11 +84,12 @@ public class DraftController {
             BaseballTeam team = teamDialog.getTeam();
             teamToEdit.setTeamName(team.getTeamName());
             teamToEdit.setCoach(team.getCoach());
-
+            
+            
             //update gui
             draft.getTeams().set(draft.getTeams().indexOf(teamToEdit), team);
             Collections.sort(draft.getTeams());
-
+            
             screen.updateScreen(team);
 
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
@@ -161,7 +161,7 @@ public class DraftController {
             if (playersTeam.getTeamName().equals(FREE_AGENT)) {
                 //first we can check if the player is already in the pool
                 if (!draft.getAvailablePlayers().contains(playerToEdit)) {
-                //we need to find out what team the player is on
+                    //we need to find out what team the player is on
                     //we need to remove him
                     //them add him to the free agents pool
                     //we will do this in one step
@@ -175,7 +175,10 @@ public class DraftController {
                     if (teams.get(x).equals(playersTeam)) {
                         teams.get(x).addPlayer(player);
                         draft.removePlayer(player);
+                    }else if(teams.get(x).getPlayers().contains(player)){
+                        teams.get(x).removePlayer(player);
                     }
+                    
 
                 }
             }

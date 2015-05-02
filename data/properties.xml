@@ -38,7 +38,7 @@
         <property name="ADD_ICON_TOOLTIP"                   value="Add player to Team"></property>
         <property name="REMOVE_ICON_TOOLTIP"                value="Remove Player from Team"></property>
         <property name="ADD_TEAM_TOOLTIP"                   value="Add Team to Draft"></property>
-        <property name="REMOVE_TEAM_TOOLTP"                 value="Remove Team from Draft"></property>
+        <property name="REMOVE_TEAM_TOOLTIP"                 value="Remove Team from Draft"></property>
         <property name="EDIT_ICON_TOOLTIP"                  value="Edit a Draft Team"></property>
         <property name="HOME_SCREEN_TOOLTIP"                value="Home Screen"></property>
         <property name="PLAYER_SCREEN_TOOLTIP"              value="Player Screen"></property>

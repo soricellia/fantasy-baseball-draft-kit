@@ -138,6 +138,23 @@ public class EditPlayerDialog extends Stage {
                 .getProperty(DIALOG_EDIT_FANTASY_TEAM_LABEL.toString()));
         dialogEditPlayerTeamComboBox = new ComboBox();
 
+        //we will set the onAction for this combo box
+        //it needs to change the positions needed for each team
+        dialogEditPlayerTeamComboBox.setOnAction(e -> {
+            //first we will clear the combo box
+            if (dialogEditPlayerTeamComboBox.getSelectionModel()
+                    .getSelectedItem() == null) {
+                return;
+            }
+            if (draft.getTeams() != null) {
+                dialogEditPlayerPositionComboBox.getItems().clear();
+                //now we can add the needed positions
+                dialogEditPlayerPositionComboBox.getItems().addAll(
+                        buildNeededPlayerPositionList(player));
+                //now we need to select something
+                dialogEditPlayerPositionComboBox.getSelectionModel().selectFirst();
+            }
+        });
         dialogEditPlayerPosLabel = new Label(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_EDIT_PLAYER_POS_LABEL.toString()));
@@ -154,6 +171,7 @@ public class EditPlayerDialog extends Stage {
                     .add(contractType[x]);
         }
         dialogEditPlayerContractComboBox.getSelectionModel().selectFirst();
+
         dialogEditPlayerSalaryLabel = new Label(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_PLAYER_SALARY_LABEL.toString()));
@@ -183,12 +201,12 @@ public class EditPlayerDialog extends Stage {
                     //in which case we need to handle the error
                     try {
                         int salary = Integer.parseInt(dialogEditPlayerSalaryTextField.getText());
-                        if(salary < 1){
+                        if (salary < 1) {
                             messageDialog.show(props.getProperty(NEED_HIGHER_SALARY_MESSAGE));
                             return;
                         }
                         player.setSalary(salary);
-                        
+
                         if (dialogEditPlayerPositionComboBox.getSelectionModel()
                                 .getSelectedItem() != null) {
                             player.setPosition(dialogEditPlayerPositionComboBox
@@ -302,6 +320,7 @@ public class EditPlayerDialog extends Stage {
         //so first we get the team we're looking at
         BaseballTeam team = dialogEditPlayerTeamComboBox.getSelectionModel()
                 .getSelectedItem();
+
         //first check if the team is null
         if (team.getTeamName().equals(FREE_AGENT)) {
             //we can just add everything
@@ -310,7 +329,7 @@ public class EditPlayerDialog extends Stage {
         //now we will get the positions
         StringTokenizer teamsNeededPositions = new StringTokenizer(
                 team.getNeededPlayerPositions(), UNDER_SCORE);
-
+        
         //and now we have to compare positions
         while (teamsNeededPositions.hasMoreTokens()) {
             String temp = teamsNeededPositions.nextToken();
@@ -331,6 +350,7 @@ public class EditPlayerDialog extends Stage {
                     }
                 } else if (temp.equals(U)) {
                     if (!positions.get(x).equals(P)) {
+                        if(!neededPositions.contains(U))
                         neededPositions.add(U);
                     }
                 } else if (positions.get(x).equals(temp)) {

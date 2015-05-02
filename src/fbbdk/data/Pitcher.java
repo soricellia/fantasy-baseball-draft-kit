@@ -25,7 +25,8 @@ public class Pitcher{
     private int saves;
     private double whip;
     private double era;
-
+    private int walks;
+    private int er;
     //this is the value of the position and qp string property we want to set 
     private final String PITCHER_POSITION = "P";
     
@@ -43,9 +44,17 @@ public class Pitcher{
        saves = 0;
        whip = 0.0;
        era = 0.0;
+       walks = 0;
+       er = 0;
+    }
+    public int getWalks(){
+        return walks;
     }
     public String getPosition(){
         return position;
+    }
+    public int getEr(){
+        return er;
     }
     /**
      * @return the wins
@@ -132,6 +141,7 @@ public class Pitcher{
      * @param ip
      */
     public void setWhip(int walks, int hits, double ip) {
+        this.walks = walks;
         this.hits=hits;
         this.inningsPitched=ip;
         if(ip == 0)
@@ -155,6 +165,7 @@ public class Pitcher{
      * @param ip
      */
     public void setEra(int er,double ip) {
+        this.er = er;
         this.inningsPitched=ip;
         DecimalFormat df = new DecimalFormat(".###");
         if(ip == 0){

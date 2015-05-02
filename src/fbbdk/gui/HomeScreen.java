@@ -83,8 +83,8 @@ public class HomeScreen extends BorderPane {
     ComboBox<BaseballTeam> teamsComboBox;
 
     HBox searchPanel;
-    Label searchLabel;
-    TextField searchText;
+    Label draftNameLabel;
+    TextField draftNameTextField;
 
     //this will hold the table
     BorderPane playerPane;
@@ -115,7 +115,6 @@ public class HomeScreen extends BorderPane {
     TableColumn<BaseballPlayer, Integer> salaryColumn;
 
     //THESE ARE THE COLUMN HEADINGS FOR THE PLAYER TABLE
-    
     private static final String POSITION_COLUMN = "Position";
     private static final String FIRST_NAME_COLUMN = "First";
     private static final String LAST_NAME_COLUMN = "Last";
@@ -129,6 +128,7 @@ public class HomeScreen extends BorderPane {
     private static final String BA_WHIP_COLUMN = "BA/WHIP";
     private static final String ESTIMATED_VALUE_COLUMN = "Estimated Value";
     private static final String SALARY_COLUMN = "Salary";
+    public static final String PADDING_TOP_STYLE = "padding_top";
 
     //this is some of the important stuff ill need for this screen
     PropertiesManager propertiesManager;
@@ -137,7 +137,7 @@ public class HomeScreen extends BorderPane {
     YesNoCancelDialog yesNoCancelDialog;
     Fdk_gui gui;
     DraftController draftController;
-    
+
     final static String HEADING_LABEL = "heading_label";
     final static String SCREEN_STYLE = "screen";
     final String PADDING_STYLE = "padding";
@@ -198,12 +198,13 @@ public class HomeScreen extends BorderPane {
         upperTopPane.getChildren().add(teamsHeadingLabel);
         //the search bar stuff goes here
         middleTopPane = new HBox();
-        searchLabel = initLabel(DRAFT_SEARCH_LABEL, SUB_HEADING);
-        searchText = initTextField(19, EMPTY_TEXT, true);
-        middleTopPane.getChildren().addAll(searchLabel, searchText);
+        middleTopPane.getStyleClass().add(PADDING_TOP_STYLE);
+        draftNameLabel = initLabel(DRAFT_SEARCH_LABEL, SUB_HEADING);
+        draftNameTextField = initTextField(19, EMPTY_TEXT, true);
+        middleTopPane.getChildren().addAll(draftNameLabel, draftNameTextField);
         //now the buttons
         lowerTopPane = new HBox();
-        lowerTopPane.getStyleClass().add(SPACING_STYLE);
+        lowerTopPane.getStyleClass().addAll(SPACING_STYLE,PADDING_TOP_STYLE);
 
         HBox tempOneBox = new HBox();
         addTeamButton = initChildButton(tempOneBox,
@@ -319,11 +320,10 @@ public class HomeScreen extends BorderPane {
         //and the table colums
         //note that some of the column headings are not set
         //this will be done later in an action listener
-        
         positionColumn = new TableColumn<>(POSITION_COLUMN);
         positionColumn.setEditable(false);
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
-        
+
         firstNameColumn = new TableColumn<>(FIRST_NAME_COLUMN);
         firstNameColumn.setEditable(false);
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -368,11 +368,11 @@ public class HomeScreen extends BorderPane {
         evColumn.setEditable(false);
         evColumn.setCellValueFactory(new PropertyValueFactory<>("estimatedValue"));
         salaryColumn = new TableColumn<>(SALARY_COLUMN);
-        
+
         salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
 
         //now we can add all of these bad girls to the table
-        table.getColumns().addAll(positionColumn,firstNameColumn, lastNameColumn,
+        table.getColumns().addAll(positionColumn, firstNameColumn, lastNameColumn,
                 proTeamColumn, positionsColumn, contractColumn, winRunColumn,
                 savesHRColumn, kRBIColumn, eraSBColumn, whipBAColumn, evColumn,
                 salaryColumn);
@@ -389,7 +389,9 @@ public class HomeScreen extends BorderPane {
         //first lets init the controller
         DraftController tec = new DraftController(primaryStage,
                 dataManager.getDraft(), messageDialog, yesNoCancelDialog);
-
+        draftNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            dataManager.getDraft().setDraftName(newValue);
+        });
         addTeamButton.setOnAction(e -> {
             tec.handleAddTeamRequest(gui, this);
         });
@@ -407,14 +409,18 @@ public class HomeScreen extends BorderPane {
         teamsComboBox.setOnAction(e -> {
             updateScreen(teamsComboBox.getSelectionModel().getSelectedItem());
         });
-        playerTable.setOnMouseClicked(e->{
-             if(e.getClickCount() == 2){
+        playerTable.setOnMouseClicked(e -> {
+            if (e.getClickCount() == 2) {
                 //OPEN PLAYER EDITOR
-                 draftController.handleEditPlayerRequest(gui, 
-                         playerTable.getSelectionModel().getSelectedItem());
-            }   
+                if(playerTable.getSelectionModel().getSelectedIndex()==-1){
+                    playerTable.getSelectionModel().select(0);
+                }
+                
+                
+                draftController.handleEditPlayerRequest(gui,
+                        playerTable.getSelectionModel().getSelectedItem());
+            }
         });
-        
 
     }
 
@@ -423,34 +429,47 @@ public class HomeScreen extends BorderPane {
      * @param team the team that is to be set
      */
     public void updateScreen(BaseballTeam team) {
+        
         //this jsut makes my life easier
         ArrayList<BaseballTeam> teams = dataManager.getDraft().getTeams();
-
         //if teams isnt empty then we can start doing stuff
         if (!teams.isEmpty()) {
+            
             //first we make sure the combo box is enabled
             teamsComboBox.setDisable(false);
             //now we can do stuff to it
+
             teamsComboBox.getItems().clear();
+
             teamsComboBox.getItems().addAll(teams);
 
             //make sure our buttons are ok
             removeTeamButton.setDisable(false);
             editTeamButton.setDisable(false);
-            teamsComboBox.getSelectionModel().select(team);
+            if (team != null) {
+                teamsComboBox.getSelectionModel().select(team);
+            } else {
+                teamsComboBox.getSelectionModel().selectFirst();
+            }
             //and now we update the players list
             //team will only be null after team is deleted
-            if (team != null) {
-                playerTable.setItems(team.getObservablePlayers());
-                taxiTable.setItems(team.getObservableTaxiPlayers());
-                teamsComboBox.getSelectionModel().select(team);
+            if (playerTable.getItems() != null) {
+
+                //    playerTable.getItems().clear();
             }
+
+            playerTable.setItems(team.getObservablePlayers());
+
+            taxiTable.setItems(team.getObservableTaxiPlayers());
         } else {
             removeTeamButton.setDisable(true);
             editTeamButton.setDisable(true);
             teamsComboBox.setDisable(true);
+            playerTable.setItems(null);
+            taxiTable.setItems(null);
         }
-
     }
-
+    public TextField getDraftNameTextField(){
+        return draftNameTextField;
+    }
 }

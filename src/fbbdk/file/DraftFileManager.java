@@ -20,6 +20,7 @@ import java.util.List;
 public interface DraftFileManager {
     public void                 saveDraft(Draft courseToSave) throws IOException;
     public void                 loadDraft(Draft courseToLoad, String coursePath) throws IOException;
+    public void                 loadNewDraft(Draft draftToLoad, String draftPath)throws IOException;
     public void                 savePlayers(List<Object> subjects, String filePath) throws IOException;
     public ArrayList<String>    loadPlayers(String filePath) throws IOException;
 }

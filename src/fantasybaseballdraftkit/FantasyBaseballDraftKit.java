@@ -71,7 +71,7 @@ public class FantasyBaseballDraftKit extends Application {
                 // AND NOW GIVE ALL OF THIS STUFF TO THE GUI
                 // INITIALIZE THE USER INTERFACE COMPONENTS
                 gui = new Fdk_gui(primaryStage);
-                gui.setCourseFileManager(jsonFileManager);
+                gui.setDraftFileManager(jsonFileManager);
                 gui.setSiteExporter(exporter);
                 
                 // CONSTRUCT THE DATA MANAGER AND GIVE IT TO THE GUI

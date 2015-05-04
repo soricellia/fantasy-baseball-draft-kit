@@ -60,7 +60,7 @@ public class TeamDialog extends Stage {
     public static final String CLASS_HEADING_LABEL = "heading_label";
     public static final String COMPLETE = "Complete";
     public static final String CANCEL = "Cancel";
-    public static final String ADD_TEAM_TITLE = "Add New Fantasy Team";
+    public static final String ADD_TEAM_TITLE = "Add Fantasy Team";
     public static final String EDIT_TEAM_TITLE = "Edit Fantasy Team";
 
     public TeamDialog(Stage primaryStage, MessageDialog initMessageDialog) {

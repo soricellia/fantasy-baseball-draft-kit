@@ -300,6 +300,9 @@ public class BaseballTeam extends Team {
             if (p < 9) {
                 return true;
             }
+            else{
+                return false;
+            }
         }
 
         if (u < 1) {
@@ -343,6 +346,11 @@ public class BaseballTeam extends Team {
                     return true;
                 }
                 if (mi < 1) {
+                    return true;
+                }
+            }
+            if(posArray[x].equals(OF)){
+                if(of < 5){
                     return true;
                 }
             }

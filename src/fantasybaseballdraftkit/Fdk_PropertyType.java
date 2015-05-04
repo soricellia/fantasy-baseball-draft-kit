@@ -95,6 +95,7 @@ public enum Fdk_PropertyType {
         NO_PLAYER_SALARY_MESSAGE,
         NEED_HIGHER_SALARY_MESSAGE,
         REMOVE_PLAYER_ERROR,
+        NO_PLAYERS_MESSAGE,
         
         // AND VERIFICATION MESSAGES
         NEW_DRAFT_CREATED_MESSAGE,

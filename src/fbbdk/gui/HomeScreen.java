@@ -14,6 +14,7 @@ import static fantasybaseballdraftkit.Fdk_PropertyType.EDIT_ICON_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.HOME_SCREEN_HEADING_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.HOME_SCREEN_PLAYER_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.HOME_SCREEN_TAXI_LABEL;
+import static fantasybaseballdraftkit.Fdk_PropertyType.NO_PLAYERS_MESSAGE;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_ICON;
 import static fantasybaseballdraftkit.Fdk_PropertyType.REMOVE_TEAM_TOOLTIP;
 import static fantasybaseballdraftkit.Fdk_PropertyType.SELECT_TEAM_LABEL;
@@ -170,9 +171,9 @@ public class HomeScreen extends BorderPane {
         scrollPane = new ScrollPane();
         scrollPane.setBorder(Border.EMPTY);
         scrollPane.setFitToWidth(true);
-        
+
         pane = new VBox();
-        
+
         pane.getStyleClass().addAll(PADDING_STYLE, SCREEN_STYLE);
         //search bar and things go here
         initTopPane();
@@ -205,7 +206,7 @@ public class HomeScreen extends BorderPane {
         middleTopPane.getChildren().addAll(draftNameLabel, draftNameTextField);
         //now the buttons
         lowerTopPane = new HBox();
-        lowerTopPane.getStyleClass().addAll(SPACING_STYLE,PADDING_TOP_STYLE);
+        lowerTopPane.getStyleClass().addAll(SPACING_STYLE, PADDING_TOP_STYLE);
 
         HBox tempOneBox = new HBox();
         addTeamButton = initChildButton(tempOneBox,
@@ -300,7 +301,7 @@ public class HomeScreen extends BorderPane {
         FlowPane labelPane = new FlowPane();
         labelPane.getStyleClass().add(PADDING_STYLE);
 
-        taxiLabel = initLabel(HOME_SCREEN_TAXI_LABEL, SUB_HEADING);
+        taxiLabel = initLabel(HOME_SCREEN_TAXI_LABEL, TABLE_HEADING);
         labelPane.getChildren().add(taxiLabel);
         taxiPane.setTop(labelPane);
 
@@ -324,54 +325,67 @@ public class HomeScreen extends BorderPane {
         positionColumn = new TableColumn<>(POSITION_COLUMN);
         positionColumn.setEditable(false);
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
-
+        positionColumn.setPrefWidth(100);
+        
         firstNameColumn = new TableColumn<>(FIRST_NAME_COLUMN);
         firstNameColumn.setEditable(false);
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-
+        firstNameColumn.setPrefWidth(120);
+        
         lastNameColumn = new TableColumn<>(LAST_NAME_COLUMN);
         lastNameColumn.setEditable(false);
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-
+        lastNameColumn.setPrefWidth(120);
+        
         proTeamColumn = new TableColumn<>(PRO_TEAM_COLUMN);
         proTeamColumn.setEditable(false);
         proTeamColumn.setCellValueFactory(new PropertyValueFactory<>("mlbTeam"));
-
+        proTeamColumn.setPrefWidth(100);
+        
         positionsColumn = new TableColumn<>(POSITIONS_COLUMN);
         positionsColumn.setEditable(false);
         positionsColumn.setCellValueFactory(new PropertyValueFactory<>("positions"));
-
+        positionsColumn.setPrefWidth(100);
+        
         contractColumn = new TableColumn<>(CONTRACT_COLUMN);
         contractColumn.setEditable(false);
         contractColumn.setCellValueFactory(new PropertyValueFactory<>("contract"));
-
+        contractColumn.setPrefWidth(100);
+        
         winRunColumn = new TableColumn<>(RUN_WIN_COLUMN);
         winRunColumn.setEditable(false);
         winRunColumn.setCellValueFactory(new PropertyValueFactory<>("winRun"));
-
+        winRunColumn.setPrefWidth(100);
+        
         savesHRColumn = new TableColumn<>(HR_SV_COLUMN);
         savesHRColumn.setEditable(false);
         savesHRColumn.setCellValueFactory(new PropertyValueFactory<>("savesHR"));
-
+        savesHRColumn.setPrefWidth(100);
+        
         kRBIColumn = new TableColumn<>(RBI_K_COLUMN);
         kRBIColumn.setEditable(false);
         kRBIColumn.setCellValueFactory(new PropertyValueFactory<>("kRBI"));
-
+        kRBIColumn.setPrefWidth(100);
+        
         eraSBColumn = new TableColumn<>(SB_ERA_COLUMN);
         eraSBColumn.setEditable(false);
         eraSBColumn.setCellValueFactory(new PropertyValueFactory<>("eraSB"));
-
+        eraSBColumn.setPrefWidth(100);
+        
         whipBAColumn = new TableColumn<>(BA_WHIP_COLUMN);
         whipBAColumn.setEditable(false);
         whipBAColumn.setCellValueFactory(new PropertyValueFactory<>("whipBA"));
-
+        whipBAColumn.setPrefWidth(100);
+        
         evColumn = new TableColumn<>(ESTIMATED_VALUE_COLUMN);
         evColumn.setEditable(false);
         evColumn.setCellValueFactory(new PropertyValueFactory<>("estimatedValue"));
+        evColumn.setPrefWidth(110);
+        
         salaryColumn = new TableColumn<>(SALARY_COLUMN);
-
         salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
-
+        salaryColumn.setPrefWidth(100);
+        
         //now we can add all of these bad girls to the table
         table.getColumns().addAll(positionColumn, firstNameColumn, lastNameColumn,
                 proTeamColumn, positionsColumn, contractColumn, winRunColumn,
@@ -413,11 +427,18 @@ public class HomeScreen extends BorderPane {
         playerTable.setOnMouseClicked(e -> {
             if (e.getClickCount() == 2) {
                 //OPEN PLAYER EDITOR
-                if(playerTable.getSelectionModel().getSelectedIndex()==-1){
+
+                if (playerTable.getSelectionModel().getSelectedIndex() == -1) {
                     playerTable.getSelectionModel().select(0);
                 }
                 
-                
+                if (playerTable.getSelectionModel().getSelectedItem() == null) {
+
+                    PropertiesManager props = PropertiesManager.getPropertiesManager();
+                    messageDialog.show(props.getProperty(NO_PLAYERS_MESSAGE.toString()));
+                    return;
+                }
+
                 draftController.handleEditPlayerRequest(gui,
                         playerTable.getSelectionModel().getSelectedItem());
             }
@@ -430,12 +451,12 @@ public class HomeScreen extends BorderPane {
      * @param team the team that is to be set
      */
     public void updateScreen(BaseballTeam team) {
-        
+
         //this jsut makes my life easier
         ArrayList<BaseballTeam> teams = dataManager.getDraft().getTeams();
         //if teams isnt empty then we can start doing stuff
         if (!teams.isEmpty()) {
-            
+
             //first we make sure the combo box is enabled
             teamsComboBox.setDisable(false);
             //now we can do stuff to it
@@ -470,7 +491,8 @@ public class HomeScreen extends BorderPane {
             taxiTable.setItems(null);
         }
     }
-    public TextField getDraftNameTextField(){
+
+    public TextField getDraftNameTextField() {
         return draftNameTextField;
     }
 }

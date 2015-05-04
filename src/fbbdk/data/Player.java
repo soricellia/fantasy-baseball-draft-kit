@@ -33,21 +33,34 @@ public abstract class Player implements Comparable{
     private StringProperty position;
     private IntegerProperty estimatedValue;
     
+    private String DEFAULT_NOTES = "";
+    private String DEFAULT_CONTRACT = "X";
+    private String DEFAULT_COUNTRY_BIRTH = "USA";
+    
+    private int DEFAULT_SALARY = 1;
+    private int DEFAULT_ESTIMATED_VALUE = -1;
+    private int DEFAULT_BIRTH_DATE = 1992;
+    
+            
     private transient PropertyChangeSupport propertyChangeSupport = new java.beans.PropertyChangeSupport(this);
 
     public Player(){
+        //these will be set using the UI or are already set
          firstName = new SimpleStringProperty();
          lastName = new SimpleStringProperty();
-         notes = new SimpleStringProperty();
-         salary = new SimpleIntegerProperty();
-         salary.set(1);
-         contract = new SimpleStringProperty();
-         estimatedValue = new SimpleIntegerProperty();
          mlbTeam = new SimpleStringProperty();
-         birthDate = new SimpleIntegerProperty();
-         countryOfBirth = new SimpleStringProperty();
          positions = new SimpleStringProperty();
          position = new SimpleStringProperty();
+         contract = new SimpleStringProperty();
+         
+         //these need a default value
+         notes = new SimpleStringProperty(DEFAULT_NOTES);
+         salary = new SimpleIntegerProperty(DEFAULT_SALARY);
+         estimatedValue = new SimpleIntegerProperty(DEFAULT_ESTIMATED_VALUE);
+         birthDate = new SimpleIntegerProperty(DEFAULT_BIRTH_DATE);
+         countryOfBirth = new SimpleStringProperty(DEFAULT_COUNTRY_BIRTH);
+         
+        
     }
     public int getEstimatedValue(){
         return -1;

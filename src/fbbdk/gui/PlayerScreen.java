@@ -26,6 +26,7 @@ import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -36,6 +37,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
@@ -61,6 +63,8 @@ public class PlayerScreen extends BorderPane {
     MessageDialog messageDialog;
     YesNoCancelDialog yesNoCancelDialog;
 
+    //this holds teh gridpane
+    FlowPane holderPane;
     //this holds everything
     GridPane pane;
 
@@ -187,7 +191,7 @@ public class PlayerScreen extends BorderPane {
     private void initComponents() {
         pane = new GridPane();
         pane.getStyleClass().addAll(PADDING_STYLE);
-
+        
         initHeading(pane);
 
         initRadioButtons(pane);
@@ -293,7 +297,9 @@ public class PlayerScreen extends BorderPane {
         //init the Vboxes
         upperTopPane = new HBox();
         lowerTopPane = new HBox();
-
+        GridPane.setHgrow(topPane, Priority.ALWAYS);
+        GridPane.setHgrow(upperTopPane, Priority.ALWAYS);
+        GridPane.setHgrow(lowerTopPane, Priority.ALWAYS);
         //now add the heading label
         playerHeadingLabel = initLabel(PLAYER_SCREEN_HEADING_LABEL, HEADING_STYLE);
         upperTopPane.getChildren().add(playerHeadingLabel);
@@ -310,8 +316,8 @@ public class PlayerScreen extends BorderPane {
         searchLabel = initLabel(SEARCH_LABEL, SUB_HEADING);
 
         searchText = initTextField(1, EMPTY_TEXT, true);
-        searchText.prefColumnCountProperty().set(75);
-
+        searchText.prefColumnCountProperty().set(77);
+        
         searchPanel.getChildren().addAll(searchLabel, searchText);
         searchPanel.setPadding(new Insets(0, 0, 10, 20));
         searchPanel.setSpacing(10.0);
@@ -337,24 +343,49 @@ public class PlayerScreen extends BorderPane {
     private void initRadioButtons(GridPane pane) {
         //first init the midpane
         midPane = new FlowPane();
+        ToggleGroup group = new ToggleGroup();
+        
         //these will be the components that go in the midPane
         allRadioButton = initRadioButton(midPane, ALL);
+        allRadioButton.setToggleGroup(group);
+        
         cRadioButton = initRadioButton(midPane, C);
+        cRadioButton.setToggleGroup(group);
+        
         firstBaseRadioButton = initRadioButton(midPane, FB);
+        firstBaseRadioButton.setToggleGroup(group);
+        
         ciRadioButton = initRadioButton(midPane, CI);
+        ciRadioButton.setToggleGroup(group);
+        
         secondBaseRadioButton = initRadioButton(midPane, SB);
+        secondBaseRadioButton.setToggleGroup(group);
+        
         thirdBaseRadioButton = initRadioButton(midPane, TB);
+        thirdBaseRadioButton.setToggleGroup(group);
+        
         miRadioButton = initRadioButton(midPane, MI);
+        miRadioButton.setToggleGroup(group);
+        
         ssRadioButton = initRadioButton(midPane, SS);
+        ssRadioButton.setToggleGroup(group);
+        
         ofRadioButton = initRadioButton(midPane, OF);
+        ofRadioButton.setToggleGroup(group);
+        
         uRadioButton = initRadioButton(midPane, U);
+        uRadioButton.setToggleGroup(group);
+        
         pitcherRadioButton = initRadioButton(midPane, P);
-
+        pitcherRadioButton.setToggleGroup(group);
+        
+        
         //ok now set the style
         midPane.getStyleClass().add(PLAYER_RADIO_PANEL_STYLE);
 
         //add to the gridpane
         pane.add(midPane, 1, 2);
+        GridPane.setHgrow(midPane, Priority.ALWAYS);
     }
 
     private void initTable(GridPane pane) {
@@ -429,6 +460,7 @@ public class PlayerScreen extends BorderPane {
 
         //finally, add the playerTable to the gridPane
         pane.add(playerTable, 1, 3);
+        GridPane.setHgrow(playerTable, Priority.ALWAYS);
 
     }
     public void updateTable(){
@@ -437,59 +469,47 @@ public class PlayerScreen extends BorderPane {
     private void initEventHandlers() {
 
         allRadioButton.setOnAction(e -> {
-            allButtonClicked();
             playerTableController.handleAllSearch();
         });
         cRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         firstBaseRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         ciRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         secondBaseRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         thirdBaseRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         miRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         ssRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         ofRadioButton.setOnAction(e -> {
-            radioButtonCheck();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
 
         uRadioButton.setOnAction(e -> {
-            uButtonClicked();
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
         pitcherRadioButton.setOnAction(e -> {
-            if (allRadioButton.isSelected()) {
-                allRadioButton.setSelected(false);
-            }
+            
             setCorrectHeadings();
             playerTableController.handleRadioSearch(getSelectedPositions());
         });
@@ -518,61 +538,6 @@ public class PlayerScreen extends BorderPane {
                         playerTable.getSelectionModel().getSelectedItem());
             }
         });
-
-    }
-
-    private void unCheckAllButtons() {
-        allRadioButton.setSelected(false);
-        cRadioButton.setSelected(false);
-        firstBaseRadioButton.setSelected(false);
-        ciRadioButton.setSelected(false);
-        secondBaseRadioButton.setSelected(false);
-        thirdBaseRadioButton.setSelected(false);
-        miRadioButton.setSelected(false);
-        ssRadioButton.setSelected(false);
-        ofRadioButton.setSelected(false);
-        uRadioButton.setSelected(false);
-        pitcherRadioButton.setSelected(false);
-
-    }
-
-    private void uButtonClicked() {
-        if (pitcherRadioButton.isSelected()) {
-            //this means pitcher is selected and uradiobutton isnt selected
-            if (!uRadioButton.isSelected()) {
-                unCheckAllButtons();
-                //so just select the pitcher
-                pitcherRadioButton.setSelected(true);
-            } else {
-                //this means both pitcher and uradioButton are selected
-                unCheckAllButtons();
-                pitcherRadioButton.setSelected(true);
-                uRadioButton.setSelected(true);
-            }
-        } else {
-            //lets check if uradioButton is selected or not
-            if (uRadioButton.isSelected()) {
-                //this means that pitcher isnt selected and uradioButton is
-                //so lets uncheck all other boxes and then recheck uRadioButton
-                unCheckAllButtons();
-                uRadioButton.setSelected(true);
-            } else {
-                //this case means that neither pitcher nor uradioButton is
-                //selected. lets uncheck all buttons
-                unCheckAllButtons();
-            }
-        }
-    }
-
-    private void allButtonClicked() {
-        //first i need to set the column titles
-        unCheckAllButtons();
-
-        //now make sure all button is selected
-        allRadioButton.setSelected(true);
-
-        //now i can set the correct columns
-        setMixedTableHeadings();
 
     }
 
@@ -628,40 +593,4 @@ public class PlayerScreen extends BorderPane {
         eraSBColumn.setText(ERA_COLUMN);
         whipBAColumn.setText(WHIP_COLUMN);
     }
-
-    private void radioButtonCheck() {
-        //we dont want these guys selected at first
-        if (allRadioButton.isSelected()) {
-            allRadioButton.setSelected(false);
-        }
-        if (uRadioButton.isSelected()) {
-            uRadioButton.setSelected(false);
-        }
-
-        if (ssRadioButton.isSelected() && secondBaseRadioButton.isSelected()) {
-            miRadioButton.setSelected(true);
-        }
-        if (miRadioButton.isSelected()) {
-            //if this button is selected we dont want ss and 2b selected
-            //because they mean the same thing
-            ssRadioButton.setSelected(false);
-            secondBaseRadioButton.setSelected(false);
-        }
-        if (firstBaseRadioButton.isSelected()
-                && thirdBaseRadioButton.isSelected()) {
-            ciRadioButton.setSelected(true);
-        }
-        if (ciRadioButton.isSelected()) {
-            //if this button is selected we dont want 1b or 3b selected
-            //because they mean the same thing
-            firstBaseRadioButton.setSelected(false);
-            thirdBaseRadioButton.setSelected(false);
-        }
-        //ok, now if there is nothing selected we are going to want the
-        //all button selected
-        if (getSelectedPositions().isEmpty()) {
-            allRadioButton.setSelected(true);
-        }
-    }
-
 }

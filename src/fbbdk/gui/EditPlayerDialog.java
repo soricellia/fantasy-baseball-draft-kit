@@ -23,6 +23,7 @@ import fbbdk.data.Draft;
 import static fbbdk.gui.AddPlayerDialog.CLASS_HEADING_LABEL;
 import static fbbdk.gui.AddPlayerDialog.COMPLETE;
 import static fbbdk.gui.Fdk_gui.PRIMARY_STYLE_SHEET;
+import static fbbdk.gui.PlayerScreen.SUB_HEADING;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import javafx.event.ActionEvent;
@@ -35,7 +36,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -102,6 +102,10 @@ public class EditPlayerDialog extends Stage {
     private static final String U = "U";
     private static final String P = "P";
 
+    private static final String TITLE = "Edit Player";
+
+    MessageDialog messageDialog;
+
     public EditPlayerDialog(Stage primaryStage, Draft draft, MessageDialog messageDialog) {
 
         // MAKE THIS DIALOG MODAL, MEANING OTHERS WILL WAIT
@@ -109,7 +113,7 @@ public class EditPlayerDialog extends Stage {
         initModality(Modality.WINDOW_MODAL);
         initOwner(primaryStage);
         this.draft = draft;
-
+        this.messageDialog = messageDialog;
         // FIRST OUR CONTAINER
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(10, 20, 20, 20));
@@ -129,13 +133,16 @@ public class EditPlayerDialog extends Stage {
 
         //now we need the position - nothing to add yet
         dialogEditPlayerPositionLabel = new Label();
-
+        dialogEditPlayerPositionLabel.getStyleClass().add(SUB_HEADING);
         //now the first name
         dialogEditPlayerNameLabel = new Label();
+        dialogEditPlayerNameLabel.getStyleClass().add(SUB_HEADING);
         //now the pro team stuff
         dialogEditPlayerFantasyTeamLabel = new Label(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_EDIT_FANTASY_TEAM_LABEL.toString()));
+        dialogEditPlayerFantasyTeamLabel.getStyleClass().add(SUB_HEADING);
+
         dialogEditPlayerTeamComboBox = new ComboBox();
 
         //we will set the onAction for this combo box
@@ -158,12 +165,16 @@ public class EditPlayerDialog extends Stage {
         dialogEditPlayerPosLabel = new Label(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_EDIT_PLAYER_POS_LABEL.toString()));
+        dialogEditPlayerPosLabel.getStyleClass().add(SUB_HEADING);
+
         //the items in this will need to be set still
         dialogEditPlayerPositionComboBox = new ComboBox();
 
         dialogEditPlayerContractLabel = new Label(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_EDIT_PLAYER_CONTRACT_LABEL.toString()));
+        dialogEditPlayerContractLabel.getStyleClass().add(SUB_HEADING);
+
         dialogEditPlayerContractComboBox = new ComboBox();
 
         for (int x = 0; x < contractType.length; x++) {
@@ -175,6 +186,8 @@ public class EditPlayerDialog extends Stage {
         dialogEditPlayerSalaryLabel = new Label(PropertiesManager
                 .getPropertiesManager()
                 .getProperty(DIALOG_PLAYER_SALARY_LABEL.toString()));
+        dialogEditPlayerSalaryLabel.getStyleClass().add(SUB_HEADING);
+
         dialogEditPlayerSalaryTextField = new TextField();
 
         //and my buttons
@@ -255,6 +268,7 @@ public class EditPlayerDialog extends Stage {
     }
 
     public void showEditPlayerDialog(BaseballPlayer playerToEdit) {
+        setTitle(TITLE);
         //first lets do the images
         player = playerToEdit;
         try {
@@ -264,7 +278,8 @@ public class EditPlayerDialog extends Stage {
                 playerPicture = new Image("file:" + PATH_PLAYER_IMAGES + NO_IMAGE + JPG_EXTENTION);
             }
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
+            return;
         }
         playerPicturePane.setImage(playerPicture);
 
@@ -329,7 +344,7 @@ public class EditPlayerDialog extends Stage {
         //now we will get the positions
         StringTokenizer teamsNeededPositions = new StringTokenizer(
                 team.getNeededPlayerPositions(), UNDER_SCORE);
-        
+
         //and now we have to compare positions
         while (teamsNeededPositions.hasMoreTokens()) {
             String temp = teamsNeededPositions.nextToken();
@@ -339,19 +354,26 @@ public class EditPlayerDialog extends Stage {
                         neededPositions.add(CI);
                     }
                     if (positions.get(x).equals(TB)) {
-                        neededPositions.add(CI);
+                        //lets make sure we dont add a duplicate CI
+                        if (!neededPositions.contains(CI)) {
+                            neededPositions.add(CI);
+                        }
                     }
                 } else if (temp.equals(MI)) {
                     if (positions.get(x).equals(SS)) {
                         neededPositions.add(MI);
                     }
                     if (positions.get(x).equals(SB)) {
-                        neededPositions.add(MI);
+                        //lets make sure we don't add a duplicate MI
+                        if (!neededPositions.contains(MI)) {
+                            neededPositions.add(MI);
+                        }
                     }
                 } else if (temp.equals(U)) {
                     if (!positions.get(x).equals(P)) {
-                        if(!neededPositions.contains(U))
-                        neededPositions.add(U);
+                        if (!neededPositions.contains(U)) {
+                            neededPositions.add(U);
+                        }
                     }
                 } else if (positions.get(x).equals(temp)) {
                     neededPositions.add(positions.get(x));

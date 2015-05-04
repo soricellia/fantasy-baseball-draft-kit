@@ -1,6 +1,6 @@
 /* 
-    This style sheet stylizes the controls inside our
-    CourseSiteBuilder JavaFX application. Note that controls
+    This style sheet stylizes the controls inside FantasyBaseballDraftKit
+    JavaFX application. Note that controls
     in the UI must have the same class as those below in 
     order to be rendered using those properties.
 
@@ -10,7 +10,65 @@
 .root{
     -fx-font-size: 12pt;
     -fx-font-family: "Arial Narrow";
+    -fx-background-color: rgb(255,255,255);
+}
+.root.popup {
+    -fx-background-color: transparent;
+}
+.combo-box .list-cell 
+{
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em; 
+}
+.combo-box-popup .list-view 
+{
+    -fx-background-color: white, white;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}    .combo-box-popup .list-view .list-cell 
+{
+    -fx-padding: 4 0 4 5;
+
+    /* No alternate highlighting */
     -fx-background-color: white;
+}
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected:hover 
+{
+    -fx-background: -fx-accent;
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+.combo-box-popup .list-view .list-cell:filled:hover 
+{
+    -fx-background-color: white;
+    -fx-text-fill: -fx-text-inner-color;
+}
+
+.combo-box-base  
+{
+    -fx-background-color: white, white, white, white;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0;
+}
+.combo-box-base:hover
+{
+    -fx-color: -fx-hover-base;
+}
+.combo-box-base:showing 
+{
+    -fx-color: -fx-pressed-base;
+}
+.combo-box-base:focused {
+    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-radius: 6.4, 4, 5, 3;
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+.combo-box-base:disabled {
+    -fx-opacity: .4;
 }
 .table_heading{
     -fx-font-weight: bold;
@@ -50,24 +108,38 @@
     -fx-background-insets: 0;
 }
 .button:hover {
-    -fx-background-color: linear-gradient(whitesmoke, white);
+    -fx-background-color: linear-gradient(lightgray,white);
 }
 .button {
     -fx-text-fill: black;
     -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(white, lightgray);
     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+.check-box .box {
+    -fx-background-color: -fx-shadow-highlight-color, gray, -fx-inner-border, white;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-background-radius: 2, 2, 1, 1;
+    -fx-padding: 0.25em; /* 3 -- padding from the outside edge to the mark */
+     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.check-box:selected .mark {
+        -fx-background-color:blue ;
+        -fx-mark-highlight-color:yellow; 
+        -fx-mark-color:replered;
 }
 .padding_top{
     -fx-padding: 10 0 0 0;
 }
 .player_radio_panel_style{
-    -fx-border-color: #00B8E6;
+    -fx-border-color: gray;
     -fx-border-radius:5;
     -fx-border-style:solid;
-    -fx-background-color: #00CCFF;
+    -fx-background-color: gray;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.9), 10, 0, 0, 0);
 
- }
+}
 .player_radio_style{
     -fx-text-fill: white;
     -fx-font-weight:bold;
@@ -77,42 +149,99 @@
 }
 // CSS CLASS FOR OUR BIG PANES
 .bordered_pane {
-    -fx-border-color: #00B8E6;
+    -fx-border-color: gray;
     -fx-border-radius:5;
     -fx-border-style:solid;
-    -fx-background-color: #00CCFF;
-     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);
+}
+.combo-box .list-cell 
+{
+    -fx-background: white;
+    -fx-background-color: transparent;
+    -fx-text-fill: -fx-text-base-color;
+    -fx-padding: 3 0 2 7;
+    -fx-cell-size: 1.66667em; 
+}
+.combo-box-popup .list-view 
+{
+    -fx-background-color: white, white;
+    -fx-background-insets: 0, 1;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}    .combo-box-popup .list-view .list-cell 
+{
+    -fx-padding: 4 0 4 5;
+
+    /* No alternate highlighting */
+    -fx-background-color: white;
+}
+.combo-box-popup .list-view .list-cell:filled:selected,.combo-box-popup .list-view .list-cell:filled:selected:hover
+{
+    -fx-background: white;
+    -fx-background-color: -fx-selection-bar;
+    -fx-text-fill: -fx-selection-bar-text;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover 
+{
+    -fx-background-color: gray;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}
+
+.combo-box-base  
+{
+    -fx-background-color: white, white, white, white;
+    -fx-background-radius: 5, 5, 4, 3;
+    -fx-background-insets: 0 0 -1 0, 0, 1, 2;
+    -fx-padding: 0;
+     -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 );
+}
+.combo-box-base:hover
+{
+    -fx-color: -fx-hover-base;
+}
+.combo-box-base:showing 
+{
+    -fx-color: -fx-pressed-base;
+}
+.combo-box-base:focused {
+    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, white;
+    -fx-background-radius: 6.4, 4, 5, 3;
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+.combo-box-base:disabled {
+    -fx-opacity: .4;
 }
 .padding{
     -fx-padding: 20;
-    
+
 }
 .spacing{
     -fx-spacing: 15;
 }
 .background{
-    -fx-background-color: #00CCFF;
+    
+    -fx-background-color: gray;
 }
 
 // CSS CLASS FOR LABELS HEADING LARGE SECTIONS IN THE GUI
 .heading_label {
-    -fx-font-size: 20pt;
+    -fx-font-size: 22pt;
     -fx-font-weight: bold;
-    -fx-text-fill: red;
-    -fx-effect: dropshadow( gaussian, rgba(0,0,0,.8) , 0,0,0,1);
+    -fx-text-fill: rgb(153,0,0);
+    -fx-effect: dropshadow( gaussian, rgba(255, 153, 153,.9) , 0,0,0,1);
 }
 
 // CSS CLASS FOR LABELS HEADING SUBSECTIONS IN THE GUI
 .subheading_label {
-    -fx-text-fill: red;
+     -fx-text-fill: rgb(153,0,0);
     -fx-font-size: 14pt;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow( gaussian, rgba(0,0,0,.8) , 0,0,0,1);
+    -fx-effect: dropshadow( gaussian, rgba(255, 153, 153,.9) , 0,0,0,1);
 }
 
 // CSS CLASS FOR LABELS SERVING AS PROMPTS IN THE GUI
 .prompt_label {
     -fx-font-size: 10pt;
     -fx-font-weight: bold;
-    -fx-effect: dropshadow( gaussian, rgba(0,0,0,.8) , 0,0,0,1);
 }

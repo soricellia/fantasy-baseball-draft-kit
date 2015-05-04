@@ -6,7 +6,7 @@
 -->
 <properties>
     <property_list>
-        <property name="PROP_APP_TITLE"   value="Fantasy Draft Kit"></property>
+        <property name="PROP_APP_TITLE"   value="Fantasy Baseball"></property>
 
         <!-- PROGRAM ICON FILES -->
         <property name="NEW_DRAFT_ICON"                 value="New.png"></property>
@@ -53,7 +53,7 @@
         <property name="DRAFT_SCREEN_HEADING_LABEL"             value="Draft Summary"></property>
         <property name="MLB_TEAMS_SCREEN_HEADING_LABEL"         value="MLB Teams"></property>
         <property name ="SEARCH_LABEL"                          value="Search: "></property>
-        <property name = "DRAFT_SEARCH_LABEL"                   value="Draft Team: "></property>
+        <property name = "DRAFT_SEARCH_LABEL"                   value="Draft Name: "></property>
         <property name = "SELECT_TEAM_LABEL"                    value="Select Fantasy Team: "></property>
         <property name="HOME_SCREEN_PLAYER_LABEL"               value="Starting Lineup"></property>
         <property name="HOME_SCREEN_TAXI_LABEL"                 value="Taxi Squad"></property> 
@@ -84,6 +84,7 @@
         <property name="NO_PLAYER_SALARY_MESSAGE"                   value="Please Enter the Players Salary"></property>
         <property name="CLOSE_BUTTON_TEXT"                          value="Close"></property>
         <property name="REMOVE_PLAYER_ERROR"                        value="Please Select a Player to Remove"></property>
+        <property name="NO_PLAYERS_MESSAGE"                         value="You Need to Add a Player to the Team First!"></property>
         
         <!-- VERIFICATION MESSAGES -->
         <property name="NEW_DRAFT_CREATED_MESSAGE"     value="New Draft Created but not yet Saved"></property>

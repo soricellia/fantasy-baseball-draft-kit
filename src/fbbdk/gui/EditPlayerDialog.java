@@ -91,6 +91,8 @@ public class EditPlayerDialog extends Stage {
     public static String NO_IMAGE = "AAA_PhotoMissing";
     public static String FREE_AGENT = "Free Agents";
     public static final String UNDER_SCORE = "_";
+    public static final String SPACE = " ";
+    
     private static final String C = "C";
     private static final String FB = "1B";
     private static final String SB = "2B";
@@ -316,12 +318,22 @@ public class EditPlayerDialog extends Stage {
         dialogEditPlayerPositionComboBox.getSelectionModel().selectFirst();
 
         //now we need to set the players position
-        dialogEditPlayerPositionLabel.setText(playerToEdit.getPositions());
+        dialogEditPlayerPositionLabel.setText(playerPositionString(player));
 
         dialogEditPlayerSalaryTextField.setText("" + player.getSalary());
         this.showAndWait();
     }
-
+    private String playerPositionString(BaseballPlayer player){
+        //first we tokenize the players position
+        StringTokenizer tokens = new StringTokenizer(player.getPositions(),UNDER_SCORE);
+        String positions = "";
+        
+        //now we add them all to the string with a space
+        while(tokens.hasMoreTokens()){
+            positions += tokens.nextToken() + SPACE;
+        }
+        return positions.trim();
+    }
     private ArrayList<String> buildNeededPlayerPositionList(BaseballPlayer player) {
         ArrayList<String> positions = new ArrayList<>();
         StringTokenizer tokens = new StringTokenizer(player.getPositions(), UNDER_SCORE);

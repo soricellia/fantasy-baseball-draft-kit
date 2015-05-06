@@ -202,7 +202,7 @@ public class HomeScreen extends BorderPane {
         middleTopPane = new HBox();
         middleTopPane.getStyleClass().add(PADDING_TOP_STYLE);
         draftNameLabel = initLabel(DRAFT_SEARCH_LABEL, SUB_HEADING);
-        draftNameTextField = initTextField(19, EMPTY_TEXT, true);
+        draftNameTextField = initTextField(26, EMPTY_TEXT, true);
         middleTopPane.getChildren().addAll(draftNameLabel, draftNameTextField);
         //now the buttons
         lowerTopPane = new HBox();
@@ -222,7 +222,7 @@ public class HomeScreen extends BorderPane {
         selectTeamLabel = initLabel(SELECT_TEAM_LABEL, SUB_HEADING);
         teamsComboBox = new ComboBox();
         teamsComboBox.setDisable(true);
-
+        teamsComboBox.setPrefWidth(150);
         tempBox.getChildren().addAll(selectTeamLabel, teamsComboBox);
 
         lowerTopPane.getChildren().addAll(tempOneBox, tempBox);
@@ -396,7 +396,7 @@ public class HomeScreen extends BorderPane {
         //add the data to the table
         table.setItems(null);
         //ok now lets make the playerTable a bit bigger
-        table.setPrefHeight(500);
+        table.setPrefHeight(600);
         return table;
     }
 

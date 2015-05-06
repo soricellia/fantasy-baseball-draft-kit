@@ -463,14 +463,15 @@ public class JsonDraftFileManager implements DraftFileManager {
         
         ArrayList<BaseballTeam> teams = draftToLoad.getTeams();
         JsonArray jsonTeamsArray = json.getJsonArray(JSON_TEAMS);
-        loadTeams(teams, jsonTeamsArray);
+        loadTeams(draftToLoad, jsonTeamsArray);
         draftToLoad.setDraftName(json.getString(JSON_DRAFT_NAME));
         
         //now set the observablePlayers
         draftToLoad.setObservablePlayers();
     }
 
-    private void loadTeams(ArrayList<BaseballTeam> teams, JsonArray array) {
+    private void loadTeams(Draft draft, JsonArray array) {
+      
         for (int x = 0; x < array.size(); x++) {
             JsonObject jso = array.getJsonObject(x);
              
@@ -484,7 +485,7 @@ public class JsonDraftFileManager implements DraftFileManager {
             team.setCoach(jso.getString(JSON_TEAM_OWNER));
             team.setTeamName(jso.getString(JSON_TEAM_NAME));
             
-            teams.add(team);
+            draft.addTeam(team);
         }
     }
 

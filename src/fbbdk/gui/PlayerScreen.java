@@ -310,15 +310,20 @@ public class PlayerScreen extends BorderPane {
         addPlayerButton = initChildButton(lowerTopPane, ADD_ICON, ADD_ICON_TOOLTIP, false);
         removePlayerButton = initChildButton(lowerTopPane, REMOVE_ICON, REMOVE_ICON_TOOLTIP, false);
 
+        //we dont want the search bar and the search label on the same panel
+        //because if the search panel grows too large it will make the 
+        //search label lose its text
         searchPanel = new HBox();
-        searchPanel.getStyleClass().addAll(PADDING_BOTTOM_LEFT_STYLE);
+        
         
         searchLabel = initLabel(SEARCH_LABEL, SUB_HEADING);
-
-        searchText = initTextField(1, EMPTY_TEXT, true);
-        searchText.prefColumnCountProperty().set(77);
+        searchLabel.setMinWidth(75);
         
-        searchPanel.getChildren().addAll(searchLabel, searchText);
+        searchText = initTextField(1, EMPTY_TEXT, true);
+        searchText.prefColumnCountProperty().set(999);
+        
+        searchPanel.getStyleClass().addAll(PADDING_BOTTOM_LEFT_STYLE);
+        searchPanel.getChildren().addAll(searchLabel,searchText);
         searchPanel.setPadding(new Insets(0, 0, 10, 20));
         searchPanel.setSpacing(10.0);
 
@@ -456,8 +461,9 @@ public class PlayerScreen extends BorderPane {
         //add the data to the table
         playerTable.setItems(dataManager.getDraft().getObservablePlayers());
         //ok now lets make the playerTable a bit bigger
-        playerTable.setPrefHeight(550);
-
+        playerTable.setPrefHeight(800);
+        
+        playerTable.setStyle("-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.9) , 5, 0.0 , 0 , 1 );");
         //finally, add the playerTable to the gridPane
         pane.add(playerTable, 1, 3);
         GridPane.setHgrow(playerTable, Priority.ALWAYS);

@@ -22,6 +22,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -34,7 +35,6 @@ import properties_manager.PropertiesManager;
 public class TeamDialog extends Stage {
 
     //THIS IS THE OBJECT DATA BEHIND THIS UI
-
     BaseballTeam team;
 
     //everything goes in here
@@ -87,9 +87,6 @@ public class TeamDialog extends Stage {
                 .getProperty(DIALOG_TEAM_NAME_LABEL.toString()));
         dialogTeamNameLabel.getStyleClass().add(SUB_HEADING);
         nameTextField = new TextField();
-        nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            team.setTeamName(newValue);
-        });
 
         //now the owner
         dialogTeamOwnerLabel = new Label(PropertiesManager
@@ -97,9 +94,6 @@ public class TeamDialog extends Stage {
                 .getProperty(DIALOG_TEAM_OWNER_LABEL.toString()));
         dialogTeamOwnerLabel.getStyleClass().add(SUB_HEADING);
         ownerTextField = new TextField();
-        ownerTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            team.setCoach(newValue);
-        });
 
         dialogCompleteButton = new Button(PropertiesManager
                 .getPropertiesManager()
@@ -108,34 +102,9 @@ public class TeamDialog extends Stage {
                 .getPropertiesManager()
                 .getProperty(DIALOG_CANCEL_BUTTON_TEXT.toString()));
 
-        //event handler for buttons
-        EventHandler completeCancelHandler = (EventHandler<ActionEvent>) (ActionEvent ae) -> {
-            Button sourceButton = (Button) ae.getSource();
-            PropertiesManager props = PropertiesManager.getPropertiesManager();
-            if (sourceButton.getText().equals(COMPLETE)) {
-                if (team.getTeamName() == null) {
-                    //need to pop up an error message
-                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
-                }else if (team.getTeamName().trim().isEmpty()) {
-                    //need to pop up an error message
-                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
-                } else if (team.getCoach() == null) {
-                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
-                } else if (team.getCoach().trim().isEmpty()) {
-                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
-                }else{
-                    this.selection = sourceButton.getText();
-                    this.hide();
-                }
-            }else{
-                this.selection = sourceButton.getText();
-                this.hide();
-            }
-        };
-
-        dialogCompleteButton.setOnAction(completeCancelHandler);
-        dialogCancelButton.setOnAction(completeCancelHandler);
-
+        //now that everything is constructed we will set up the event handlers
+        initEventHandlers();
+        
         //now we can add everything at once to the gridPane
         gridPane.add(dialogTeamHeadingLabel, 0, 0, 2, 1);
         gridPane.add(dialogTeamNameLabel, 0, 1, 1, 1);
@@ -156,7 +125,6 @@ public class TeamDialog extends Stage {
      * @return Either complete or cancel, depending on which button the user
      * selected when this dialog was presented.
      */
-
     public String getSelection() {
         return selection;
     }
@@ -166,8 +134,9 @@ public class TeamDialog extends Stage {
     }
 
     public boolean wasCompleteSelected() {
-        if(selection == null)
+        if (selection == null) {
             return false;
+        }
         return selection.equals(COMPLETE);
     }
 
@@ -195,10 +164,100 @@ public class TeamDialog extends Stage {
 
     public void loadGUIData() {
         // LOAD THE UI STUFF
-        
+
         nameTextField.setText(team.getTeamName());
         ownerTextField.setText(team.getCoach());
 
+    }
+
+    private void initEventHandlers() {
+        //first lets set on the properties manager
+        PropertiesManager props = PropertiesManager.getPropertiesManager();
+        
+        //now lets construct the event handler for our complete and cancel
+        //buttons
+        EventHandler completeCancelHandler = (EventHandler<ActionEvent>) (ActionEvent ae) -> {
+            Button sourceButton = (Button) ae.getSource();
+            if (sourceButton.getText().equals(COMPLETE)) {
+                if (team.getTeamName() == null) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                } else if (team.getTeamName().trim().isEmpty()) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                } else if (team.getCoach() == null) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                } else if (team.getCoach().trim().isEmpty()) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                } else {
+                    this.selection = sourceButton.getText();
+                    this.hide();
+                }
+            } else {
+                this.selection = sourceButton.getText();
+                this.hide();
+            }
+        };
+        //now we add the handler
+        dialogCompleteButton.setOnAction(completeCancelHandler);
+        dialogCancelButton.setOnAction(completeCancelHandler);
+
+        //now lets set out textField listeners
+        ownerTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            team.setCoach(newValue);
+        });
+        
+        //when enter button is hit we want to be responsive
+        ownerTextField.setOnKeyPressed(e->{
+            
+            if(e.getCode().equals(KeyCode.ENTER)){
+                if (team.getTeamName() == null) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                } else if (team.getTeamName().trim().isEmpty()) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                } else if (team.getCoach() == null) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                } else if (team.getCoach().trim().isEmpty()) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                } else {
+                    this.selection = COMPLETE;
+                    this.hide();
+                }
+            }else if(e.getCode().equals(KeyCode.ESCAPE)){
+                selection = CANCEL;
+                this.hide();
+            }
+        });
+        nameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            team.setTeamName(newValue);
+        });
+        
+        //when enter button is hit we want to be responsive
+        nameTextField.setOnKeyPressed(e->{
+            if(e.getCode().equals(KeyCode.ENTER)){
+                if (team.getTeamName() == null) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                } else if (team.getTeamName().trim().isEmpty()) {
+                    //need to pop up an error message
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_NAME_MESSAGE.toString()));
+                } else if (team.getCoach() == null) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                } else if (team.getCoach().trim().isEmpty()) {
+                    messageDialog.show(props.getProperty(ILLEGAL_TEAM_OWNER_MESSAGE.toString()));
+                } else {
+                    this.selection = COMPLETE;
+                    this.hide();
+                }
+            }else if(e.getCode().equals(KeyCode.ESCAPE)){
+                selection = CANCEL;
+                this.hide();
+            }
+        });
+        
+        
     }
 
     public void showEditTeamDialog(BaseballTeam teamToEdit) {

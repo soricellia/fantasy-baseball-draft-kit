@@ -210,7 +210,17 @@ public abstract class Player implements Comparable{
         hash = 53 * hash + Objects.hashCode(this.lastName);
         return hash;
     }
-
+    @Override
+    public boolean equals(Object o){
+        if(o.getClass() != this.getClass())
+            return false;
+        Player player = (Player) o;
+        if(this.firstName.equals(player.getFirstName())&&
+                this.lastName.equals(player.getLastName())){
+            return true;
+        }
+        return false;
+    }
     
     public String toString(){
         return firstName+" "+lastName;

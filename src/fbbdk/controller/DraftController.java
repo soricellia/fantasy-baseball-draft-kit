@@ -21,6 +21,7 @@ import fbbdk.gui.TeamDialog;
 import fbbdk.gui.YesNoCancelDialog;
 import java.util.ArrayList;
 import java.util.Collections;
+import javafx.collections.FXCollections;
 import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
 
@@ -62,7 +63,7 @@ public class DraftController {
             BaseballTeam team = teamDialog.getTeam();
 
             // AND ADD IT AS A ROW TO THE TABLE
-            ddm.getDraft().getTeams().add(team);
+            ddm.getDraft().addTeam(team);
             //update the gui
             screen.updateScreen(team);
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
@@ -75,21 +76,23 @@ public class DraftController {
 
     public void handleEditTeamRequest(Fdk_gui gui, BaseballTeam teamToEdit, HomeScreen screen) {
         DraftDataManager ddm = gui.getDataManager();
-        
+
         teamDialog.showEditTeamDialog(teamToEdit);
 
         // DID THE USER CONFIRM?
         if (teamDialog.wasCompleteSelected()) {
-            // UPDATE THE SCHEDULE ITEM
+            //UPDATE THE TEAM
             BaseballTeam team = teamDialog.getTeam();
             teamToEdit.setTeamName(team.getTeamName());
             teamToEdit.setCoach(team.getCoach());
-            
-            
+
             //update gui
             draft.getTeams().set(draft.getTeams().indexOf(teamToEdit), team);
+            draft.getObservableTeams().set(draft.getTeams().indexOf(teamToEdit), team);
+
+            //now we sort the teams
             Collections.sort(draft.getTeams());
-            
+
             screen.updateScreen(team);
 
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
@@ -174,11 +177,15 @@ public class DraftController {
                 for (int x = 0; x < teams.size(); x++) {
                     if (teams.get(x).equals(playersTeam)) {
                         teams.get(x).addPlayer(player);
+                        draft.getObservableTeams().clear();
+                        draft.getObservableTeams().setAll(teams);
                         draft.removePlayer(player);
-                    }else if(teams.get(x).getPlayers().contains(player)){
+
+                    } else if (teams.get(x).getPlayers().contains(player)) {
                         teams.get(x).removePlayer(player);
+                        draft.getObservableTeams().clear();
+                        draft.getObservableTeams().setAll(teams);
                     }
-                    
 
                 }
             }
@@ -220,6 +227,8 @@ public class DraftController {
                 if (playerIterator.equals(player)) {
                     //ok we found him we need to remove him
                     teams.get(x).removePlayer(player);
+                    draft.getObservableTeams().clear();
+                    draft.getObservableTeams().setAll(teams);
                 }
             }
             //now we need to check the taxiPlayers
@@ -228,6 +237,9 @@ public class DraftController {
                 if (playerIterator.equals(player)) {
                     //same thing we found him and we need to remove him
                     teams.get(x).removeTaxiPlayer(player);
+                    draft.getObservableTeams().clear();
+                    draft.getObservableTeams().setAll(teams);
+
                 }
             }
 

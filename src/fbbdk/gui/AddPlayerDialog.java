@@ -176,7 +176,7 @@ public class AddPlayerDialog extends Stage {
         dialogScene = new Scene(gridPane);
         dialogScene.getStylesheets().add(PRIMARY_STYLE_SHEET);
         this.setScene(dialogScene);
-        
+
         //call the event handelers
         initEventHandlers();
     }
@@ -252,6 +252,84 @@ public class AddPlayerDialog extends Stage {
                 .addListener((observable, oldValue, newValue) -> {
                     player.setFirstName(newValue);
                 });
+
+        dialogAddPCheckBox.setOnAction(e -> {
+            if (dialogAddPCheckBox.isSelected()) {
+                unCheckHitterBoxes();
+            } else {
+                enableHitterCheckBoxes();
+            }
+        });
+        dialogAddCCheckBox.setOnAction(e -> {
+            if (dialogAddCCheckBox.isSelected()) {
+                dialogAddPCheckBox.setDisable(true);
+            }else if(noHitterCheckBoxSelected()){
+                dialogAddPCheckBox.setDisable(false);
+            }
+        });
+        dialogAddFBCheckBox.setOnAction(e -> {
+            if (dialogAddFBCheckBox.isSelected()) {
+                dialogAddPCheckBox.setDisable(true);
+            }else if(noHitterCheckBoxSelected()){
+                dialogAddPCheckBox.setDisable(false);
+            }
+        });
+        dialogAddSBCheckBox.setOnAction(e -> {
+            if (dialogAddSBCheckBox.isSelected()) {
+                dialogAddPCheckBox.setDisable(true);
+            }else if(noHitterCheckBoxSelected()){
+                dialogAddPCheckBox.setDisable(false);
+            }
+        });
+        dialogAddTBCheckBox.setOnAction(e -> {
+            if (dialogAddTBCheckBox.isSelected()) {
+                dialogAddPCheckBox.setDisable(true);
+            }else if(noHitterCheckBoxSelected()){
+                dialogAddPCheckBox.setDisable(false);
+            }
+        });
+        dialogAddSSCheckBox.setOnAction(e -> {
+            if (dialogAddSSCheckBox.isSelected()) {
+                dialogAddPCheckBox.setDisable(true);
+            }else if(noHitterCheckBoxSelected()){
+                dialogAddPCheckBox.setDisable(false);
+            }
+        });
+        dialogAddOFCheckBox.setOnAction(e -> {
+            if (dialogAddOFCheckBox.isSelected()) {
+                dialogAddPCheckBox.setDisable(true);
+            }else if(noHitterCheckBoxSelected()){
+                dialogAddPCheckBox.setDisable(false);
+            }
+        });
+
+    }
+
+    public boolean noHitterCheckBoxSelected() {
+        if (dialogAddCCheckBox.isSelected() || dialogAddFBCheckBox.isSelected()
+                || dialogAddSBCheckBox.isSelected() || dialogAddTBCheckBox.isSelected()
+                || dialogAddSSCheckBox.isSelected() || dialogAddOFCheckBox.isSelected()) {
+            return false;
+        }
+        return true;
+    }
+
+    public void enableHitterCheckBoxes() {
+        dialogAddCCheckBox.setDisable(false);
+        dialogAddFBCheckBox.setDisable(false);
+        dialogAddSBCheckBox.setDisable(false);
+        dialogAddTBCheckBox.setDisable(false);
+        dialogAddSSCheckBox.setDisable(false);
+        dialogAddOFCheckBox.setDisable(false);
+    }
+
+    public void unCheckHitterBoxes() {
+        dialogAddCCheckBox.setDisable(true);
+        dialogAddFBCheckBox.setDisable(true);
+        dialogAddSBCheckBox.setDisable(true);
+        dialogAddTBCheckBox.setDisable(true);
+        dialogAddSSCheckBox.setDisable(true);
+        dialogAddOFCheckBox.setDisable(true);
 
     }
 

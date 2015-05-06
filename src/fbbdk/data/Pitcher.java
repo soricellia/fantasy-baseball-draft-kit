@@ -147,8 +147,8 @@ public class Pitcher{
         if(ip == 0)
             whip = 0.0;
         else{
-            this.whip= (Double.parseDouble(""+walks) + (Double.parseDouble(""+hits)/Double.parseDouble(""+ip)));
-            DecimalFormat df = new DecimalFormat("##.#");
+            this.whip= (Double.parseDouble(""+walks) + Double.parseDouble(""+hits))/Double.parseDouble(""+ip);
+            DecimalFormat df = new DecimalFormat("#.##");
             whip = Double.parseDouble(df.format(whip));
         }
     }
@@ -167,12 +167,11 @@ public class Pitcher{
     public void setEra(int er,double ip) {
         this.er = er;
         this.inningsPitched=ip;
-        DecimalFormat df = new DecimalFormat(".###");
+        DecimalFormat df = new DecimalFormat("#.##");
         if(ip == 0){
             era = 0;
         }else{
-            int number = er*9;
-            era=Double.parseDouble(""+number)/Double.parseDouble(""+ip);
+            era=(Double.parseDouble(""+er)/Double.parseDouble(""+ip))*9;
             era = Double.parseDouble(df.format(era));
         }
     }

@@ -11,7 +11,7 @@ package fbbdk.data;
  */
 public class Team implements Comparable{
     private String coach;
-    private String teamName;
+    String teamName;
     private int budgetMoney;
     
     public Team(){
@@ -63,7 +63,21 @@ public class Team implements Comparable{
     public String toString(){
         return teamName;
     }
-
+    public boolean equals(Object o){
+        if(o == null){
+            return false;
+        }
+        if(o.getClass() != this.getClass()){
+            return false;
+        }
+        Team team = (Team)o;
+        if(team.getTeamName().equals(this.getTeamName())
+                && team.getCoach().equals(this.getCoach())){
+            return true;
+        }
+        return false;
+        
+    }
     @Override
     public int compareTo(Object o) {
         if(o.getClass()!=this.getClass()){

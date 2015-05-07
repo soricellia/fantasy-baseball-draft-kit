@@ -6,13 +6,15 @@
 package fbbdk.gui;
 
 import fantasybaseballdraftkit.Fdk_PropertyType;
+import static fantasybaseballdraftkit.Fdk_PropertyType.MLB_SCREEN_TEAM_LABEL;
 import static fantasybaseballdraftkit.Fdk_PropertyType.MLB_TEAMS_SCREEN_HEADING_LABEL;
 import fbbdk.data.BaseballPlayer;
+import fbbdk.data.BaseballTeam;
 import fbbdk.data.DraftDataManager;
 import static fbbdk.gui.FantasyStandingScreen.PADDING_STYLE;
 import static fbbdk.gui.HomeScreen.SCREEN_STYLE;
-import javafx.collections.FXCollections;
-import javafx.scene.Scene;
+import static fbbdk.gui.PlayerScreen.SUB_HEADING;
+import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -30,18 +32,19 @@ import properties_manager.PropertiesManager;
  * @author Tony
  */
 public class MLBTeamsScreen extends BorderPane{
-    PropertiesManager properties;
+    PropertiesManager props;
     MessageDialog messageDialog;
     YesNoCancelDialog yesNoCancelDialog;
     DraftDataManager dataManager;
     
     Label mlbTeamsHeadingLabel;
+    Label mlbTeamsLabel;
     
     GridPane pane;
     
-    HBox settingsPane;
+    HBox selectionPane;
     //we need a combo box to select the mlb tea
-    ComboBox mlbTeams;
+    ComboBox<BaseballTeam> mlbTeams;
 
     public MLBTeamsScreen() {
     }
@@ -73,13 +76,11 @@ public class MLBTeamsScreen extends BorderPane{
     private static final String BA_WHIP_COLUMN = "BA/WHIP";
     
     
-    public static String[] MLB_TEAMS = {"ATL", "AZ", "CHC", "CIN", "COL", "LAD", "MIA", "MIL",
-        "NYM", "PHI", "PIT", "SD", "SF", "STL", "WAS"};
     
     public MLBTeamsScreen(Fdk_gui initGui, Stage primaryStage,
             MessageDialog initMessageDialog, YesNoCancelDialog initYesNoCancelDialog){
         //init the properties Manager
-        properties = PropertiesManager.getPropertiesManager();
+        props = PropertiesManager.getPropertiesManager();
         dataManager = initGui.getDataManager();
         messageDialog = initMessageDialog;
         yesNoCancelDialog = initYesNoCancelDialog;
@@ -89,22 +90,45 @@ public class MLBTeamsScreen extends BorderPane{
         
         //init the components
         initComponents();
+        
+        //now we do the event handlers
+        initEventHandlers();
+        
+        //and we select the first team in the mlb teams combo box
+        //this will trigger an event handler, setting the table to the correct
+        //mlb team
+        mlbTeams.getSelectionModel().selectFirst();
+       
     }
 
     private void initComponents() {
+        
         //init the gridpane
         pane = new GridPane();
         pane.getStyleClass().add(PADDING_STYLE);
         
         mlbTeamsHeadingLabel = initGridLabel(pane,MLB_TEAMS_SCREEN_HEADING_LABEL,HEADING_STYLE,1,1,1,1);
         
-        settingsPane = new HBox();
-        mlbTeams = new ComboBox();
-        mlbTeams.setItems(FXCollections.observableArrayList(dataManager
-                .getDraft().getMlbTeams()));
+        //first we will construct the pane that the teams selection items will
+        //go on
+        selectionPane = new HBox();
+        selectionPane.setPadding(new Insets(15,15,15,0));
+        selectionPane.setSpacing(15);
         
-        settingsPane.getChildren().addAll(mlbTeams);
-        pane.add(settingsPane, 1, 2);
+        //now we construct the label
+        mlbTeamsLabel = new Label(props
+                .getProperty(MLB_SCREEN_TEAM_LABEL.toString()));
+        mlbTeamsLabel.getStyleClass().add(SUB_HEADING);
+        
+        //and now we construct the mlb teams combo box
+        mlbTeams = new ComboBox();
+        mlbTeams.getItems().addAll(dataManager.getDraft().getMlbTeams());
+        
+        //and we add everything at once to the selection pane
+        selectionPane.getChildren().addAll(mlbTeamsLabel,mlbTeams);
+        
+        //now we can add the selectionPane to the grid
+        pane.add(selectionPane, 1, 2);
         createTable();
         
         this.setCenter(pane);
@@ -133,39 +157,47 @@ public class MLBTeamsScreen extends BorderPane{
         firstNameColumn = new TableColumn<>(FIRST_NAME_COLUMN);
         firstNameColumn.setEditable(false);
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        firstNameColumn.setPrefWidth(150);
 
         lastNameColumn = new TableColumn<>(LAST_NAME_COLUMN);
         lastNameColumn.setEditable(false);
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-
+        lastNameColumn.setPrefWidth(150);
+        
         positionsColumn = new TableColumn<>(POSITIONS_COLUMN);
         positionsColumn.setEditable(false);
         positionsColumn.setCellValueFactory(new PropertyValueFactory<>("positions"));
-
+        positionsColumn.setPrefWidth(150);
+        
         yearOfBirthColumn = new TableColumn<>(YEAR_OF_BIRTH_COLUMN);
         yearOfBirthColumn.setEditable(false);
         yearOfBirthColumn.setCellValueFactory(new PropertyValueFactory<>("birthDate"));
-
+        yearOfBirthColumn.setPrefWidth(150);
+        
         winRunColumn = new TableColumn<>();
         winRunColumn.setEditable(false);
         winRunColumn.setCellValueFactory(new PropertyValueFactory<>("winRun"));
+        winRunColumn.setPrefWidth(120);
 
         savesHRColumn = new TableColumn<>();
         savesHRColumn.setEditable(false);
         savesHRColumn.setCellValueFactory(new PropertyValueFactory<>("savesHR"));
-
+        savesHRColumn.setPrefWidth(120);
+            
         kRBIColumn = new TableColumn<>();
         kRBIColumn.setEditable(false);
         kRBIColumn.setCellValueFactory(new PropertyValueFactory<>("kRBI"));
-
+        kRBIColumn.setPrefWidth(120);
+        
         eraSBColumn = new TableColumn<>();
         eraSBColumn.setEditable(false);
         eraSBColumn.setCellValueFactory(new PropertyValueFactory<>("eraSB"));
-
+        eraSBColumn.setPrefWidth(120);
+        
         whipBAColumn = new TableColumn<>();
         whipBAColumn.setEditable(false);
         whipBAColumn.setCellValueFactory(new PropertyValueFactory<>("whipBA"));
-
+        whipBAColumn.setPrefWidth(120);
 
         //now we can add all of these bad girls to the table
         playerTable.getColumns().addAll(firstNameColumn, lastNameColumn,
@@ -185,6 +217,14 @@ public class MLBTeamsScreen extends BorderPane{
         //and finally we can add the table to the gridPane
         pane.add(playerTable, 1, 3);
         GridPane.setHgrow(playerTable, Priority.ALWAYS);
+    }
+    private void initEventHandlers(){
+        mlbTeams.setOnAction(e->{
+            playerTable.setItems(dataManager.getDraft().getMlbTeam(
+                    mlbTeams.getSelectionModel().getSelectedItem().getTeamName())
+                    .getObservablePlayers());
+        });
+        
     }
        //SETS ALL TABLE HEADINGS TO PITCHER AND HITTER HEADINGS
     private void setMixedTableHeadings() {

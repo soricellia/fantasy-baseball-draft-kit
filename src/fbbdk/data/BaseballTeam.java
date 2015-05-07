@@ -88,6 +88,7 @@ public class BaseballTeam extends Team {
         observableTaxiPlayers = FXCollections.observableArrayList();
         observableTeamName = new SimpleStringProperty();
         playersNeeded = new SimpleIntegerProperty();
+        playersNeeded.set(MAX_TEAM_SIZE);
         obvMoneyLeft = new SimpleIntegerProperty();
         moneyPerPlayer = new SimpleIntegerProperty();
         runs = new SimpleIntegerProperty();

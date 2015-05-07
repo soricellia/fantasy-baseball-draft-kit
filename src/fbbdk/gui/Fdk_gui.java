@@ -299,7 +299,7 @@ public class Fdk_gui implements DraftDataView {
         homeScreen = new HomeScreen(this, primaryStage, messageDialog, yesNoCancelDialog);
         playerScreen = new PlayerScreen(this, primaryStage, messageDialog, yesNoCancelDialog);
         fantasyStandingsScreen = new FantasyStandingScreen(this, primaryStage, messageDialog, yesNoCancelDialog);
-        draftScreen = new DraftScreen(primaryScene);
+        draftScreen = new DraftScreen(this, primaryStage, messageDialog, yesNoCancelDialog);
         mlbTeamsScreen = new MLBTeamsScreen(this, primaryStage, messageDialog, yesNoCancelDialog);
 
         //construct the workspacePane

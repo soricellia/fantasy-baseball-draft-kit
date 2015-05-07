@@ -57,6 +57,7 @@
         <property name = "SELECT_TEAM_LABEL"                    value="Select Fantasy Team: "></property>
         <property name="HOME_SCREEN_PLAYER_LABEL"               value="Starting Lineup"></property>
         <property name="HOME_SCREEN_TAXI_LABEL"                 value="Taxi Squad"></property> 
+        <property name="MLB_SCREEN_TEAM_LABEL"                  value="Select Pro Team: "></property>
         <property name="DIALOG_TEAM_HEADING_LABEL"              value="Fantasy Team Details"></property>
         <property name="DIALOG_TEAM_NAME_LABEL"                 value="Name: "></property>
         <property name="DIALOG_TEAM_OWNER_LABEL"                value="Owner: "></property>

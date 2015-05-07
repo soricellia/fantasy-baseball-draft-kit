@@ -7,11 +7,13 @@ package fbbdk.gui;
 
 import fantasybaseballdraftkit.Fdk_PropertyType;
 import static fantasybaseballdraftkit.Fdk_PropertyType.DRAFT_SCREEN_HEADING_LABEL;
+import fbbdk.data.DraftDataManager;
 import static fbbdk.gui.HomeScreen.SCREEN_STYLE;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 import properties_manager.PropertiesManager;
 
 /**
@@ -21,16 +23,25 @@ import properties_manager.PropertiesManager;
 public class DraftScreen extends BorderPane{
     
     PropertiesManager properties;
+    DraftDataManager dataManager;
+    YesNoCancelDialog yesNoCancelDialog;
+    MessageDialog messageDialog;
     
     Label draftHeadingLabel;
     
     GridPane pane;
     
     final static String HEADING_STYLE = "heading_label";
-    public DraftScreen(Scene primaryScene){
-        //init the propertiesManager
+    
+    public DraftScreen(Fdk_gui initGui, Stage primaryStage,
+            MessageDialog initMessageDialog, YesNoCancelDialog initYesNoCancelDialog){
+        //init the properties Manager
         properties = PropertiesManager.getPropertiesManager();
-        //set the class
+        dataManager = initGui.getDataManager();
+        messageDialog = initMessageDialog;
+        yesNoCancelDialog = initYesNoCancelDialog;
+        
+        //set the style class
         this.getStyleClass().add(SCREEN_STYLE);
         
         //init the components

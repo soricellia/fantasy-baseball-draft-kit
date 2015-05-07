@@ -68,6 +68,7 @@ public enum Fdk_PropertyType {
         SELECT_TEAM_LABEL,
         HOME_SCREEN_PLAYER_LABEL,
         HOME_SCREEN_TAXI_LABEL,
+        MLB_SCREEN_TEAM_LABEL,
         
         //DIALOG LABELS
         DIALOG_TEAM_HEADING_LABEL,

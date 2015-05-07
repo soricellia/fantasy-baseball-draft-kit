@@ -11,15 +11,12 @@ import fbbdk.data.BaseballTeam;
 import fbbdk.data.Draft;
 import fbbdk.data.Hitter;
 import fbbdk.data.Pitcher;
-import fbbdk.data.Player;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.math.BigInteger;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.json.Json;
@@ -134,17 +131,16 @@ public class JsonDraftFileManager implements DraftFileManager {
         //now lets clear all availble players from the list
         draftToLoad.getAvailablePlayers().clear();
         //create a variable to accsess player array
-        ArrayList<BaseballPlayer> players = draftToLoad.getAvailablePlayers();
-
+       
         //create a json array
         JsonArray array = json.getJsonArray(JSON_HITTER);
         //populate the hitters
-        loadNewHitters(players, array);
+        loadNewHitters(draftToLoad, array);
 
         //create new array
         array = json.getJsonArray(JSON_PITCHER);
         //now we can load the pitchers
-        loadNewPitchers(players, array);
+        loadNewPitchers(draftToLoad, array);
 
     }
 
@@ -191,7 +187,7 @@ public class JsonDraftFileManager implements DraftFileManager {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private void loadHitters(ArrayList<BaseballPlayer> players, JsonArray array) {
+    private void loadHitters(Draft draft, JsonArray array) {
         for (int i = 0; i < array.size(); i++) {
             JsonObject jso = array.getJsonObject(i);
             
@@ -216,11 +212,11 @@ public class JsonDraftFileManager implements DraftFileManager {
             //now add the hitter stats to the player
             player.setHitterStats(hitterStats);
             
-            players.add(player);
+            draft.addPlayer(player);
         }
     }
 
-    private void loadNewHitters(ArrayList<BaseballPlayer> players, JsonArray array) {
+    private void loadNewHitters(Draft draft, JsonArray array) {
         for (int i = 0; i < array.size(); i++) {
             JsonObject jso = array.getJsonObject(i);
             BaseballPlayer player = new BaseballPlayer();
@@ -243,11 +239,11 @@ public class JsonDraftFileManager implements DraftFileManager {
             hitterStats.setBa(Integer.parseInt(jso.getString(JSON_AB)), Integer.parseInt(jso.getString(JSON_H)));
             //now add the hitter stats to the player
             player.setHitterStats(hitterStats);
-            players.add(player);
+            draft.addPlayer(player);
         }
     }
 
-    private void loadPitchers(ArrayList<BaseballPlayer> players, JsonArray array) {
+    private void loadPitchers(Draft draft, JsonArray array) {
         for (int i = 0; i < array.size(); i++) {
             JsonObject jso = array.getJsonObject(i);
             //first add the player stuff
@@ -269,11 +265,11 @@ public class JsonDraftFileManager implements DraftFileManager {
 
             //add the stats to the player
             player.setPitcherStats(pitcherStats);
-            players.add(player);
+            draft.addPlayer(player);
         }
     }
 
-    private void loadNewPitchers(ArrayList<BaseballPlayer> players, JsonArray array) {
+    private void loadNewPitchers(Draft draft, JsonArray array) {
         for (int i = 0; i < array.size(); i++) {
             JsonObject jso = array.getJsonObject(i);
             //first add the player stuff
@@ -295,7 +291,7 @@ public class JsonDraftFileManager implements DraftFileManager {
 
             //add the stats to the player
             player.setPitcherStats(pitcherStats);
-            players.add(player);
+            draft.addPlayer(player);
         }
     }
 
@@ -453,11 +449,11 @@ public class JsonDraftFileManager implements DraftFileManager {
         //create a json array
         JsonArray array = json.getJsonArray(JSON_HITTER);
         //populate the hitters
-        loadHitters(players, array);
+        loadHitters(draftToLoad, array);
         //create new array
         array = json.getJsonArray(JSON_PITCHER);
         //now we can load the pitchers
-        loadPitchers(players, array);
+        loadPitchers(draftToLoad, array);
         
         draftToLoad.getTeams().clear();
         

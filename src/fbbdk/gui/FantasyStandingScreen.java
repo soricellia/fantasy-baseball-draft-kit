@@ -198,6 +198,8 @@ public class FantasyStandingScreen extends BorderPane{
         whipColumn.setPrefWidth(75);
         
         totalPointsColumn = new TableColumn<>(TOTAL_POINTS_COLUMN);
+        totalPointsColumn.setCellValueFactory(new PropertyValueFactory<>(
+                "totalPoints"));
         totalPointsColumn.setPrefWidth(150);
         
         //now we can add all of these bad girls to the table

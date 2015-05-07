@@ -135,7 +135,6 @@ public class DraftController {
 
             // AND ADD IT AS A ROW TO THE TABLE
             draft.addPlayer(player);
-
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         } else {
@@ -177,12 +176,18 @@ public class DraftController {
                 for (int x = 0; x < teams.size(); x++) {
                     if (teams.get(x).equals(playersTeam)) {
                         teams.get(x).addPlayer(player);
+
+                        //make sure to update totalpoints
+                        draft.calculateTotalPoints();
                         draft.getObservableTeams().clear();
                         draft.getObservableTeams().setAll(teams);
                         draft.removePlayer(player);
 
                     } else if (teams.get(x).getPlayers().contains(player)) {
                         teams.get(x).removePlayer(player);
+
+                        //make sure to update totalpoints
+                        draft.calculateTotalPoints();
                         draft.getObservableTeams().clear();
                         draft.getObservableTeams().setAll(teams);
                     }
@@ -227,6 +232,9 @@ public class DraftController {
                 if (playerIterator.equals(player)) {
                     //ok we found him we need to remove him
                     teams.get(x).removePlayer(player);
+
+                    //make sure to update totalpoints
+                    draft.calculateTotalPoints();
                     draft.getObservableTeams().clear();
                     draft.getObservableTeams().setAll(teams);
                 }

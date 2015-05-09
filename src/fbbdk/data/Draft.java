@@ -5,14 +5,21 @@
  */
 package fbbdk.data;
 
+import fbbdk.Comparators.BaComparator;
+import fbbdk.Comparators.EraComparator;
+import fbbdk.Comparators.HRComparator;
+import fbbdk.Comparators.KComparator;
+import fbbdk.Comparators.RbiComparator;
+import fbbdk.Comparators.RunsComparator;
+import fbbdk.Comparators.SbComparator;
+import fbbdk.Comparators.SvComparator;
+import fbbdk.Comparators.WComparator;
+import fbbdk.Comparators.WhipComparator;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeMap;
 import java.util.TreeSet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.omg.DynamicAny.NameValuePair;
 
 /**
  *
@@ -22,9 +29,9 @@ public class Draft {
 
     private ArrayList<BaseballPlayer> availablePlayers;
     private ArrayList<BaseballTeam> teams;
-    private ArrayList<BaseballPlayer> pickOrder;
     private String draftName;
 
+    private ObservableList<Pick> pickOrder;
     private ObservableList<BaseballPlayer> observablePlayers;
     private ObservableList<BaseballTeam> observableTeams;
     private ArrayList<BaseballTeam> mlbTeams;
@@ -32,21 +39,21 @@ public class Draft {
     private static final String[] MLB_TEAMS = {"ATL", "AZ", "CHC", "CIN", "COL",
         "LAD", "MIA", "MIL", "NYM", "PHI", "PIT", "SD", "SF", "STL", "WSH"};
     //we need to make lists to decide who is in what place
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> rStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> hrStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> rbiStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> sbStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> baStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> wStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> svStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> kStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> eraStandingsList;
-    TreeSet<ObjectValuePair<BaseballTeam,Integer>> whipStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> rStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> hrStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> rbiStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> sbStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> baStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> wStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> svStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> kStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> eraStandingsList;
+    TreeSet<ObjectValuePair<BaseballTeam, Integer>> whipStandingsList;
 
     public Draft() {
         availablePlayers = new ArrayList<>();
         teams = new ArrayList<>();
-        pickOrder = new ArrayList<>();
+        pickOrder = FXCollections.observableArrayList();;
         observablePlayers = FXCollections.observableArrayList();
         observableTeams = FXCollections.observableArrayList();
         mlbTeams = new ArrayList<>();
@@ -86,45 +93,46 @@ public class Draft {
         kStandingsList = new TreeSet<>();
         eraStandingsList = new TreeSet<>();
         whipStandingsList = new TreeSet<>();
+
         ObjectValuePair ovp;
         for (int x = 0; x < teams.size(); x++) {
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getRuns());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getRuns());
             if (!rStandingsList.contains(ovp)) {
                 rStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getHr());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getHr());
             if (!hrStandingsList.contains(ovp)) {
                 hrStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getRbi());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getRbi());
             if (!rbiStandingsList.contains(ovp)) {
                 rbiStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getObvSb());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getObvSb());
             if (!sbStandingsList.contains(ovp)) {
                 sbStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getBa());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getBa());
             if (!baStandingsList.contains(ovp)) {
                 baStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getWins());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getWins());
             if (!wStandingsList.contains(ovp)) {
                 wStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getSv());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getSv());
             if (!svStandingsList.contains(ovp)) {
                 svStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getK());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getK());
             if (!kStandingsList.contains(ovp)) {
                 kStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getEra());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getEra());
             if (!eraStandingsList.contains(ovp)) {
                 eraStandingsList.add(ovp);
             }
-            ovp = new ObjectValuePair(teams.get(x),teams.get(x).getWhip());
+            ovp = new ObjectValuePair(teams.get(x), teams.get(x).getWhip());
             if (!whipStandingsList.contains(ovp)) {
                 whipStandingsList.add(ovp);
             }
@@ -138,7 +146,7 @@ public class Draft {
         }
 
         //these guys will help us iterate through the standings lists
-        Iterator<ObjectValuePair<BaseballTeam,Integer>> i;
+        Iterator<ObjectValuePair<BaseballTeam, Integer>> i;
         BaseballTeam team;
 
         //now we start the calculations 
@@ -147,71 +155,179 @@ public class Draft {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(rStandingsList.size() - y);
         }
         i = hrStandingsList.iterator();
         for (int y = 1; y < hrStandingsList.size() + 1; y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(hrStandingsList.size() - y);
+
         }
         i = rbiStandingsList.iterator();
         for (int y = 1; y < rbiStandingsList.size() + 1; y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(rbiStandingsList.size() - y);
         }
         i = sbStandingsList.iterator();
         for (int y = 1; y < sbStandingsList.size() + 1; y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(sbStandingsList.size() - y);
         }
         i = baStandingsList.iterator();
         for (int y = 1; y < baStandingsList.size() + 1; y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(baStandingsList.size() - y);
         }
         i = wStandingsList.iterator();
         for (int y = 1; y < wStandingsList.size() + 1; y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(wStandingsList.size() - y);
         }
         i = svStandingsList.iterator();
         for (int y = 1; y < svStandingsList.size() + 1; y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(svStandingsList.size() - y);
         }
         i = kStandingsList.iterator();
         for (int y = 1; y < kStandingsList.size() + 1; y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + y);
-            System.out.println(kStandingsList.size() - y);
         }
         i = eraStandingsList.iterator();
         for (int y = 0; y < eraStandingsList.size(); y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + eraStandingsList.size() - y);
-            System.out.println(eraStandingsList.size() - y);
         }
         i = whipStandingsList.iterator();
         for (int y = 0; y < whipStandingsList.size(); y++) {
             team = i.next().getObject();
             team.setTotalPoints(team.getTotalPoints()
                     + whipStandingsList.size() - y);
-            System.out.println(whipStandingsList.size() - y);
         }
+    }
+    /**
+     * . In order to do this first calculate the total money remaining in the
+     * draft (remaining money for all fantasy teams with spots to fill). Then,
+     * calculate the rank among players in all 5 of their categories, and
+     * determine the average rank of each player in their 5 categories. Once
+     * we've done this we'll know the top X hitters and top Y pitchers where X
+     * is the number of hitters needing to be drafted (total of all teams) and Y
+     * is the number of pitchers needing to be drafted (total of all teams).
+     * Finally, we can calculate the median salary as (total $ remaining)/(2 *
+     * X) for hitters and a similar calculation for pitchers. And so we can then
+     * calculate the estimated value for each player as the median hitter (or
+     * pithcher) salary * (X * 2/player rank).
+     */
+    public void calculateEstimatedValue() {
+        //first we will calculate remaning money
+        int money = 0;
+        for (BaseballTeam team : teams) {
+            money += team.getObvMoneyLeft();
+        }
+        //ok now we calculate rank of a hitter
+        int x = 0;
+        for (int i = 0; i < teams.size(); i++) {
+            x += teams.get(i).getHittersNeeded();
+        }
+        int medianSalary;
+        if (x != 0) {
+            medianSalary = money / (2 * x);
+        } else {
+            medianSalary = 0;
+        }
+        
+        //ok now we calculate median salary of a pitcher
+        int y = 0;
+        for (int i = 0; i < teams.size(); i++) {
+            y += teams.get(i).getPitchersNeeded();
+        }
+        int medianPitcherSalary;
+        if (y != 0) {
+            medianPitcherSalary = money / (2 * y);
+        } else {
+            medianPitcherSalary = 0;
+        }
+
+        //now we put each guy into a standings
+        ArrayList<BaseballPlayer> rstandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> rbistandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> sbstandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> bastandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> hrstandingsList = new ArrayList<>();
+
+        ArrayList<BaseballPlayer> wstandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> svstandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> kstandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> erastandingsList = new ArrayList<>();
+        ArrayList<BaseballPlayer> whipstandingsList = new ArrayList<>();
+        for (int i = 0; i < availablePlayers.size(); i++) {
+            if (!availablePlayers.get(i).isPitcher) {
+                rstandingsList.add(availablePlayers.get(i));
+                hrstandingsList.add(availablePlayers.get(i));
+                rbistandingsList.add(availablePlayers.get(i));
+                sbstandingsList.add(availablePlayers.get(i));
+                bastandingsList.add(availablePlayers.get(i));
+            } else {
+                wstandingsList.add(availablePlayers.get(i));
+                svstandingsList.add(availablePlayers.get(i));
+                kstandingsList.add(availablePlayers.get(i));
+                erastandingsList.add(availablePlayers.get(i));
+                whipstandingsList.add(availablePlayers.get(i));
+            }
+        }
+        //now we sort the list by each thing
+        rstandingsList.sort(new RunsComparator());
+        hrstandingsList.sort(new HRComparator());
+        rbistandingsList.sort(new RbiComparator());
+        sbstandingsList.sort(new SbComparator());
+        bastandingsList.sort(new BaComparator());
+
+        wstandingsList.sort(new WComparator());
+        svstandingsList.sort(new SvComparator());
+        kstandingsList.sort(new KComparator());
+        erastandingsList.sort(new EraComparator());
+        whipstandingsList.sort(new WhipComparator());
+
+        //now we loop through and calculate the players average standing
+        //and thus giving an estimated value
+        BaseballPlayer bbPlayer;
+        for (int i = 0; i < availablePlayers.size(); i++) {
+            bbPlayer = availablePlayers.get(i);
+            if (!bbPlayer.isPitcher) {
+                int bbPlayerStanding = 0;
+                bbPlayerStanding = (rstandingsList.indexOf(bbPlayer)
+                        + hrstandingsList.indexOf(bbPlayer) + rbistandingsList.indexOf(bbPlayer)
+                        + sbstandingsList.indexOf(bbPlayer) + bastandingsList.indexOf(bbPlayer) + 5)
+                        / 5;
+                if (medianSalary * ((x * 2) / bbPlayerStanding) == 0) {
+                    bbPlayer.setEstimatedValue(1);
+                } else {
+                    bbPlayer.setEstimatedValue(medianSalary * ((x * 2) / bbPlayerStanding));
+                }
+            } else {
+                int bbPlayerStanding = 0;
+                bbPlayerStanding = (wstandingsList.indexOf(bbPlayer)
+                        + svstandingsList.indexOf(bbPlayer) + kstandingsList.indexOf(bbPlayer)
+                        + erastandingsList.indexOf(bbPlayer) + whipstandingsList.indexOf(bbPlayer) + 5)
+                        / 5;
+
+                if (medianPitcherSalary * ((y * 2) / bbPlayerStanding) == 0) {
+                    bbPlayer.setEstimatedValue(1);
+                } else {
+                    bbPlayer.setEstimatedValue(medianPitcherSalary * ((y * 2) / bbPlayerStanding));
+                }
+            }
+        }
+        observablePlayers.clear();
+        observablePlayers.addAll(availablePlayers);
+
     }
 
     public void addPlayer(BaseballPlayer player) {
@@ -300,15 +416,26 @@ public class Draft {
     /**
      * @return the pickOrder
      */
-    public ArrayList<BaseballPlayer> getPickOrder() {
+    public ObservableList getPickOrder() {
         return pickOrder;
+    }
+    public void addPick(Pick pick){
+        this.pickOrder.add(pick);
+    }
+    public void removePick(Pick pick){
+        this.pickOrder.remove(pick);
+        //ok so we need to make sure the pick orders arnt all skrewd up
+        for(int x = 0 ; x < pickOrder.size() ; x++){
+            Pick p = pickOrder.get(x);
+            p.setPickOrder(x+1);
+        }
     }
 
     /**
      * @param pickOrder the pickOrder to set
      */
-    public void setPickOrder(ArrayList<BaseballPlayer> pickOrder) {
-        this.pickOrder = pickOrder;
+    public void setPickOrder(ArrayList<Pick> pickOrder) {
+        this.pickOrder.setAll(pickOrder);
     }
 
     public void sortTeams() {

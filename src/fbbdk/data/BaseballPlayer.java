@@ -27,6 +27,7 @@ public class BaseballPlayer extends Player{
     DoubleProperty eraSB;
     DoubleProperty whipBA;
     
+    Double standing;
     //in fantasy baseball a player can only be a pitcher or hitter
     boolean isPitcher;
     
@@ -41,8 +42,15 @@ public class BaseballPlayer extends Player{
         kRBI = new SimpleIntegerProperty();
         eraSB = new SimpleDoubleProperty();
         whipBA = new SimpleDoubleProperty();
-    
+        standing = 0.0;
     }
+    public void setStanding(double standings){
+        standing = standings;
+}
+    public double getStanding(){
+        return standing;
+    }
+
     public boolean isPitcher(){
         return isPitcher;
     }

@@ -383,6 +383,9 @@ public class EditPlayerDialog extends Stage {
         setTitle(TITLE);
         //first lets do the images
         player = playerToEdit;
+        if(player == null){
+            return;
+        }
         try {
             playerPicture = new Image("file:" + PATH_PLAYER_IMAGES + playerToEdit.getLastName()
                     + playerToEdit.getFirstName() + JPG_EXTENTION);

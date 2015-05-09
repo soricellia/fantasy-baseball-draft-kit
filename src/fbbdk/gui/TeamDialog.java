@@ -150,7 +150,7 @@ public class TeamDialog extends Stage {
     public BaseballTeam showAddTeamDialog() {
         // SET THE DIALOG TITLE
         setTitle(ADD_TEAM_TITLE);
-
+        nameTextField.requestFocus();
         // RESET THE SCHEDULE ITEM OBJECT WITH DEFAULT VALUES
         team = new BaseballTeam();
 

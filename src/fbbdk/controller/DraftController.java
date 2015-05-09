@@ -12,6 +12,7 @@ import fbbdk.data.BaseballPlayer;
 import fbbdk.data.BaseballTeam;
 import fbbdk.data.Draft;
 import fbbdk.data.DraftDataManager;
+import fbbdk.data.Pick;
 import fbbdk.gui.EditPlayerDialog;
 import static fbbdk.gui.EditPlayerDialog.FREE_AGENT;
 import fbbdk.gui.Fdk_gui;
@@ -66,6 +67,7 @@ public class DraftController {
             ddm.getDraft().addTeam(team);
             //update the gui
             screen.updateScreen(team);
+            gui.getDataManager().getDraft().calculateEstimatedValue();
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         } else {
@@ -117,12 +119,21 @@ public class DraftController {
             //update gui
             screen.updateScreen(null);
 
+            //calculate the estimated value
+            gui.getDataManager().getDraft().calculateEstimatedValue();
+
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         }
 
     }
 
+    /**
+     * adding a player is simply means adding a NEW player to the
+     * availablePlayers list see editPlayer to add a player to a team
+     *
+     * @param gui
+     */
     public void handleAddPlayerRequest(Fdk_gui gui) {
         DraftDataManager ddm = gui.getDataManager();
         Draft draft = ddm.getDraft();
@@ -130,11 +141,12 @@ public class DraftController {
 
         // DID THE USER CONFIRM?
         if (addPlayerDialog.wasCompleteSelected()) {
-            // GET THE SCHEDULE ITEM
+            // GET THE PLAYER
             BaseballPlayer player = addPlayerDialog.getPlayer();
 
             // AND ADD IT AS A ROW TO THE TABLE
             draft.addPlayer(player);
+
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         } else {
@@ -147,7 +159,9 @@ public class DraftController {
         DraftDataManager ddm = gui.getDataManager();
         Draft draft = ddm.getDraft();
         editPlayerDialog.showEditPlayerDialog(playerToEdit);
-
+        if (playerToEdit == null) {
+            return;
+        }
         // DID THE USER CONFIRM?
         if (editPlayerDialog.wasCompleteSelected()) {
             // UPDATE THE SCHEDULE ITEM
@@ -168,7 +182,7 @@ public class DraftController {
                     //them add him to the free agents pool
                     //we will do this in one step
                     draft.addPlayer(
-                            searchAndRemovePlayerFromTeam(teams, player));
+                            searchAndRemovePlayerFromTeam(teams, player,ddm));
                 }
             } //ok hes not going to the free agents so we need to add him to a team
             else {
@@ -176,7 +190,12 @@ public class DraftController {
                 for (int x = 0; x < teams.size(); x++) {
                     if (teams.get(x).equals(playersTeam)) {
                         teams.get(x).addPlayer(player);
-
+                        //add the new pick
+                        Pick pick = new Pick(ddm.getDraft().getPickOrder().size()+1,
+                            player.getFirstName(),player.getLastName(),teams.get(x).getTeamName(),
+                          player.getContract(),player.getSalary(),player.getEstimatedValue());
+                          System.out.println(pick.getEstimatedValue());
+                          ddm.getDraft().addPick(pick);
                         //make sure to update totalpoints
                         draft.calculateTotalPoints();
                         draft.getObservableTeams().clear();
@@ -185,15 +204,22 @@ public class DraftController {
 
                     } else if (teams.get(x).getPlayers().contains(player)) {
                         teams.get(x).removePlayer(player);
-
+                        ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size()+1,
+                            player.getFirstName(),player.getLastName(),teams.get(x).getTeamName(),
+                          player.getContract(),player.getSalary(),player.getEstimatedValue()));
                         //make sure to update totalpoints
                         draft.calculateTotalPoints();
                         draft.getObservableTeams().clear();
                         draft.getObservableTeams().setAll(teams);
+
                     }
 
                 }
             }
+            //AFTER THE PLAYER IS ADDED WE NOW NEED TO REDUE THE ESTIMATED VALUE
+            draft.calculateEstimatedValue();
+            gui.getPlayerScreen().updateTable();
+          
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         } else {
@@ -217,7 +243,7 @@ public class DraftController {
         }
     }
 
-    private BaseballPlayer searchAndRemovePlayerFromTeam(ArrayList<BaseballTeam> teams, BaseballPlayer player) {
+    private BaseballPlayer searchAndRemovePlayerFromTeam(ArrayList<BaseballTeam> teams, BaseballPlayer player, DraftDataManager ddm) {
         //ill use these guy
         BaseballPlayer playerIterator;
         BaseballTeam teamIterator;
@@ -232,7 +258,9 @@ public class DraftController {
                 if (playerIterator.equals(player)) {
                     //ok we found him we need to remove him
                     teams.get(x).removePlayer(player);
-
+                    ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size()+1,
+                            playerIterator.getFirstName(),playerIterator.getLastName(),teamIterator.getTeamName(),
+                          playerIterator.getContract(),playerIterator.getSalary(),playerIterator.getEstimatedValue()));
                     //make sure to update totalpoints
                     draft.calculateTotalPoints();
                     draft.getObservableTeams().clear();
@@ -245,6 +273,9 @@ public class DraftController {
                 if (playerIterator.equals(player)) {
                     //same thing we found him and we need to remove him
                     teams.get(x).removeTaxiPlayer(player);
+                    ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size()+1,
+                            playerIterator.getFirstName(),playerIterator.getLastName(),teams.get(x).getTeamName(),
+                          playerIterator.getContract(),playerIterator.getSalary(),playerIterator.getEstimatedValue()));
                     draft.getObservableTeams().clear();
                     draft.getObservableTeams().setAll(teams);
 

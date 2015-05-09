@@ -146,7 +146,12 @@ public class Fdk_gui implements DraftDataView {
     public DraftSiteExporter getSiteExporter() {
         return draftSiteExporter;
     }
-
+    public HomeScreen getHomeScreen(){
+        return homeScreen;
+    }
+    public PlayerScreen getPlayerScreen(){
+        return playerScreen;
+    }
     /**
      * Accessor method for the window (i.e. stage).
      *

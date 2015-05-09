@@ -141,6 +141,8 @@ public class JsonDraftFileManager implements DraftFileManager {
         array = json.getJsonArray(JSON_PITCHER);
         //now we can load the pitchers
         loadNewPitchers(draftToLoad, array);
+        
+        draftToLoad.calculateEstimatedValue();
 
     }
 
@@ -462,6 +464,8 @@ public class JsonDraftFileManager implements DraftFileManager {
         loadTeams(draftToLoad, jsonTeamsArray);
         draftToLoad.setDraftName(json.getString(JSON_DRAFT_NAME));
         
+        //lets set the estimated value now
+        draftToLoad.calculateEstimatedValue();
         //now set the observablePlayers
         draftToLoad.setObservablePlayers();
     }

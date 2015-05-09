@@ -63,7 +63,7 @@ public abstract class Player implements Comparable{
         
     }
     public int getEstimatedValue(){
-        return -1;
+        return estimatedValue.get();
     }
     public void setEstimatedValue(int value){
         this.estimatedValue.set(value);

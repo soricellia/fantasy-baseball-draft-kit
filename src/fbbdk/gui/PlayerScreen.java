@@ -471,6 +471,7 @@ public class PlayerScreen extends BorderPane {
     }
     public void updateTable(){
         playerTable.setItems(dataManager.getDraft().getObservablePlayers());
+        playerTableController.handleSearchTextRequest(searchText.getText());
     }
     private void initEventHandlers() {
 

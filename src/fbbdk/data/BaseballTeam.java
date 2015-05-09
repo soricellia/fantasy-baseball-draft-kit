@@ -90,6 +90,7 @@ public class BaseballTeam extends Team {
         playersNeeded = new SimpleIntegerProperty();
         playersNeeded.set(MAX_TEAM_SIZE);
         obvMoneyLeft = new SimpleIntegerProperty();
+        obvMoneyLeft.set(MAX_MONEY);
         moneyPerPlayer = new SimpleIntegerProperty();
         runs = new SimpleIntegerProperty();
         hr = new SimpleIntegerProperty();
@@ -125,6 +126,12 @@ public class BaseballTeam extends Team {
 
     public int getPlayersNeeded() {
         return playersNeeded.get();
+    }
+    public int getHittersNeeded(){
+        return (MAX_TEAM_SIZE-9) - c-fb-ci-tb-sb-mi-ss-of- u ;
+    }
+    public int getPitchersNeeded(){
+        return 9 - p;
     }
 
     public void setPlayersNeeded(int playersNeeded) {

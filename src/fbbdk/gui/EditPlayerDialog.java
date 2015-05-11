@@ -58,7 +58,7 @@ public class EditPlayerDialog extends Stage {
 
     Scene dialogScene;
 
-    //these things go into the adddialog 
+    //these things go into the adddialog
     Label dialogEditHeadingLabel;
 
     ImageView playerPicturePane;
@@ -230,42 +230,56 @@ public class EditPlayerDialog extends Stage {
         EventHandler completeCancelHandler = (EventHandler<ActionEvent>) (ActionEvent ae) -> {
             Button sourceButton = (Button) ae.getSource();
             if (sourceButton.getText().equals(COMPLETE)) {
+                if (!draft.playerDraftEnded()) {
+                    if (dialogEditPlayerSalaryTextField == null
+                            || dialogEditPlayerSalaryTextField.getText().isEmpty()) {
+                        //need to pop up an error message
+                        messageDialog.show(props.getProperty(NO_PLAYER_SALARY_MESSAGE.toString()));
+                    } else {
+                        //we are going to try to set the players salary
+                        //this will throw if the players salary is not a number
+                        //in which case we need to handle the error
+                        try {
+                            int salary = Integer.parseInt(dialogEditPlayerSalaryTextField.getText());
+                            if (salary < 1) {
+                                messageDialog.show(props.getProperty(NEED_HIGHER_SALARY_MESSAGE));
+                                return;
+                            }
+                            //we dont want to allow the user to select a salary
+                            //that will put them over budget
 
-                if (dialogEditPlayerSalaryTextField == null
-                        || dialogEditPlayerSalaryTextField.getText().isEmpty()) {
-                    //need to pop up an error message
-                    messageDialog.show(props.getProperty(NO_PLAYER_SALARY_MESSAGE.toString()));
-                } else {
-                    //we are going to try to set the players salary
-                    //this will throw if the players salary is not a number
-                    //in which case we need to handle the error
-                    try {
-                        int salary = Integer.parseInt(dialogEditPlayerSalaryTextField.getText());
-                        if (salary < 1) {
-                            messageDialog.show(props.getProperty(NEED_HIGHER_SALARY_MESSAGE));
-                            return;
-                        }
-                        //we dont want to allow the user to select a salary
-                        //that will put them over budget
-                        if (salary > maxSalaryAllowance) {
-                            messageDialog.show(props.getProperty(NEED_HIGHER_SALARY_MESSAGE));
-                            return;
-                        }
-                        player.setSalary(salary);
+                            BaseballTeam team = dialogEditPlayerTeamComboBox
+                                    .getSelectionModel().getSelectedItem();
+                            if (team.getPlayers().contains(player)) {
+                                player.setSalary(salary);
+                            } else if (salary > maxSalaryAllowance) {
+                                messageDialog.show(props.getProperty(NEED_HIGHER_SALARY_MESSAGE));
+                                return;
+                            } else {
+                                player.setSalary(salary);
+                            }
 
-                        if (dialogEditPlayerPositionComboBox.getSelectionModel()
-                                .getSelectedItem() != null) {
-                            player.setPosition(dialogEditPlayerPositionComboBox
-                                    .getSelectionModel().getSelectedItem());
+                            if (dialogEditPlayerPositionComboBox.getSelectionModel()
+                                    .getSelectedItem() != null) {
+                                player.setPosition(dialogEditPlayerPositionComboBox
+                                        .getSelectionModel().getSelectedItem());
+                            }
+                            player.setContract(dialogEditPlayerContractComboBox.getSelectionModel()
+                                    .getSelectedItem());
+                            this.selection = sourceButton.getText();
+                            this.hide();
+                        } catch (NumberFormatException e) {
+                            //hey! we dont want bad data!
+                            messageDialog.show(props.getProperty(ILLEGAL_PLAYER_SALARY_MESSAGE.toString()));
                         }
-                        player.setContract(dialogEditPlayerContractComboBox.getSelectionModel()
-                                .getSelectedItem());
-                        this.selection = sourceButton.getText();
-                        this.hide();
-                    } catch (NumberFormatException e) {
-                        //hey! we dont want bad data!
-                        messageDialog.show(props.getProperty(ILLEGAL_PLAYER_SALARY_MESSAGE.toString()));
                     }
+                } else {
+                    player.setSalary(0);
+                      player.setContract("X");
+                    player.setPosition(player.getPositions());
+                    //this will happen when cancel button is pressed
+                    this.selection = sourceButton.getText();
+                    this.hide();
                 }
             } else {
                 //this will happen when cancel button is pressed
@@ -278,71 +292,65 @@ public class EditPlayerDialog extends Stage {
         dialogCompleteButton.setOnAction(completeCancelHandler);
         dialogCancelButton.setOnAction(completeCancelHandler);
 
-        //we will set the onAction for this combo box
-        //it needs to change the positions needed for each team
-        dialogEditPlayerTeamComboBox.setOnAction(e -> {
-            //this is for when the program sets the combo box up when this
-            //dialog is first shown. The selected Item will be null before
-            //the team is selected
-            if (dialogEditPlayerTeamComboBox.getSelectionModel()
-                    .getSelectedItem() == null) {
-                return;
-            }
-            if (draft.getTeams() != null) {
-                //first we will clear the combo box
-                dialogEditPlayerPositionComboBox.getItems().clear();
-                //now we can add the needed positions
-                dialogEditPlayerPositionComboBox.getItems().addAll(
-                        buildNeededPlayerPositionList(player));
-                //now we need to select something
-                dialogEditPlayerPositionComboBox.getSelectionModel().selectFirst();
-            }
-        });
-
         //now we want to be responseive when the enter key or esacpe key is
         //pressed
         dialogEditPlayerSalaryTextField.setOnKeyPressed((KeyEvent e) -> {
             if (e.getCode().equals(KeyCode.ENTER)) {
                 //we need some kind of text here before we start doing error
                 //checking
-                if (dialogEditPlayerSalaryTextField == null
-                        || dialogEditPlayerSalaryTextField.getText().isEmpty()) {
-                    //need to pop up an error message
-                    messageDialog.show(props.getProperty(NO_PLAYER_SALARY_MESSAGE.toString()));
-                } else {
-                    //we are going to try to set the players salary
-                    //this will throw if the players salary is not a number
-                    //in which case we need to handle the error
-                    try {
-                        //this is where the try catch comes in
-                        int salary = Integer.parseInt(dialogEditPlayerSalaryTextField.getText());
-                        //we cant have a salary less than 1
-                        if (salary < 1) {
-                            messageDialog.show(props.getProperty(SALARY_LESS_THAN_ONE_MESSAGE));
-                            return;
-                        }
-                        //we dont want to allow the user to select a salary
-                        //that will put them over budget
-                        if (salary > maxSalaryAllowance) {
-                            messageDialog.show(props.getProperty(NEED_HIGHER_SALARY_MESSAGE));
-                            return;
-                        }
-                        player.setSalary(salary);
+                if (!draft.playerDraftEnded()) {
+                    if (dialogEditPlayerSalaryTextField == null
+                            || dialogEditPlayerSalaryTextField.getText().isEmpty()) {
+                        //need to pop up an error message
+                        messageDialog.show(props.getProperty(NO_PLAYER_SALARY_MESSAGE.toString()));
+                    } else {
+                        //we are going to try to set the players salary
+                        //this will throw if the players salary is not a number
+                        //in which case we need to handle the error
+                        try {
+                            //this is where the try catch comes in
+                            int salary = Integer.parseInt(dialogEditPlayerSalaryTextField.getText());
+                            //we cant have a salary less than 1
+                            if (salary < 1) {
+                                messageDialog.show(props.getProperty(SALARY_LESS_THAN_ONE_MESSAGE));
+                                return;
+                            }
+                            //we dont want to allow the user to select a salary
+                            //that will put them over budget
 
-                        if (dialogEditPlayerPositionComboBox.getSelectionModel()
-                                .getSelectedItem() != null) {
-                            player.setPosition(dialogEditPlayerPositionComboBox
-                                    .getSelectionModel().getSelectedItem());
-                        }
-                        player.setContract(dialogEditPlayerContractComboBox.getSelectionModel()
-                                .getSelectedItem());
-                        this.selection = COMPLETE;
-                        this.hide();
-                    } catch (NumberFormatException nfe) {
-                        //hey! we dont want bad data!
-                        messageDialog.show(props.getProperty(ILLEGAL_PLAYER_SALARY_MESSAGE.toString()));
-                    }//end catch
-                }//end else
+                            BaseballTeam team = dialogEditPlayerTeamComboBox
+                                    .getSelectionModel().getSelectedItem();
+                            if (team.getPlayers().contains(player)) {
+                                player.setSalary(salary);
+                            } else if (salary > maxSalaryAllowance) {
+                                messageDialog.show(props.getProperty(NEED_HIGHER_SALARY_MESSAGE));
+                                return;
+                            } else {
+                                player.setSalary(salary);
+                            }
+
+                            if (dialogEditPlayerPositionComboBox.getSelectionModel()
+                                    .getSelectedItem() != null) {
+                                player.setPosition(dialogEditPlayerPositionComboBox
+                                        .getSelectionModel().getSelectedItem());
+                            }
+                            player.setContract(dialogEditPlayerContractComboBox.getSelectionModel()
+                                    .getSelectedItem());
+                            this.selection = COMPLETE;
+                            this.hide();
+                        } catch (NumberFormatException nfe) {
+                            //hey! we dont want bad data!
+                            messageDialog.show(props.getProperty(ILLEGAL_PLAYER_SALARY_MESSAGE.toString()));
+                        }//end catch
+                    }//end else
+                } else {
+                    player.setSalary(0);
+                    //this will happen when cancel button is pressed
+                    player.setContract("X");
+                    player.setPosition(player.getPositions());
+                    this.selection = COMPLETE;
+                    this.hide();
+                }
             }//end if enter
             //now we will check if esc was pressed
             else if (e.getCode().equals(KeyCode.ESCAPE)) {
@@ -352,6 +360,8 @@ public class EditPlayerDialog extends Stage {
             }
         });
 
+        //we will set the onAction for this combo box
+        //it needs to change the positions needed for each team
         //now we dont want to have the user create a player salary that will
         //throw the user over budget
         dialogEditPlayerTeamComboBox.setOnAction(e -> {
@@ -375,6 +385,13 @@ public class EditPlayerDialog extends Stage {
                 maxSalaryAllowance = team.maxSalaryAllowance();
                 //and lets not forget to enable the salaryTextField
                 dialogEditPlayerSalaryTextField.setEditable(true);
+                //first we will clear the combo box
+                dialogEditPlayerPositionComboBox.getItems().clear();
+                //now we can add the needed positions
+                dialogEditPlayerPositionComboBox.getItems().addAll(
+                        buildNeededPlayerPositionList(player));
+                //now we need to select something
+                dialogEditPlayerPositionComboBox.getSelectionModel().selectFirst();
             }
         });
     }
@@ -383,7 +400,7 @@ public class EditPlayerDialog extends Stage {
         setTitle(TITLE);
         //first lets do the images
         player = playerToEdit;
-        if(player == null){
+        if (player == null) {
             return;
         }
         try {
@@ -408,7 +425,14 @@ public class EditPlayerDialog extends Stage {
         dialogEditPlayerNameLabel.setText(playerToEdit.getFirstName() + " "
                 + playerToEdit.getLastName());
 
-        //this is for the free agent pool. if this is select that means this 
+        //NOW WE SET UP THE CONTRACT COMBO BOX
+        dialogEditPlayerContractComboBox.getItems().clear();
+        for (int x = 0; x < contractType.length; x++) {
+            dialogEditPlayerContractComboBox.getItems()
+                    .add(contractType[x]);
+        }
+        dialogEditPlayerContractComboBox.getSelectionModel().selectFirst();
+        //this is for the free agent pool. if this is select that means this
         //player should show up in the availblePlayers list
         freeAgent = new BaseballTeam();
         freeAgent.setTeamName(FREE_AGENT);
@@ -437,6 +461,30 @@ public class EditPlayerDialog extends Stage {
         dialogEditPlayerPositionLabel.setText(playerPositionString(player));
 
         dialogEditPlayerSalaryTextField.setText("" + player.getSalary());
+        dialogEditPlayerSalaryTextField.setEditable(true);
+
+        //NOW WE DEAL WITH THE CASE WHERE THE PLAYER DRAFT IS ENDED
+        if (draft.playerDraftEnded()) {
+            //ok we need to set all the teams now
+            dialogEditPlayerTeamComboBox.getItems().clear();
+            for (int x = 0; x < draft.getTeams().size(); x++) {
+                if (draft.getTeams().get(x).needsMoreTaxiDraftPlayers()) {
+                    dialogEditPlayerTeamComboBox.getItems().add(draft.getTeams().get(x));
+                }
+            }
+            dialogEditPlayerTeamComboBox.getSelectionModel().selectFirst();
+            //now we add all players positions
+            dialogEditPlayerPositionComboBox.getItems().clear();
+            dialogEditPlayerPositionComboBox.getItems().addAll(buildTaxiPlayerPositionList(player));
+            dialogEditPlayerPositionComboBox.getSelectionModel().selectFirst();
+            //now we just want to set the contract combo box
+            dialogEditPlayerContractComboBox.getItems().clear();
+            dialogEditPlayerContractComboBox.getItems().add("X");
+            dialogEditPlayerContractComboBox.getSelectionModel().selectFirst();
+            //AND WE SET THE SALARY TEXT FIELD TO DISPLAY 0 AND MAKE IT NOT EDITABLE
+            dialogEditPlayerSalaryTextField.setText("0");
+            dialogEditPlayerSalaryTextField.setEditable(false);
+        }
         this.showAndWait();
     }
 
@@ -450,6 +498,15 @@ public class EditPlayerDialog extends Stage {
             positions += tokens.nextToken() + SPACE;
         }
         return positions.trim();
+    }
+
+    private ArrayList<String> buildTaxiPlayerPositionList(BaseballPlayer player) {
+        ArrayList<String> positions = new ArrayList<>();
+        StringTokenizer tokens = new StringTokenizer(player.getPositions(), UNDER_SCORE);
+        while (tokens.hasMoreTokens()) {
+            positions.add(tokens.nextToken());
+        }
+        return positions;
     }
 
     private ArrayList<String> buildNeededPlayerPositionList(BaseballPlayer player) {
@@ -471,10 +528,13 @@ public class EditPlayerDialog extends Stage {
             //we can just add everything
             return positions;
         }
+        if (team.getNeededPlayerPositions() == null) {
+            neededPositions.add(player.getPosition());
+            return neededPositions;
+        }
         //now we will get the positions
         StringTokenizer teamsNeededPositions = new StringTokenizer(
                 team.getNeededPlayerPositions(), UNDER_SCORE);
-
         //and now we have to compare positions
         while (teamsNeededPositions.hasMoreTokens()) {
             String temp = teamsNeededPositions.nextToken();
@@ -511,6 +571,12 @@ public class EditPlayerDialog extends Stage {
 
             }
         }//end while
+        //now we check if the player is on the team
+        if (team.getPlayers().contains(player)) {
+            if (!neededPositions.contains(player.getPosition())) {
+                neededPositions.add(player.getPosition());
+            }
+        }
         return neededPositions;
     }
 
@@ -532,7 +598,11 @@ public class EditPlayerDialog extends Stage {
         ArrayList<BaseballTeam> teams = draft.getTeams();
         ArrayList<BaseballTeam> useableTeams = new ArrayList<>();
         for (int x = 0; x < teams.size(); x++) {
+
             if (teams.get(x).canUsePlayer(player)) {
+                useableTeams.add(teams.get(x));
+            } //if the team already has the player we want to add the team
+            else if (teams.get(x).getPlayers().contains(player)) {
                 useableTeams.add(teams.get(x));
             }
         }

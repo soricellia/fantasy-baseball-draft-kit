@@ -307,7 +307,7 @@ public class HomeScreen extends BorderPane {
 
         taxiPane.getStyleClass().add(BORDER_STYLE);
         //first init the player table
-        taxiTable = createTable(taxiTable);
+        taxiTable = createTaxiTable(taxiTable);
 
         taxiPane.setCenter(taxiTable);
 
@@ -326,69 +326,150 @@ public class HomeScreen extends BorderPane {
         positionColumn.setEditable(false);
         positionColumn.setCellValueFactory(new PropertyValueFactory<>("position"));
         positionColumn.setPrefWidth(100);
-        
+
         firstNameColumn = new TableColumn<>(FIRST_NAME_COLUMN);
         firstNameColumn.setEditable(false);
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         firstNameColumn.setPrefWidth(120);
-        
+
         lastNameColumn = new TableColumn<>(LAST_NAME_COLUMN);
         lastNameColumn.setEditable(false);
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         lastNameColumn.setPrefWidth(120);
-        
+
         proTeamColumn = new TableColumn<>(PRO_TEAM_COLUMN);
         proTeamColumn.setEditable(false);
         proTeamColumn.setCellValueFactory(new PropertyValueFactory<>("mlbTeam"));
         proTeamColumn.setPrefWidth(100);
-        
+
         positionsColumn = new TableColumn<>(POSITIONS_COLUMN);
         positionsColumn.setEditable(false);
         positionsColumn.setCellValueFactory(new PropertyValueFactory<>("positions"));
         positionsColumn.setPrefWidth(100);
-        
+
         contractColumn = new TableColumn<>(CONTRACT_COLUMN);
         contractColumn.setEditable(false);
         contractColumn.setCellValueFactory(new PropertyValueFactory<>("contract"));
         contractColumn.setPrefWidth(100);
-        
+
         winRunColumn = new TableColumn<>(RUN_WIN_COLUMN);
         winRunColumn.setEditable(false);
         winRunColumn.setCellValueFactory(new PropertyValueFactory<>("winRun"));
         winRunColumn.setPrefWidth(100);
-        
+
         savesHRColumn = new TableColumn<>(HR_SV_COLUMN);
         savesHRColumn.setEditable(false);
         savesHRColumn.setCellValueFactory(new PropertyValueFactory<>("savesHR"));
         savesHRColumn.setPrefWidth(100);
-        
+
         kRBIColumn = new TableColumn<>(RBI_K_COLUMN);
         kRBIColumn.setEditable(false);
         kRBIColumn.setCellValueFactory(new PropertyValueFactory<>("kRBI"));
         kRBIColumn.setPrefWidth(100);
-        
+
         eraSBColumn = new TableColumn<>(SB_ERA_COLUMN);
         eraSBColumn.setEditable(false);
         eraSBColumn.setCellValueFactory(new PropertyValueFactory<>("eraSB"));
         eraSBColumn.setPrefWidth(100);
-        
+
         whipBAColumn = new TableColumn<>(BA_WHIP_COLUMN);
         whipBAColumn.setEditable(false);
         whipBAColumn.setCellValueFactory(new PropertyValueFactory<>("whipBA"));
         whipBAColumn.setPrefWidth(100);
-        
+
         evColumn = new TableColumn<>(ESTIMATED_VALUE_COLUMN);
         evColumn.setEditable(false);
         evColumn.setCellValueFactory(new PropertyValueFactory<>("estimatedValue"));
         evColumn.setPrefWidth(110);
-        
+
         salaryColumn = new TableColumn<>(SALARY_COLUMN);
         salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
         salaryColumn.setPrefWidth(100);
-        
+
         //now we can add all of these bad girls to the table
         table.getColumns().addAll(positionColumn, firstNameColumn, lastNameColumn,
                 proTeamColumn, positionsColumn, contractColumn, winRunColumn,
+                savesHRColumn, kRBIColumn, eraSBColumn, whipBAColumn, evColumn,
+                salaryColumn);
+        //make the playerTable editable
+        table.setEditable(true);
+        //add the data to the table
+        table.setItems(null);
+        //ok now lets make the playerTable a bit bigger
+        table.setPrefHeight(600);
+        return table;
+    }
+
+    private TableView<BaseballPlayer> createTaxiTable(TableView<BaseballPlayer> table) {
+
+        //first init the player table
+        table = new TableView<>();
+
+        //and the table colums
+        //note that some of the column headings are not set
+        //this will be done later in an action listener
+        positionColumn = new TableColumn<>(POSITIONS_COLUMN);
+        positionColumn.setEditable(false);
+        positionColumn.setCellValueFactory(new PropertyValueFactory<>("positions"));
+        positionColumn.setPrefWidth(100);
+
+        firstNameColumn = new TableColumn<>(FIRST_NAME_COLUMN);
+        firstNameColumn.setEditable(false);
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        firstNameColumn.setPrefWidth(120);
+
+        lastNameColumn = new TableColumn<>(LAST_NAME_COLUMN);
+        lastNameColumn.setEditable(false);
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        lastNameColumn.setPrefWidth(120);
+
+        proTeamColumn = new TableColumn<>(PRO_TEAM_COLUMN);
+        proTeamColumn.setEditable(false);
+        proTeamColumn.setCellValueFactory(new PropertyValueFactory<>("mlbTeam"));
+        proTeamColumn.setPrefWidth(100);
+
+        contractColumn = new TableColumn<>(CONTRACT_COLUMN);
+        contractColumn.setEditable(false);
+        contractColumn.setCellValueFactory(new PropertyValueFactory<>("contract"));
+        contractColumn.setPrefWidth(100);
+
+        winRunColumn = new TableColumn<>(RUN_WIN_COLUMN);
+        winRunColumn.setEditable(false);
+        winRunColumn.setCellValueFactory(new PropertyValueFactory<>("winRun"));
+        winRunColumn.setPrefWidth(100);
+
+        savesHRColumn = new TableColumn<>(HR_SV_COLUMN);
+        savesHRColumn.setEditable(false);
+        savesHRColumn.setCellValueFactory(new PropertyValueFactory<>("savesHR"));
+        savesHRColumn.setPrefWidth(100);
+
+        kRBIColumn = new TableColumn<>(RBI_K_COLUMN);
+        kRBIColumn.setEditable(false);
+        kRBIColumn.setCellValueFactory(new PropertyValueFactory<>("kRBI"));
+        kRBIColumn.setPrefWidth(100);
+
+        eraSBColumn = new TableColumn<>(SB_ERA_COLUMN);
+        eraSBColumn.setEditable(false);
+        eraSBColumn.setCellValueFactory(new PropertyValueFactory<>("eraSB"));
+        eraSBColumn.setPrefWidth(100);
+
+        whipBAColumn = new TableColumn<>(BA_WHIP_COLUMN);
+        whipBAColumn.setEditable(false);
+        whipBAColumn.setCellValueFactory(new PropertyValueFactory<>("whipBA"));
+        whipBAColumn.setPrefWidth(100);
+
+        evColumn = new TableColumn<>(ESTIMATED_VALUE_COLUMN);
+        evColumn.setEditable(false);
+        evColumn.setCellValueFactory(new PropertyValueFactory<>("estimatedValue"));
+        evColumn.setPrefWidth(110);
+
+        salaryColumn = new TableColumn<>(SALARY_COLUMN);
+        salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
+        salaryColumn.setPrefWidth(100);
+
+        //now we can add all of these bad girls to the table
+        table.getColumns().addAll(positionColumn, firstNameColumn, lastNameColumn,
+                proTeamColumn, contractColumn, winRunColumn,
                 savesHRColumn, kRBIColumn, eraSBColumn, whipBAColumn, evColumn,
                 salaryColumn);
         //make the playerTable editable
@@ -404,9 +485,17 @@ public class HomeScreen extends BorderPane {
         //first lets init the controller
         DraftController tec = new DraftController(primaryStage,
                 dataManager.getDraft(), messageDialog, yesNoCancelDialog);
+
         draftNameTextField.textProperty().addListener((observable, oldValue, newValue) -> {
-            dataManager.getDraft().setDraftName(newValue);
+            if (newValue.isEmpty()) {
+                gui.cantSave(true);
+            } else {
+                gui.cantSave(false);
+                dataManager.getDraft().setDraftName(newValue);
+            }
+
         });
+
         addTeamButton.setOnAction(e -> {
             tec.handleAddTeamRequest(gui, this);
         });
@@ -431,7 +520,7 @@ public class HomeScreen extends BorderPane {
                 if (playerTable.getSelectionModel().getSelectedIndex() == -1) {
                     playerTable.getSelectionModel().select(0);
                 }
-                
+
                 if (playerTable.getSelectionModel().getSelectedItem() == null) {
 
                     PropertiesManager props = PropertiesManager.getPropertiesManager();
@@ -479,10 +568,15 @@ public class HomeScreen extends BorderPane {
 
                 //    playerTable.getItems().clear();
             }
-
             playerTable.setItems(team.getObservablePlayers());
-
+            
             taxiTable.setItems(team.getObservableTaxiPlayers());
+            team.getObservablePlayers().clear();
+            team.getObservablePlayers().setAll(team.getPlayers());
+            
+            team.getObservableTaxiPlayers().clear();
+            team.getObservableTaxiPlayers().setAll(team.getTaxiPlayers());
+
         } else {
             removeTeamButton.setDisable(true);
             editTeamButton.setDisable(true);

@@ -20,16 +20,18 @@ public class Pick {
     private StringProperty firstName;
     private StringProperty lastName;
     private StringProperty teamName;
+    private StringProperty position;
     private StringProperty contract;
     private IntegerProperty salary;
     private IntegerProperty estimatedValue;
     
-    public Pick(int pickOrder, String firstName, String lastName, String teamName, String contract, int salary,int estimatedValue) {
+    public Pick(int pickOrder, String firstName, String lastName, String teamName,String position, String contract, int salary,int estimatedValue) {
         //init the fields
         this.pickOrder = new SimpleIntegerProperty();
         this.firstName = new SimpleStringProperty();
         this.lastName = new SimpleStringProperty();
         this.teamName = new SimpleStringProperty();
+        this.position = new SimpleStringProperty();
         this.contract = new SimpleStringProperty();
         this.salary = new SimpleIntegerProperty();
         this.estimatedValue = new SimpleIntegerProperty();
@@ -38,9 +40,16 @@ public class Pick {
         this.firstName.set(firstName);
         this.lastName.set(lastName);
         this.teamName.set(teamName);
+        this.position.set(position);
         this.contract.set(contract);
         this.salary.set(salary);
         this.estimatedValue.set(estimatedValue);
+    }
+    public String getPosition(){
+        return position.get();
+    }
+    public void setPosition(String position){
+        this.position.set(position);
     }
 
     public int getPickOrder() {

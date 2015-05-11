@@ -9,6 +9,7 @@ import fbbdk.Comparators.BaComparator;
 import fbbdk.Comparators.EraComparator;
 import fbbdk.Comparators.HRComparator;
 import fbbdk.Comparators.KComparator;
+import fbbdk.Comparators.LastNameComparator;
 import fbbdk.Comparators.RbiComparator;
 import fbbdk.Comparators.RunsComparator;
 import fbbdk.Comparators.SbComparator;
@@ -212,6 +213,7 @@ public class Draft {
                     + whipStandingsList.size() - y);
         }
     }
+
     /**
      * . In order to do this first calculate the total money remaining in the
      * draft (remaining money for all fantasy teams with spots to fill). Then,
@@ -242,7 +244,7 @@ public class Draft {
         } else {
             medianSalary = 0;
         }
-        
+
         //ok now we calculate median salary of a pitcher
         int y = 0;
         for (int i = 0; i < teams.size(); i++) {
@@ -330,6 +332,58 @@ public class Draft {
 
     }
 
+    public BaseballPlayer getHighestHitterEstValue(BaseballTeam team) {
+        int highest = 0;
+        int index = 0;
+        int value = team.maxSalaryAllowance();
+
+        BaseballPlayer player;
+        for (int x = 0; x < availablePlayers.size(); x++) {
+            player = availablePlayers.get(x);
+            if (!player.isPitcher) {
+                if (player.getEstimatedValue() > highest) {
+                    if (player.getEstimatedValue() <= value) {
+                        if (team.canUsePlayer(player)) {
+                            index = x;
+                            highest = player.getEstimatedValue();
+                        }
+                    }
+                }
+            }
+        }
+        return availablePlayers.get(index);
+    }
+
+    public boolean playerDraftEnded() {
+        for (int x = 0; x < teams.size(); x++) {
+            if (teams.get(x).needsMorePlayers()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public BaseballPlayer getHighestPitcherEstValue(BaseballTeam team) {
+        int highest = 0;
+        int index = 0;
+        int value = team.maxSalaryAllowance();
+        BaseballPlayer player;
+        for (int x = 0; x < availablePlayers.size(); x++) {
+            player = availablePlayers.get(x);
+            if (player.isPitcher) {
+                if (player.getEstimatedValue() > highest) {
+                    if (player.getEstimatedValue() <= value) {
+                        if (team.canUsePlayer(player)) {
+                            index = x;
+                            highest = player.getEstimatedValue();
+                        }
+                    }
+                }
+            }
+        }
+        return availablePlayers.get(index);
+    }
+
     public void addPlayer(BaseballPlayer player) {
         availablePlayers.add(player);
         observablePlayers.add(player);
@@ -377,6 +431,7 @@ public class Draft {
         for (int x = 0; x < mlbTeams.size(); x++) {
             if (mlbTeams.get(x).teamName.equals(player.getMlbTeam())) {
                 mlbTeams.get(x).getObservablePlayers().add(player);
+                mlbTeams.get(x).getObservablePlayers().sort(new LastNameComparator());
             }
         }
     }
@@ -419,15 +474,25 @@ public class Draft {
     public ObservableList getPickOrder() {
         return pickOrder;
     }
-    public void addPick(Pick pick){
-        this.pickOrder.add(pick);
+
+    public void addPick(Pick pick) {
+        if(pickOrder.contains(pick))
+            removePick(pick);
+        
+        if (pick.getContract().equals("S2")) {
+            this.pickOrder.add(pick);
+        }
+        else if(playerDraftEnded()){
+            this.pickOrder.add(pick);
+        }
     }
-    public void removePick(Pick pick){
+
+    public void removePick(Pick pick) {
         this.pickOrder.remove(pick);
         //ok so we need to make sure the pick orders arnt all skrewd up
-        for(int x = 0 ; x < pickOrder.size() ; x++){
+        for (int x = 0; x < pickOrder.size(); x++) {
             Pick p = pickOrder.get(x);
-            p.setPickOrder(x+1);
+            p.setPickOrder(x + 1);
         }
     }
 

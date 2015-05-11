@@ -27,7 +27,10 @@
         <property name="FANTASY_STANDING_SCREEN_ICON"   value="fantasyStandingScreenIcon.png"></property>
         <property name="DRAFT_SCREEN_ICON"              value="draftScreenIcon.png"></property>
         <property name="MLB_TEAMS_SCREEN_ICON"          value="mlbTeamsScreenIcon.png"></property>
-
+        <property name="DRAFT_ONE_PLAYER_ICON"          value="onePlayerDraft.png"></property>
+        <property name="AUTO_DRAFT_PLAYER_ICON"         value="autoDraftPlayer.png"></property>
+        <property name="STOP_AUTO_DRAFT_ICON"           value="stopAutoDraft.png"></property>
+        
         <!-- TOOLTIPS FOR BUTTONS -->
         <property name="NEW_DRAFT_TOOLTIP"                 value="Create a New Draft"></property>
         <property name="LOAD_DRAFT_TOOLTIP"                value="Load an Existing Draft"></property>
@@ -45,7 +48,9 @@
         <property name="FANTASY_STANDING_SCREEN_TOOLTIP"    value="Fantasy Standing Screen"></property>
         <property name="DRAFT_SCREEN_TOOLTIP"               value="Draft Screen"></property>
         <property name="MLB_TEAMS_SCREEN_TOOLTIP"           value="MLB Teams Screen"></property>
-        
+        <property name="DRAFT_PLAYER_BUTTON_TOOLTIP"        value="Automatically Draft One Player"></property>
+        <property name="AUTO_DRAFT_PLAYER_BUTTON_TOOLTIP"   value="Start the Automatic Draft Process"></property>
+        <property name="STOP_AUTO_DRAFT_TOOLTIP"            value="Stop the Automatic Draft Process"></property>
         <!-- GUI LABELS -->
         <property name="HOME_SCREEN_HEADING_LABEL"              value="Fantasy Teams"></property>
         <property name="PLAYER_SCREEN_HEADING_LABEL"            value="Available Players"></property>
@@ -69,6 +74,7 @@
         <property name="DIALOG_EDIT_PLAYER_POS_LABEL"           value="Position: "></property>
         <property name="DIALOG_EDIT_PLAYER_CONTRACT_LABEL"      value="Contract: "></property>
         <property name="DIALOG_PLAYER_SALARY_LABEL"             value="Salary($): "></property>
+        <property name="DRAFT_PLAYER_CONTROL_LABEL"             value="Draft Player Controls"></property>
         
         <!--BUTTON TEXT -->
         <property name="DIALOG_COMPLETE_BUTTON_TEXT"            value="Complete"></property>

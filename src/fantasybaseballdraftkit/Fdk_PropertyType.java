@@ -32,6 +32,9 @@ public enum Fdk_PropertyType {
         EDIT_ICON,
         MOVE_UP_ICON,
         MOVE_DOWN_ICON,
+        DRAFT_ONE_PLAYER_ICON,
+        AUTO_DRAFT_PLAYER_ICON,
+        STOP_AUTO_DRAFT_ICON,
         
         
         // APPLICATION TOOLTIPS FOR BUTTONS
@@ -45,6 +48,9 @@ public enum Fdk_PropertyType {
         ADD_TEAM_TOOLTIP,
         REMOVE_TEAM_TOOLTIP,
         EDIT_ICON_TOOLTIP,
+        DRAFT_PLAYER_BUTTON_TOOLTIP,
+        AUTO_DRAFT_PLAYER_BUTTON_TOOLTIP,
+        STOP_AUTO_DRAFT_TOOLTIP,
         
         HOME_SCREEN_TOOLTIP,
         PLAYER_SCREEN_TOOLTIP,
@@ -53,7 +59,7 @@ public enum Fdk_PropertyType {
         MLB_TEAMS_SCREEN_TOOLTIP,
         
         // FOR DRAFT EDIT WORKSPACE
-        
+        DRAFT_PLAYER_CONTROL_LABEL,
         
         //SCREEN HEADING LABELS
         HOME_SCREEN_HEADING_LABEL,

@@ -173,6 +173,7 @@ public class DraftController {
             //update gui
             ArrayList<BaseballTeam> teams = draft.getTeams();
             BaseballTeam playersTeam = editPlayerDialog.getPlayerTeam();
+
             //first list check if the team is the free agents
             if (playersTeam.getTeamName().equals(FREE_AGENT)) {
                 //first we can check if the player is already in the pool
@@ -182,20 +183,33 @@ public class DraftController {
                     //them add him to the free agents pool
                     //we will do this in one step
                     draft.addPlayer(
-                            searchAndRemovePlayerFromTeam(teams, player,ddm));
+                            searchAndRemovePlayerFromTeam(teams, player, ddm));
                 }
             } //ok hes not going to the free agents so we need to add him to a team
             else {
-
+                //LETS CHECK THAT THE DRAFT ISNT ENDED
+                if (draft.playerDraftEnded()) {
+                //ok we are just going to add the player to the team that
+                    //is selected
+                    playersTeam.addTaxiPlayer(player);
+                    //now lets check the player wasnt on another team
+                    for (int x = 0; x < teams.size(); x++) {
+                        if (teams.get(x).getPlayers().contains(player)) {
+                            teams.get(x).removePlayer(player);
+                        }
+                    }
+                    draft.removePlayer(player);
+                    return;
+                }
                 for (int x = 0; x < teams.size(); x++) {
                     if (teams.get(x).equals(playersTeam)) {
                         teams.get(x).addPlayer(player);
                         //add the new pick
-                        Pick pick = new Pick(ddm.getDraft().getPickOrder().size()+1,
-                            player.getFirstName(),player.getLastName(),teams.get(x).getTeamName(),
-                          player.getContract(),player.getSalary(),player.getEstimatedValue());
-                          System.out.println(pick.getEstimatedValue());
-                          ddm.getDraft().addPick(pick);
+                        Pick pick = new Pick(ddm.getDraft().getPickOrder().size() + 1,
+                                player.getFirstName(), player.getLastName(), teams.get(x).getTeamName(),
+                                player.getPosition(), player.getContract(),
+                                player.getSalary(), player.getEstimatedValue());
+                        ddm.getDraft().addPick(pick);
                         //make sure to update totalpoints
                         draft.calculateTotalPoints();
                         draft.getObservableTeams().clear();
@@ -204,9 +218,11 @@ public class DraftController {
 
                     } else if (teams.get(x).getPlayers().contains(player)) {
                         teams.get(x).removePlayer(player);
-                        ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size()+1,
-                            player.getFirstName(),player.getLastName(),teams.get(x).getTeamName(),
-                          player.getContract(),player.getSalary(),player.getEstimatedValue()));
+
+                        ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size() + 1,
+                                player.getFirstName(), player.getLastName(), teams.get(x).getTeamName(),
+                                player.getPosition(), player.getContract(), player.getSalary(), player.getEstimatedValue()));
+
                         //make sure to update totalpoints
                         draft.calculateTotalPoints();
                         draft.getObservableTeams().clear();
@@ -219,7 +235,7 @@ public class DraftController {
             //AFTER THE PLAYER IS ADDED WE NOW NEED TO REDUE THE ESTIMATED VALUE
             draft.calculateEstimatedValue();
             gui.getPlayerScreen().updateTable();
-          
+            gui.getDraftScreen().updateTable();
             //COURSE IS NOW DIRTY AND THUS CAN BE SAVED
             gui.getFileController().markAsEdited(gui);
         } else {
@@ -258,9 +274,10 @@ public class DraftController {
                 if (playerIterator.equals(player)) {
                     //ok we found him we need to remove him
                     teams.get(x).removePlayer(player);
-                    ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size()+1,
-                            playerIterator.getFirstName(),playerIterator.getLastName(),teamIterator.getTeamName(),
-                          playerIterator.getContract(),playerIterator.getSalary(),playerIterator.getEstimatedValue()));
+                    ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size() + 1,
+                            playerIterator.getFirstName(), playerIterator.getLastName(), teamIterator.getTeamName(),
+                            player.getPosition(), playerIterator.getContract(), playerIterator.getSalary(),
+                            playerIterator.getEstimatedValue()));
                     //make sure to update totalpoints
                     draft.calculateTotalPoints();
                     draft.getObservableTeams().clear();
@@ -273,9 +290,10 @@ public class DraftController {
                 if (playerIterator.equals(player)) {
                     //same thing we found him and we need to remove him
                     teams.get(x).removeTaxiPlayer(player);
-                    ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size()+1,
-                            playerIterator.getFirstName(),playerIterator.getLastName(),teams.get(x).getTeamName(),
-                          playerIterator.getContract(),playerIterator.getSalary(),playerIterator.getEstimatedValue()));
+                    ddm.getDraft().removePick(new Pick(ddm.getDraft().getPickOrder().size() + 1,
+                            playerIterator.getFirstName(), playerIterator.getLastName(), teams.get(x).getTeamName(),
+                            player.getPosition(), playerIterator.getContract(), playerIterator.getSalary(),
+                            playerIterator.getEstimatedValue()));
                     draft.getObservableTeams().clear();
                     draft.getObservableTeams().setAll(teams);
 

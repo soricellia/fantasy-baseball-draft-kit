@@ -30,10 +30,13 @@ public class DraftDataManager {
 
     public void reset() {
         draft.getTeams().clear();
+        draft.getObservableTeams().clear();
+        
         draft.getAvailablePlayers().clear();
+        draft.getObservablePlayers().clear();
+       
         draft.setDraftName(DEFAULT_DRAFT_NAME);
         draft.getPickOrder().clear();
-
         ddv.reloadDraft(draft);
     }
 }

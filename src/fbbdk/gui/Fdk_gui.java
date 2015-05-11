@@ -146,12 +146,15 @@ public class Fdk_gui implements DraftDataView {
     public DraftSiteExporter getSiteExporter() {
         return draftSiteExporter;
     }
-    public HomeScreen getHomeScreen(){
+
+    public HomeScreen getHomeScreen() {
         return homeScreen;
     }
-    public PlayerScreen getPlayerScreen(){
+
+    public PlayerScreen getPlayerScreen() {
         return playerScreen;
     }
+
     /**
      * Accessor method for the window (i.e. stage).
      *
@@ -249,6 +252,10 @@ public class Fdk_gui implements DraftDataView {
 
         // NOTE THAT THE NEW, LOAD, AND EXIT BUTTONS
         // ARE NEVER DISABLED SO WE NEVER HAVE TO TOUCH THEM
+    }
+
+    public void cantSave(boolean save) {
+        saveDraftButton.setDisable(save);
     }
 
     // INITIALIZE THE WINDOW (i.e. STAGE) PUTTING ALL THE CONTROLS
@@ -359,10 +366,12 @@ public class Fdk_gui implements DraftDataView {
             activateWorkspace();
         }
         homeScreen.getDraftNameTextField().setText(draftToReload.getDraftName());
+
         homeScreen.updateScreen(null);
         playerScreen.updateTable();
         fantasyStandingsScreen.getFantasyStandingsTable()
                 .setItems(draftToReload.getObservableTeams());
+        draftScreen.updateTable();
     }
 
     // INIT A BUTTON AND ADD IT TO A CONTAINER IN A TOOLBAR
@@ -377,6 +386,10 @@ public class Fdk_gui implements DraftDataView {
         button.setTooltip(buttonTooltip);
         toolbar.getChildren().add(button);
         return button;
+    }
+
+    public DraftScreen getDraftScreen() {
+        return draftScreen;
     }
 
     // INIT A LABEL AND SET IT'S STYLESHEET CLASS
@@ -396,7 +409,6 @@ public class Fdk_gui implements DraftDataView {
     }
 
     // INIT A LABEL AND PUT IT IN A TOOLBAR
-
     private Label initChildLabel(Pane container, Fdk_PropertyType labelProperty, String styleClass) {
         Label label = initLabel(labelProperty, styleClass);
         container.getChildren().add(label);
@@ -404,7 +416,6 @@ public class Fdk_gui implements DraftDataView {
     }
 
     // INIT A COMBO BOX AND PUT IT IN A GridPane
-
     private ComboBox initGridComboBox(GridPane container, int col, int row, int colSpan, int rowSpan) throws IOException {
         ComboBox comboBox = new ComboBox();
         container.add(comboBox, col, row, colSpan, rowSpan);
@@ -412,7 +423,6 @@ public class Fdk_gui implements DraftDataView {
     }
 
     // INIT A TEXT FIELD AND PUT IT IN A GridPane
-
     private TextField initGridTextField(GridPane container, int size, String initText, boolean editable, int col, int row, int colSpan, int rowSpan) {
         TextField tf = new TextField();
         tf.setPrefColumnCount(size);

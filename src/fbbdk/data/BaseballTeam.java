@@ -75,7 +75,10 @@ public class BaseballTeam extends Team {
     private int of = 0;
     private int u = 0;
     private int p = 0;
-
+    private int tp = 0;
+    
+    private final int MAX_TAXI_PLAYER = 8;
+    
     private int moneySpent;
     private static final int MAX_MONEY = 260;
 
@@ -110,6 +113,42 @@ public class BaseballTeam extends Team {
         teamName = name;
         observableTeamName.set(name);
 
+    }
+    public void addTaxiPlayer(BaseballPlayer player){
+        taxiPlayers.add(player);
+        observableTaxiPlayers.add(player);
+        tp++;
+    }
+    public void removeTaxiPlayer(BaseballPlayer player){
+        taxiPlayers.remove(player);
+        observableTaxiPlayers.remove(player);
+        tp--;
+    }
+    
+    public boolean needsMorePlayers(){
+        if(teamSize == MAX_TEAM_SIZE){
+            return false;
+        }
+        else
+            return true;
+    }
+    public boolean needsMoreHitters(){
+        if(getHittersNeeded() >= 1){
+            return true;
+        }
+        return false;
+    }
+    public boolean needsMoreTaxiDraftPlayers(){
+        if(MAX_TAXI_PLAYER - tp == 0)
+            return false;
+        else
+            return true;
+    }
+    public boolean needsMorePitchers(){
+        if(p == 9)
+            return false;
+        else
+            return true;
     }
 
     public String getObservableTeamName() {
@@ -290,7 +329,6 @@ public class BaseballTeam extends Team {
         if (players.contains(player)) {
             removePlayer(player);
         }
-
         //now lets add the player
         players.add(player);
         observablePlayers.add(player);
@@ -464,24 +502,6 @@ public class BaseballTeam extends Team {
      */
     public void setTaxiPlayers(ArrayList<BaseballPlayer> reserves) {
         this.taxiPlayers = reserves;
-    }
-
-    /**
-     * this method adds a player to the reserves list
-     *
-     * @param player
-     */
-    public void addTaxiPlayer(BaseballPlayer player) {
-        this.taxiPlayers.add(player);
-    }
-
-    /**
-     * this method removes a player from the reserves list
-     *
-     * @param player
-     */
-    public void removeTaxiPlayer(BaseballPlayer player) {
-        this.taxiPlayers.remove(player);
     }
 
     private void countPositions() {

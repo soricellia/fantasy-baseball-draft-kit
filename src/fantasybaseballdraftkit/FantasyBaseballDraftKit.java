@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -73,7 +74,7 @@ public class FantasyBaseballDraftKit extends Application {
                 gui = new Fdk_gui(primaryStage);
                 gui.setDraftFileManager(jsonFileManager);
                 gui.setSiteExporter(exporter);
-                
+                Platform.setImplicitExit(false);
                 // CONSTRUCT THE DATA MANAGER AND GIVE IT TO THE GUI
                 DraftDataManager dataManager = new DraftDataManager(gui); 
                 gui.setDataManager(dataManager);

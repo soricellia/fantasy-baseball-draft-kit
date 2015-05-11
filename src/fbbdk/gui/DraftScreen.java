@@ -353,7 +353,7 @@ public class DraftScreen extends BorderPane {
                 protected Object call() throws Exception {
                     Draft draft = dataManager.getDraft();
                     while (autoDraft) {
-
+                      
                         if (!draft.playerDraftEnded()) {
                             boolean drafted = false;
                             for (int x = 0; x < draft.getTeams().size(); x++) {
@@ -381,7 +381,6 @@ public class DraftScreen extends BorderPane {
                                         draft.getObservableTeams().clear();
                                         draft.getObservableTeams().setAll(draft.getTeams());
                                         draft.removePlayer(player);
-                                        gui.getHomeScreen().updateScreen(draft.getTeams().get(x));
                                         drafted = true;
                                     } else if (draft.getTeams().get(x).needsMorePitchers()) {
                                         //we are going to draft a pitcher
@@ -427,7 +426,7 @@ public class DraftScreen extends BorderPane {
                                     //we dont want any salary, this is a taxi pick
                                     player.setSalary(0);
                                     draft.getTeams().get(x).addTaxiPlayer(player);
-
+                                    
                                     //now the visual stuff
                                     Pick pick = new Pick(draft.getPickOrder().size() + 1,
                                             player.getFirstName(), player.getLastName(), draft.getTeams().get(x).getTeamName(),
@@ -446,8 +445,8 @@ public class DraftScreen extends BorderPane {
                                 }
                             }
                         }
-
-                        Thread.sleep(100);
+                        
+                        Thread.sleep(50);
                     }
                     return "";
                 }
